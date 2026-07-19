@@ -6,7 +6,7 @@ const achFormName = { "tab1": "icon", "tab2": "bird", "tab3": "dart", "tab4": "c
 const specialFormNames = { "trail": "Trail", "deathEffect": "Death Effect", "shipFire": "Ship Fire", "item": "Item" }
 const qualities = { low: 'low', sd: 'low', med: 'hd', medium: 'hd', hd: 'hd' }
 const positionMultipliers = { uhd: 4, hd: 2, low: 1 }
-const yOffsets = { player_ball: -10, bird: 30, spider: 7, swing: -15 }
+const yOffsets = { player_ball: 0, bird: 0, spider: 0, swing: 0 }
 const cubeOffsets = {
     ship: { "x": 0, "y": 5, "scale": 0.55 },
     bird: { "x": 0, "y": 6, "scale": 0.55 },
