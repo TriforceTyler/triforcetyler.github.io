@@ -13,7 +13,7 @@
         <div class="fancybox bounce center supercenter" style="min-width: 580px; padding: 0px 25px 20px">
             <h1 id="extraInfoText" class="center gold" style="margin-top: 14px; margin-bottom: 20px; overflow: visible;">Info</h1>
             <div id="extraInfoPopup"></div>
-            <img src="../assets/ok.png" class="gdButton center" style="height: 55px; margin-top: 30px" onclick="$('#iconInfoPopup').hide()"">
+            <img src="./assets/ok.png" class="gdButton center" style="height: 55px; margin-top: 30px" onclick="$('#iconInfoPopup').hide()"">
 		</div>
     </div>
 
@@ -42,8 +42,8 @@
             </div>
 
             <div style="display: flex; justify-content: center; gap: 30px; margin-top: 8px">
-                <button class="blankButton gdButton" onClick="toggleAllFilters(true)"><img src="../assets/iconkitbuttons/select-all.png" style="height: 40px"></button>
-                <button class="blankButton gdButton" onClick="toggleAllFilters(false)"><img src="../assets/iconkitbuttons/select-none.png" style="height: 40px"></button>
+                <button class="blankButton gdButton" onClick="toggleAllFilters(true)"><img src="./assets/select-all.png" style="height: 40px"></button>
+                <button class="blankButton gdButton" onClick="toggleAllFilters(false)"><img src="./assets/select-none.png" style="height: 40px"></button>
             </div>
             
             <p class="white" style="margin: 20px 0px 0px 0px">idk?</p>
@@ -56,12 +56,12 @@
 
             <div class="cornerCheckbox" style="position: absolute; bottom: 0px; right: 0px">
                 <button class="blankButton gdButton" id="resetAllFilters">
-                    <img src="../assets/iconkitbuttons/trash.png" style="width: 64px">
+                    <img src="./assets/trash.png" style="width: 64px">
                 </button>
             </div>
         
-            <img src="../assets/ok.png" class="postButton gdButton center" style="height: 55px; margin-top: 30px" onclick="$('#filter').hide()">
-            <img class="gdButton xButton" src="../assets/close.png" style="width: 70px" onclick="$('#filter').hide()">
+            <img src="./assets/ok.png" class="postButton gdButton center" style="height: 55px; margin-top: 30px" onclick="$('#filter').hide()">
+            <img class="gdButton xButton" src="./assets/close.png" style="width: 70px" onclick="$('#filter').hide()">
 		</div>
     </div>
 
@@ -78,8 +78,8 @@
                 <h2>Full set</h2>
             </div>
 
-            <img src="../assets/ok.png" class="postButton gdButton center" style="height: 55px; margin-top: 30px" id="fetchUser">
-            <img class="gdButton xButton" src="../assets/close.png" style="width: 70px" onclick="$('#steal').hide()">
+            <img src="./assets/ok.png" class="postButton gdButton center" style="height: 55px; margin-top: 30px" id="fetchUser">
+            <img class="gdButton xButton" src="./assets/close.png" style="width: 70px" onclick="$('#steal').hide()">
 		</div>
     </div>
     
@@ -96,12 +96,12 @@
                 <div class="help" help="Allows robots to play spider animations and vice versa"><input type="checkbox" class="iconsetting" id="box-cursed"><label for="box-cursed" class="gdcheckbox gdButton"></label><h2>Cursed animations</h2></div>
             </div>
             <p class="white" id="helpText" style="font-size: 24px; margin: 0px auto; height: 50px; width: 90%">(Hover over a setting for information)</p>
-            <img src="../assets/ok.png" class="postButton gdButton center" style="height: 55px; margin-top: 30px; margin-bottom: 20px" onclick="$('#settings').hide()">
-            <img class="gdButton xButton" src="../assets/close.png" style="width: 70px" onclick="$('#settings').hide()">
+            <img src="./assets/ok.png" class="postButton gdButton center" style="height: 55px; margin-top: 30px; margin-bottom: 20px" onclick="$('#settings').hide()">
+            <img class="gdButton xButton" src="./assets/close.png" style="width: 70px" onclick="$('#settings').hide()">
         </div>
 	</div>
 
-    <img id="iconKitLogo" src="../assets/title.png" style="margin: 7px 0px; height: 50px"><br>
+    <img id="iconKitLogo" src="./assets/title.png" style="margin: 7px 0px; height: 50px"><br>
     <h2 style="margin: 5px auto 0px auto; display: none; height: 45px" id="howto"><span style='color: #aaaaaa'>This is WIP, since this is a recode of GD Colon's Online Icon Kit</span></h2>
 
     <div class="iconbox">
@@ -111,12 +111,12 @@
 	<!-- buttons above editor tabs -->
     <hr id="gdfloor">
     <div class="menuButtons">
-        <button class="blankButton menuButton" onclick="icon.psdExport()" title="Download layered PSD"><img src="../assets/iconkitbuttons/psd.png"></button>
-         <button class="blankButton menuButton" id="copyURL" title="Copy icon kit URL"><img src="../assets/iconkitbuttons/link.png"></button>
-        <button class="blankButton menuButton" id="copyToClipboard" title="Copy to clipboard" style="margin-left: 30px"><img src="../assets/iconkitbuttons/copy.png"></button>
-        <button class="blankButton menuButton" id="pngExport" onclick="icon.pngExport()" title="Download icon" style="margin-right: 30px"><img src="../assets/iconkitbuttons/save.png"></a></button>
-        <button class="blankButton menuButton" id="getUserIcon" title="Get player icon"><img src="../assets/iconkitbuttons/steal.png"></button>
-        <button class="blankButton menuButton" id="randomIcon" title="Random Icon"><img src="../assets/iconkitbuttons/shuffle.png"></button>
+        <button class="blankButton menuButton" onclick="icon.psdExport()" title="Download layered PSD"><img src="./assets/psd.png"></button>
+         <button class="blankButton menuButton" id="copyURL" title="Copy icon kit URL"><img src="./assets/link.png"></button>
+        <button class="blankButton menuButton" id="copyToClipboard" title="Copy to clipboard" style="margin-left: 30px"><img src="./assets/copy.png"></button>
+        <button class="blankButton menuButton" id="pngExport" onclick="icon.pngExport()" title="Download icon" style="margin-right: 30px"><img src="./assets/save.png"></a></button>
+        <button class="blankButton menuButton" id="getUserIcon" title="Get player icon"><img src="./assets/steal.png"></button>
+        <button class="blankButton menuButton" id="randomIcon" title="Random Icon"><img src="./assets/shuffle.png"></button>
     </div>
 
 	<!-- editor tabs -->
@@ -128,9 +128,9 @@
 
     <div id="iconLayer">
         <div class="sideButtons" id="leftSide">
-            <button title="Colors" class="blankButton gdButton" id="colorToggle"><img src="../assets/iconkitbuttons/colors.png" style="width: 75px"></button>
-            <button title="Glow" class="blankButton glowToggle gdButton" id="glowbtn"><img id="glow" src="../assets/iconkitbuttons/streak_off.png"></button>
-            <button title="Dev Tools" class="blankButton gdButton" id="devToolsToggle"><img id="devToolsIcon" src="../assets/iconkitbuttons/dev_off.png"></button>
+            <button title="Colors" class="blankButton gdButton" id="colorToggle"><img src="./assets/colors.png" style="width: 75px"></button>
+            <button title="Glow" class="blankButton glowToggle gdButton" id="glowbtn"><img id="glow" src="./assets/streak_off.png"></button>
+            <button title="Dev Tools" class="blankButton gdButton" id="devToolsToggle"><img id="devToolsIcon" src="./assets/dev_off.png"></button>
         </div>
 
         <div id="iconKitParent" class="iconKit iconSetup">
@@ -141,11 +141,11 @@
             <div id="iconprogressbar"><div class="fakeloading"></div></div>
 
             <div id="colorLabels">
-                <button id="cc1" colType="1" altCol="2" class="colorLabel blankButton selectedColorType" title="Primary Color"><img src="../assets/col1.png"></button><input type="color" id="cp1" class="colorPicker">
-                <button id="cc2" colType="2" altCol="1" class="colorLabel blankButton" title="Secondary Color"><img src="../assets/col2.png"></button><input type="color" id="cp2" class="colorPicker">
-                <button id="ccg" colType="g" altCol="2" class="colorLabel blankButton" title="Glow Color" style="display: none"><img src="../assets/colG.png"></button><input type="color" id="cpg" class="colorPicker">
-                <button id="ccw" colType="w" altCol="1" class="colorLabel blankButton" title="White Highlights" style="display: none"><img src="../assets/colW.png" style="background-color: rgb(255, 255, 255)";></button><input type="color" id="cpw" class="colorPicker">
-                <button id="ccu" colType="u" altCol="1" class="colorLabel blankButton" title="UFO Dome" style="display: none"><img src="../assets/colU.png" style="background-color: rgb(255, 255, 255)";></button><input type="color" id="cpu" class="colorPicker">
+                <button id="cc1" colType="1" altCol="2" class="colorLabel blankButton selectedColorType" title="Primary Color"><img src="./assets/col1.png"></button><input type="color" id="cp1" class="colorPicker">
+                <button id="cc2" colType="2" altCol="1" class="colorLabel blankButton" title="Secondary Color"><img src="./assets/col2.png"></button><input type="color" id="cp2" class="colorPicker">
+                <button id="ccg" colType="g" altCol="2" class="colorLabel blankButton" title="Glow Color" style="display: none"><img src="./assets/colG.png"></button><input type="color" id="cpg" class="colorPicker">
+                <button id="ccw" colType="w" altCol="1" class="colorLabel blankButton" title="White Highlights" style="display: none"><img src="./assets/colW.png" style="background-color: rgb(255, 255, 255)";></button><input type="color" id="cpw" class="colorPicker">
+                <button id="ccu" colType="u" altCol="1" class="colorLabel blankButton" title="UFO Dome" style="display: none"><img src="./assets/colU.png" style="background-color: rgb(255, 255, 255)";></button><input type="color" id="cpu" class="colorPicker">
             </div>
 
             <div id="colorList"></div>
@@ -204,7 +204,7 @@
                     
                     <div id="devColorConfig">
                         <button id="devColor" class="colorLabel blankButton" onclick="$('#devColorPicker').trigger('click')" style="margin-left: 28px !important; margin-right: 9px !important">
-                            <img src="../assets/colB.png" style="width: 40px; transition-duration: 0ms;">
+                            <img src="./assets/colB.png" style="width: 40px; transition-duration: 0ms;">
                         </button>
                         <input type="color" id="devColorPicker" class="colorPicker">
                         <p>Color</p>
@@ -220,9 +220,9 @@
         </div>
 
         <div class="sideButtons" id="rightSide">
-            <button title="Unlock details" class="blankButton gdButton" id="unlockIcon"><img id="lock" src="../assets/iconkitbuttons/unlockinfo_off.png"></button>
-            <button title="Filter" class="blankButton gdButton" id="filters"><img id="openFilters" src="../assets/iconkitbuttons/filter_off.png"></button>
-            <button title="Expand icon list" class="blankButton gdButton" id="expand" ><img id="expandIcon" src="../assets/iconkitbuttons/expanded_off.png"></button>
+            <button title="Unlock details" class="blankButton gdButton" id="unlockIcon"><img id="lock" src="./assets/unlockinfo_off.png"></button>
+            <button title="Filter" class="blankButton gdButton" id="filters"><img id="openFilters" src="./assets/filter_off.png"></button>
+            <button title="Expand icon list" class="blankButton gdButton" id="expand" ><img id="expandIcon" src="./assets/expanded_off.png"></button>
         </div>
     </div>
 
@@ -240,7 +240,7 @@
             <input id="rollSpeedBox" type="number" value="0">
 
             <button class="blankButton gdButton" id="resetBallRotation" style="margin-left: 15px">
-                <img src="../assets/iconkitbuttons/trash.png" style="width: 58px">
+                <img src="./assets/trash.png" style="width: 58px">
             </button>
         </div>
     </div>
@@ -267,14 +267,14 @@
 
     <div style="position:absolute; top: 20px; left: 20px; pointer-events: none">
         <button class="blankButton menuButton" id="customColors" title="Settings" onclick="$('#settings').show()" style="pointer-events: all;" tabindex="0">
-            <img src="../assets/iconkitbuttons/cog.png" style="width: 75px">
+            <img src="./assets/cog.png" style="width: 75px">
         </button>
 	</div>
 
     <div class="hideIfSmall" id="extraInfo" style="position:absolute; top: 20px; right: 15px"></div>
 
     <div class="showIfSmall" style="position:absolute; top: 20px; right: 15px">
-        <img class="gdButton" onclick="extraInfoPopup()" style="pointer-events: all; width: 50%" src="../assets/smallinfo.png"">
+        <img class="gdButton" onclick="extraInfoPopup()" style="pointer-events: all; width: 50%" src="./assets/smallinfo.png"">
     </div>
     
 </div>
