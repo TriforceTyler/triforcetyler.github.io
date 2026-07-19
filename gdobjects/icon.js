@@ -1,6 +1,6 @@
 const WHITE = 0xffffff
 const colorNames = { "1": "Color 1", "2": "Color 2", "g": "Glow", "w": "White", "u": "UFO Dome" }
-const formNames = { "player": "cube", "player_ball": "ball", "bird": "ufo", "dart": "wave" }
+const formNames = { "tab1": "tab1", "tab2": "tab2", "tab3": "tab3", "tab4": "tab4", "tab5": "tab5", "tab6": "tab6", "tab7": "tab7", "tab8": "tab8", "tab9": "tab9", "tab10": "tab10", "tab11": "tab11", "tab12": "tab12", "tab13": "tab13" }
 const extendedFormNames = Object.assign({ icon: "cube", special: "trail", death: "deathEffect", color: "color1" }, formNames)
 const achFormName = { "tab1": "icon", "tab2": "bird", "tab3": "dart", "tab4": "color", "tab5": "death", "tab6": "special" }
 const specialFormNames = { "trail": "Trail", "deathEffect": "Death Effect", "shipFire": "Ship Fire", "item": "Item" }
