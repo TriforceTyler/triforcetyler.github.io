@@ -105,7 +105,7 @@
     <h2 style="margin: 5px auto 0px auto; display: none; height: 45px" id="howto"><span style='color: #aaaaaa'>This is WIP, since this is a recode of GD Colon's Online Icon Kit</span></h2>
 
     <div class="iconbox">
-        <canvas id="result" style="transform: translateY(-35px)">
+        <canvas id="result" style="transform: translateY(-35px)"></canvas>
     </div>
 
 	<!-- buttons above editor tabs -->
@@ -120,7 +120,21 @@
     </div>
 
 	<!-- editor tabs -->
-    <div id="iconTabs"></div><br>
+    <div id="iconTabs">
+		<button class="blankButton menuButton" onclick="icon.psdExport()" title="Download layered PSD"><img src="./assets/tab_block.png"></button>
+        <button class="blankButton menuButton" id="copyURL" title="Copy icon kit URL"><img src="./assets/tab_outline.png"></button>
+        <button class="blankButton menuButton" id="copyToClipboard" title="Copy to clipboard" style="margin-left: 30px"><img src="./assets/tab_slope.png"></button>
+        <button class="blankButton menuButton" id="pngExport" onclick="icon.pngExport()" title="Download icon" style="margin-right: 30px"><img src="./assets/tab_spike.png"></a></button>
+        <button class="blankButton menuButton" id="getUserIcon" title="Get player icon"><img src="./assets/tab_3DL.png"></button>
+        <button class="blankButton menuButton" id="randomIcon" title="Random Icon"><img src="./assets/tab_orb.png"></button>
+		<button class="blankButton menuButton" id="randomIcon" title="Random Icon"><img src="./assets/tab_monster.png"></button>
+		<button class="blankButton menuButton" id="randomIcon" title="Random Icon"><img src="./assets/tab_pixel.png"></button>
+		<button class="blankButton menuButton" id="randomIcon" title="Random Icon"><img src="./assets/tab_potion.png"></button>
+		<button class="blankButton menuButton" id="randomIcon" title="Random Icon"><img src="./assets/tab_hexagon.png"></button>
+		<button class="blankButton menuButton" id="randomIcon" title="Random Icon"><img src="./assets/tab_ground_deco.png"></button>
+		<button class="blankButton menuButton" id="randomIcon" title="Random Icon"><img src="./assets/tab_sawblade.png"></button>
+		<button class="blankButton menuButton" id="randomIcon" title="Random Icon"><img src="./assets/tab_trigger.png"></button>
+	</div><br>
 
     <div id="extraUnlockText_off" style="display: none">
         <p style="margin: 0px 0px 16px 0px; color: white">Check back soon!</p>
