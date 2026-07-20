@@ -122,7 +122,7 @@
         <button class="blankButton menuButton" id="randomIcon" title="Random Icon"><img src="./assets/shuffle.png"></button>
     </div>
 
-    <div id="iconTabs"><button form="cube" title="Cube" class="blankButton iconTabButton activeForm"><img src="./assets/tab1_on.png" style="width: 50px"></button><button form="ship" title="Ship" class="blankButton iconTabButton"><img src="./assets/tab2_off.png" style="width: 50px"></button><button form="ball" title="Ball" class="blankButton iconTabButton"><img src="./assets/tab3_off.png" style="width: 50px"></button><button form="ufo" title="UFO" class="blankButton iconTabButton"><img src="./assets/tab4_off.png" style="width: 50px"></button><button form="wave" title="Wave" class="blankButton iconTabButton"><img src="./assets/tab5_off.png" style="width: 50px"></button><button form="robot" title="Robot" class="blankButton iconTabButton"><img src="./assets/tab6_off.png" style="width: 50px"></button><button form="spider" title="Spider" class="blankButton iconTabButton"><img src="./assets/tab7_off.png" style="width: 50px"></button><button form="swing" title="Swing" class="blankButton iconTabButton"><img src="./assets/tab8_off.png" style="width: 50px"></button><button form="jetpack" title="Jetpack" class="blankButton iconTabButton"><img src="./assets/tab9_off.png" style="width: 50px"></button><button form="extraItem" title="Extra" class="blankButton" id="extraItemsToggle" style="display: none"><img src="./assets/extra_off.png" style="width: 50px"></button></div><br>
+    <div id="iconTabs"><button form="tab1" title="tab1" class="blankButton iconTabButton activeForm"><img src="./assets/tab1_on.png" style="width: 50px"></button><button form="tab2" title="tab2" class="blankButton iconTabButton"><img src="./assets/tab2_off.png" style="width: 50px"></button><button form="tab3" title="tab3" class="blankButton iconTabButton"><img src="./assets/tab3_off.png" style="width: 50px"></button><button form="tab4" title="tab4" class="blankButton iconTabButton"><img src="./assets/tab4_off.png" style="width: 50px"></button><button form="tab5" title="tab5" class="blankButton iconTabButton"><img src="./assets/tab5_off.png" style="width: 50px"></button><button form="tab6" title="tab6" class="blankButton iconTabButton"><img src="./assets/tab6_off.png" style="width: 50px"></button><button form="tab7" title="tab7" class="blankButton iconTabButton"><img src="./assets/tab7_off.png" style="width: 50px"></button><button form="tab8" title="tab8" class="blankButton iconTabButton"><img src="./assets/tab8_off.png" style="width: 50px"></button><button form="tab9" title="tab9" class="blankButton iconTabButton"><img src="./assets/tab9_off.png" style="width: 50px"></button><button form="extraItem" title="Extra" class="blankButton" id="extraItemsToggle" style="display: none"><img src="./assets/extra_off.png" style="width: 50px"></button></div><br>
 
     <div id="extraUnlockText_off" style="display: none">
         <p style="margin: 0px 0px 16px 0px; color: white">Check back soon!</p>
@@ -292,11 +292,11 @@
 const iconCanvas = document.getElementById('result');
 const app = new PIXI.Application({ view: iconCanvas, width: 300, height: 300, backgroundAlpha: 0 });
 
-let currentForm = 'cube'
+let currentForm = 'tab1'
 
 let selectedIcon = "1"          // Icon ID
-let selectedForm = 'cube'       // Form
-let extraItemsformCopy = 'cube'     // Form for copying
+let selectedForm = 'tab1'       // Form
+let extraItemsformCopy = 'tab1'     // Form for copying
 
 let selectedColorType = "1"     // Color tab selection (primary, secondary, etc)
 let altColorType = "2"          // Color tab selection when right-clicking
@@ -518,7 +518,7 @@ function getExtraInfo(raw, form, id) {
  
         if (icon && icon.secondaryIcon) {
             let i2 = icon.secondaryIcon
-            extraInfo["Cube"] = (i2.customFiles ? `Custom (${i2.id || "-"})` : (+i2.id).toString())
+            extraInfo["Tab1"] = (i2.customFiles ? `Custom (${i2.id || "-"})` : (+i2.id).toString())
         }
     }
 
