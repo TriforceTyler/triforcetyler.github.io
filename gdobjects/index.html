@@ -120,34 +120,129 @@
     </div>
 
     <div id="iconTabs"></div><br>
+
+	<div id="extraUnlockText_off" style="display: none">
+        <p style="margin: 0px 0px 16px 0px; color: white">Check back soon!</p>
+    </div>
+
+    <div id="iconLayer">
+        <div class="sideButtons" id="leftSide">
+            <button title="Colors" class="blankButton gdButton" id="colorToggle"><img src="./assets/colors.png" style="width: 75px"></button>
+            <button title="Glow" class="blankButton glowToggle gdButton" id="glowbtn"><img id="glow" src="./assets/streak_off.png"></button>
+            <button title="Dev Tools" class="blankButton gdButton" id="devToolsToggle"><img id="devToolsIcon" src="./assets/dev_off.png"></button>
+        </div>
+	
     <div id="iconKitParent" class="iconKit iconSetup">
             <div id="iconprogressbar"><div id="iconloading" style="width: 100%;"></div></div>
         </div><br>
 
-    <div style="width: 1200px; margin: 0 auto; position: relative; right: 42px">
-        <div style="padding-top: 15px; width: 75px; vertical-align: top;" class="colTypes inline">
-            <button id="cc1" class="colorLabel blankButton" onclick="$('#cp1').trigger('click')" title="Primary Color"><img src="./assets/col1.png"></button><input type="color" id="cp1" class="colorPicker">
-            <button id="cc2" class="colorLabel blankButton" onclick="$('#cp2').trigger('click')" title="Secondary Color"><img src="./assets/col2.png"></button><input type="color" id="cp2" class="colorPicker">
-            <div class="colorSplit" style="height: 12.5px"></div>
-            <button id="ccG" class="colorLabel blankButton" onclick="$('#cpG').trigger('click')" title="Glow Color"><img src="./assets/colG.png"></button><input type="color" id="cpG" class="colorPicker">
-            <button id="ccW" class="colorLabel blankButton" onclick="$('#cpW').trigger('click')" title="White Highlights" style="display: none"><img src="./assets/colW.png" style="background-color: rgb(255, 255, 255)";></button><input type="color" id="cpW" class="colorPicker">
-            <button id="ccU" class="colorLabel blankButton" onclick="$('#cpU').trigger('click')" title="UFO Dome" style="display: none"><img src="./assets/colU.png" style="background-color: rgb(255, 255, 255)";></button><input type="color" id="cpU" class="colorPicker">
-        </div>
-        <div id="colors" class="inline iconKit">
-            <div id="col1"></div>
-            <div id="col2"></div>
-            <div class="colorSplit" style="height: 12.5px"></div>
-            <div id="colG"></div>
-            <div id="colW" style="display: none"></div>
-            <div id="colU" style="display: none"></div>
-        </div>
+    <div id="colorLayer" class="iconKit iconSetup" style="display: none;">
+            <div id="iconprogressbar"><div class="fakeloading"></div></div>
+
+            <div id="colorLabels">
+                <button id="cc1" coltype="1" altcol="2" class="colorLabel blankButton selectedColorType" title="Primary Color"><img src="./assets/col1.png" style="background-color: rgb(125, 0, 255);"></button><input type="color" id="cp1" class="colorPicker">
+                <button id="cc2" coltype="2" altcol="1" class="colorLabel blankButton" title="Secondary Color"><img src="./assets/col2.png" style="background-color: rgb(0, 255, 255);"></button><input type="color" id="cp2" class="colorPicker">
+                <button id="ccg" coltype="g" altcol="2" class="colorLabel blankButton" title="Glow Color" style="display: none"><img src="./assets/colG.png" style="background-color: rgb(125, 255, 0);"></button><input type="color" id="cpg" class="colorPicker">
+                <button id="ccw" coltype="w" altcol="1" class="colorLabel blankButton" title="White Highlights" style=""><img src="./assets/colW.png" style="background-color: rgb(255, 255, 255)" ;=""></button><input type="color" id="cpw" class="colorPicker">
+                <button id="ccu" coltype="u" altcol="1" class="colorLabel blankButton" title="UFO Dome" style="display: none"><img src="./assets/colU.png" style="background-color: rgb(255, 255, 255)" ;=""></button><input type="color" id="cpu" class="colorPicker">
+            </div>
+
+			<div id="colorList"></div>
+
+			<p class="hideIfSmall" style="color: white; opacity: 66%; line-height: 7px;">Right click to change <span id="altColor">secondary</span> color</p>
     </div>
 
-	<div class="sideButtons" id="rightSide">
+	<div id="devTools" class="iconKit droppable" style="display: none">
+            <div>
+                <h2>Icon</h2>
+                <div id="devCustomIcon">
+    
+                    <p>Upload .png</p>
+                    <div class="fileBox gdButton customUploader" target="devUploadPNG" id="devViewPNG"><p></p></div>
+                    <input id="devUploadPNG" style="display: none" type="file" accept="image/png">
+    
+                    <p>Upload .plist</p>
+                    <div class="fileBox gdButton customUploader" target="devUploadPLIST" id="devViewPLIST"><p></p></div>
+                    <input id="devUploadPLIST" style="display: none" type="file" accept=".plist,.dat,.xml">
+    
+                    <p>Quality</p>
+                    <select id="devUploadQuality" class="fancySelect">
+                        <option val="uhd">UHD</option>
+                        <option val="hd">HD</option>
+                        <option val="low">Low</option>
+                    </select>
+                </div>
+    
+                <div style="width: 100%; margin-top: 10px">
+                    <button class="longButton devLayerBtn gdButton" disabled="" id="devLoadIcon">
+                        <h2 style="width: 100%; margin: 0px 0px; font-size: 30px;">Load icon</h2>
+                    </button>
+                </div>
+
+                <p class="hideIfSmall" style="color: white; opacity: 66%; line-height: 9px;">Files can also be dragged here</p>
+    
+            </div>
+    
+            <div id="devLayersSection">
+                <div style="display: flex; flex-direction: column; align-items: center; overflow: visible;">
+                    <h2>Layers</h2>
+                    <div id="devIconLayers">
+                        <button class="longButton devLayerBtn gdButton" id="backOneLayer" style="display: none;">◀️ Back</button>
+                    <button class="longButton devLayerBtn gdButton" idx="0" layertype="group">📁 Leg 3</button><button class="longButton devLayerBtn gdButton" idx="1" layertype="group">📁 Leg 4</button><button class="longButton devLayerBtn gdButton" idx="2" layertype="group">📁 Connector</button><button class="longButton devLayerBtn gdButton" idx="3" layertype="group">📁 Head</button><button class="longButton devLayerBtn gdButton" idx="4" layertype="group">📁 Leg 1</button><button class="longButton devLayerBtn gdButton" idx="5" layertype="group">📁 Leg 2</button><button class="longButton devLayerBtn gdButton" idx="6" layertype="group">📁 Glow</button></div>
+                </div>
+            </div>
+    
+            <div>
+                <h2 id="devSettingsHeader">Settings</h2>
+                <p class="noLayerSelected" style="color: white">No layer selected..</p>
+                <div id="devIconSettings" class="yesLayerSelected" style="display: none;">
+                    <div>
+                        <input type="checkbox" id="devToggleVisible"><label for="devToggleVisible" class="gdcheckbox gdButton"></label>
+                        <p>Visible</p>
+                    </div>
+                    
+                    <div id="devColorConfig">
+                        <button id="devColor" class="colorLabel blankButton" onclick="$('#devColorPicker').trigger('click')" style="margin-left: 28px !important; margin-right: 9px !important">
+                            <img src="./assets/colB.png" style="width: 40px; transition-duration: 0ms;">
+                        </button>
+                        <input type="color" id="devColorPicker" class="colorPicker">
+                        <p>Color</p>
+                    </div>
+    
+                    <div id="devSpriteOffset" style="margin-top: 30px">
+                        <h2 id="spriteOffsetHeader" style="font-size: 32px; margin-bottom: 20px">Sprite Offset</h2>
+                        <div style="margin-bottom: 10px"><p>X: </p> <input id="spriteOffsetX" type="number" value="0" onwheel="event.stopImmediatePropagation()"> </div>
+                        <div><p>Y: </p> <input id="spriteOffsetY" type="number" value="0" onwheel="event.stopImmediatePropagation()"> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+		<div class="sideButtons" id="rightSide">
             <button title="Unlock details" class="blankButton gdButton" id="unlockIcon"><img id="lock" src="./assets/unlockinfo_off.png"></button>
             <button title="Filter" class="blankButton gdButton" id="filters"><img id="openFilters" src="./assets/filter_off.png"></button>
             <button title="Expand icon list" class="blankButton gdButton" id="expand"><img id="expandIcon" src="./assets/expanded_off.png"></button>
-	</div>
+        </div>
+    </div>
+
+	<div id="secondaryIconOptions" style="display: none">
+        <div id="showSecondaryIcon" class="specialIconSetting">
+            <input type="checkbox" id="enableSecondaryIcon"><label for="enableSecondaryIcon" class="gdcheckbox gdButton"></label>
+            <h2>Show icon</h2>
+        </div>
+    </div>
+
+    <div id="ballRollOptions" style="display: none;">
+        <div class="animationSelector" style="margin-top: 10px">
+            <h2 style="margin-right: 20px">Roll speed:</h2>
+            <input id="rollSpeed" style="width: 250px" type="range" value="0" placeholder="0" min="-10" max="10" step="0.1">
+            <input id="rollSpeedBox" type="number" value="0">
+
+            <button class="blankButton gdButton" id="resetBallRotation" style="margin-left: 15px">
+                <img src="./assets/trash.png" style="width: 58px">
+            </button>
+        </div>
+    </div>
 
     <div id="animationOptions" style="">
         <div class="animationSelector">
@@ -170,12 +265,6 @@
             <img src="./assets/cog.png" style="width: 75px">
         </button>
 	</div>
-
-    <div class="hideIfSmall" style="position:absolute; top: 20px; left: 20px; width: 64px; height: 64px; pointer-events: none">
-		<img class="gdButton" style="pointer-events: all" id="backButton" src="./assets/back.png" height="100%" onclick="backButton()">
-	</div>
-
-    <div class="hideIfSmall" id="extraInfo" style="position:absolute; top: 20px; right: 15px"></div>
 
 </div>
 
