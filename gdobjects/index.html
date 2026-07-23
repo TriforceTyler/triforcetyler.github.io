@@ -1155,7 +1155,7 @@ $(document).on('click', '.iconButton', function (e) {
 })
 
 // fetch way too much icon kit related data
-fetch('../api/iconkit').then(res => res.json()).then(iconKitData => {
+fetch('./api/iconkit').then(res => res.json()).then(iconKitData => {
 
     iconStuff = iconKitData
     forms = Object.keys(iconStuff.forms)
@@ -1166,14 +1166,14 @@ fetch('../api/iconkit').then(res => res.json()).then(iconKitData => {
 
     // add a button for each form, and set up their container
     forms.forEach(form => {
-        $("#iconTabs").append(`<button form="${form}" title="${iconStuff.forms[form].name}" class="blankButton iconTabButton"><img src="../assets/iconkitbuttons/${form}_off.png" style="width: 50px"></button>`)
-        $("#copyForms").append(`<button form="${form}" title="${iconStuff.forms[form].name}" class="blankButton copyForm"><img src="../assets/iconkitbuttons/${form}_off.png" style="width: 50px"></button>`)
+        $("#iconTabs").append(`<button form="${form}" title="${iconStuff.forms[form].name}" class="blankButton iconTabButton"><img src="./assets/iconkitbuttons/${form}_off.png" style="width: 50px"></button>`)
+        $("#copyForms").append(`<button form="${form}" title="${iconStuff.forms[form].name}" class="blankButton copyForm"><img src="./assets/iconkitbuttons/${form}_off.png" style="width: 50px"></button>`)
         $("#iconKitParent").append(`<div id="${form}s" class="iconContainer" unloaded></div>`)
         appendIcon(form)
     })
 
     // extra items tab, if unlock mode is on
-    $("#iconTabs").append(`<button form="extraItem" title="Extra" class="blankButton" id="extraItemsToggle" style="display: none"><img src="../assets/iconkitbuttons/extra_off.png" style="width: 50px"></button>`)
+    $("#iconTabs").append(`<button form="extraItem" title="Extra" class="blankButton" id="extraItemsToggle" style="display: none"><img src="./assets/iconkitbuttons/extra_off.png" style="width: 50px"></button>`)
     $('#iconKitParent').append(`<div id="extraItems" class="iconContainer" style="flex-direction: column; display: none"></div>`)
     $('#extraItemsToggle').click(onExtraItems)
 
@@ -1493,7 +1493,7 @@ function getExtraInfo(raw, form, id) {
 
     $('#extraInfo').show()
     $('#extraInfo').html(extraData)
-    $('#extraInfo p').first().append(`<img class="gdButton" onclick="extraInfoPopup()" style="vertical-align: middle; margin-left: 12px; height: 1em" src="../assets/smallinfo.png"">`)
+    $('#extraInfo p').first().append(`<img class="gdButton" onclick="extraInfoPopup()" style="vertical-align: middle; margin-left: 12px; height: 1em" src="./assets/smallinfo.png"">`)
 }
     
 </script>
