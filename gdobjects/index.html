@@ -13,6 +13,8 @@
     </link>
 </head>
 <body style="background: linear-gradient(rgb(139, 139, 139), rgb(100, 100, 100)) no-repeat center center fixed;" onbeforeunload="sessionStorage.setItem('prevUrl', window.location.href)">
+
+<!-- Popups -->
 <div class="center hidden"><br>
 
     <div class="popup" id="steal">
@@ -26,7 +28,7 @@
 		</div>
     </div>
     
-    <div class="popup" data-nosnippet id="settings">
+    <div class="popup" data-nosnippet="" id="settings">
         <div class="brownbox bounce center supercenter" style="height: 380px; width: 820px">
             <h1 class="center gold" style="margin-top: 10px; margin-bottom: 20px;">Settings</h1>
             <div id="settingList">
@@ -51,29 +53,75 @@
         </div>
     </div>
 
+	<div class="popup" id="filter">
+        <div class="brownbox bounce center supercenter" style="width: 820px">
+            <h1 class="center gold" style="margin-top: 10px">Filter</h1>
+
+            <div class="filterOption" style="margin-top: 32px">
+                <h2>Version</h2>
+                <select id="filter-startversion" class="gdSelect iconFilter versionFilter"></select>
+                <h2> to </h2>
+                <select id="filter-endversion" class="gdSelect iconFilter versionFilter"></select>
+            </div>
+
+            <div class="filterOption" style="margin-top: 16px">
+                <h2>Icon artist</h2>
+                <select id="filter-artist" class="gdSelect iconFilter" style="width: 400px"></select>
+            </div>
+
+            <div class="filterCheckboxes" id="filterCheckboxList" style="margin-top: 20px">
+                <div class="filterCheckbox">
+                    <input class="iconFilterBox" type="checkbox" checked="" id="filterbox-template">
+                    <label for="filterbox-template" class="gdcheckbox gdButton"></label>
+                    <h2>Label</h2>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: center; gap: 30px; margin-top: 8px">
+                <button class="blankButton gdButton" onclick="toggleAllFilters(true)"><img src="./assets/select-all.png" style="height: 40px"></button>
+                <button class="blankButton gdButton" onclick="toggleAllFilters(false)"><img src="./assets/select-none.png" style="height: 40px"></button>
+            </div>
+            
+            <p class="white" style="margin: 20px 0px 0px 0px">More filters when I feel like it</p>
+
+            <div class="cornerCheckbox" style="position: absolute; bottom: 14px; left: 10px">
+                <input type="checkbox" checked="" id="filterhide">
+                <label for="filterhide" class="gdcheckbox gdButton"></label>
+                <h2 class="smallCheckboxLabel">Hide others</h2>
+            </div>
+
+            <div class="cornerCheckbox" style="position: absolute; bottom: 0px; right: 0px">
+                <button class="blankButton gdButton" id="resetAllFilters">
+                    <img src="./assets/trash.png" style="width: 64px">
+                </button>
+            </div>
+        
+            <img src="./assets/ok.png" class="postButton gdButton center" style="height: 55px; margin-top: 30px" onclick="$('#filter').hide()">
+            <img class="gdButton xButton" src="./assets/close.png" style="width: 70px" onclick="$('#filter').hide()">
+		</div>
+    </div>
+
+	<!-- Icon kit (object kit??) -->
     <img id="iconkitlogo" src="./assets/title.png" style="margin: 7px 0px; height: 50px"><br>
     <h2 style="margin: 5 auto 0 auto; display: none; height: 45px" id="howto"><span style='color: #aaaaaa'>(hover over an icon for info)</span></h2>
 
-    <div id="iconbox">
-        <canvas id="result" style="transform: translateY(-35px)">
-    </div>
+    <div class="iconbox">
+        <canvas id="result" style="transform: translateY(-35px); touch-action: none; cursor: inherit;" width="300" height="300">
+    </canvas></div>
 
     <hr id="gdfloor">
     <div id="menuButtons" style="height: 65px; margin: 0 0 8 0;">
-        <button class="blankButton menuButton" id="customColors" title="Settings" onclick="$('#settings').show()"><img src="./assets/cog.png" width=60px></button>
         <button class="blankButton menuButton" onclick="icon.psdExport()" title="Download layered PSD"><img src="./assets/psd.png" width=60px></button>
         <button class="blankButton menuButton" id="copyToClipboard" title="Copy to clipboard"><img src="./assets/copy.png" width=60px></button>
         <button class="blankButton menuButton" onclick="icon.pngExport()" title="Download icon"><img src="./assets/save.png" width=60px></a></button>
         <button class="blankButton menuButton" id="getUserIcon" title="Get player icon"><img src="./assets/steal.png" width=60px></button>
         <button class="blankButton menuButton" id="randomIcon" title="Random Icon"><img src="./assets/shuffle.png" width=60px></button>
         <button class="blankButton menuButton" id="unlockIcon" title="Unlock details"><img id="lock" src="./assets/unlock.png" width=60px></button>
-        <button class="blankButton menuButton" onclick="clickedSpoilerWarning ? toggleSpoilers() : $('#spoilerwarning').show()" title="2.2 icons (spoilers!!!)"><img id="newIconBtn" src="./assets/spoilers.png" width=60px></button>
     </div>
 
     <div id="iconTabs"></div><br>
-    <div id="iconKitParent" class="iconKit noDarken">
-        <div id="iconprogressbar">
-            <div id="iconloading"></div>
+    <div id="iconKitParent" class="iconKit iconSetup">
+            <div id="iconprogressbar"><div id="iconloading" style="width: 100%;"></div></div>
         </div>
     </div><br>
 
@@ -96,10 +144,17 @@
         </div>
     </div>
 
-    <div id="animationOptions" style="display: none;">
+	<div class="sideButtons" id="rightSide">
+            <button title="Unlock details" class="blankButton gdButton" id="unlockIcon"><img id="lock" src="./assets/unlockinfo_off.png"></button>
+            <button title="Filter" class="blankButton gdButton" id="filters"><img id="openFilters" src="./assets/filter_off.png"></button>
+            <button title="Expand icon list" class="blankButton gdButton" id="expand"><img id="expandIcon" src="./assets/expanded_off.png"></button>
+        </div>
+    </div>
+
+    <div id="animationOptions" style="">
         <div class="animationSelector">
             <h2 style="margin-right: 20px">Animation: </h2>
-            <select id="robotAnimation"></select>
+            <select id="robotAnimation" form="spider"><option form="spider" value="fall_loop">fall loop</option><option form="spider" value="idle">idle</option><option form="spider" value="idle01">idle01</option><option form="spider" value="idle02">idle02</option><option form="spider" value="jump">jump</option><option form="spider" value="run">run</option><option form="spider" value="run2">run2</option><option form="spider" value="walk">walk</option></select>
         </div>
         <div class="animationSelector">
             <h2 style="margin-right: 20px">Speed:</h2>
@@ -111,6 +166,12 @@
     <p style="color: rgb(20, 20, 20); margin-top: 25px; margin-bottom: 25px; line-height: 16px">
         All sprites/assets belong to <a target=_blank href="http://robtopgames.com">RobTop Games</a>
     </p>
+
+	<div style="position:absolute; top: 20px; left: 20px; pointer-events: none">
+        <button class="blankButton menuButton" id="customColors" title="Settings" onclick="$('#settings').show()" style="pointer-events: all;" tabindex="0">
+            <img src="./assets/cog.png" style="width: 75px">
+        </button>
+	</div>
 
     <div class="hideIfSmall" style="position:absolute; top: 20px; left: 20px; width: 64px; height: 64px; pointer-events: none">
 		<img class="gdButton" style="pointer-events: all" id="backButton" src="./assets/back.png" height="100%" onclick="backButton()">
