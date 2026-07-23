@@ -114,7 +114,7 @@
         <button class="blankButton menuButton" onclick="icon.psdExport()" title="Download layered PSD"><img src="./assets/psd.png" width=60px></button>
         <button class="blankButton menuButton" id="copyToClipboard" title="Copy to clipboard"><img src="./assets/copy.png" width=60px></button>
         <button class="blankButton menuButton" onclick="icon.pngExport()" title="Download icon"><img src="./assets/save.png" width=60px></a></button>
-        <button class="blankButton menuButton" id="getUserIcon" title="Get player icon"><img src="./assets/steal.png" width=60px></button>
+        <button class="blankButton menuButton" onclick="$('#steal').show()" id="getUserIcon" title="Get player icon"><img src="./assets/steal.png" width=60px></button>
         <button class="blankButton menuButton" id="randomIcon" title="Random Icon"><img src="./assets/shuffle.png" width=60px></button>
         <button class="blankButton menuButton" id="unlockIcon" title="Unlock details"><img id="lock" src="./assets/unlock.png" width=60px></button>
     </div>
@@ -127,7 +127,7 @@
 
     <div id="iconLayer">
         <div class="sideButtons" id="leftSide">
-            <button title="Colors" class="blankButton gdButton" id="colorToggle"><img src="./assets/colors.png" style="width: 75px"></button>
+            <button title="Colors" class="blankButton gdButton"  id="colorToggle"><img src="./assets/colors.png" style="width: 75px"></button>
             <button title="Glow" class="blankButton glowToggle gdButton" id="glowbtn"><img id="glow" src="./assets/streak_off.png"></button>
             <button title="Dev Tools" class="blankButton gdButton" id="devToolsToggle"><img id="devToolsIcon" src="./assets/dev_off.png"></button>
         </div>
@@ -220,7 +220,7 @@
 
 		<div class="sideButtons" id="rightSide">
             <button title="Unlock details" class="blankButton gdButton" id="unlockIcon"><img id="lock" src="./assets/unlockinfo_off.png"></button>
-            <button title="Filter" class="blankButton gdButton" id="filters"><img id="openFilters" src="./assets/filter_off.png"></button>
+            <button title="Filter" class="blankButton gdButton" onclick="$('#filter').show()" id="filters"><img id="openFilters" src="./assets/filter_off.png"></button>
             <button title="Expand icon list" class="blankButton gdButton" id="expand"><img id="expandIcon" src="./assets/expanded_off.png"></button>
         </div>
     </div>
@@ -284,12 +284,12 @@
 $('.hidden').show();
 
 let mobile =  /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)
-let currentForm = 'icon'
-let glowbtnformCopy = 'icon'
+let currentForm = 'tab1'
+let glowbtnformCopy = 'tab1'
 const yOffsets = { ball: -10, ufo: 30, spider: 7, swing: -15 }
 
 let selectedIcon = 1
-let selectedForm = 'icon'
+let selectedForm = 'tab1'
 
 let selectedCol1 = 0
 let selectedCol2 = 3
