@@ -1,8 +1,6 @@
 const WHITE = 0xffffff
 const colorNames = { "1": "Color 1", "2": "Color 2", "g": "Glow", "w": "White", "u": "UFO Dome" }
 const formNames = { "tab1": "tab1", "tab3": "tab3", "tab4": "tab4", "tab5": "tab5" }
-const extendedFormNames = Object.assign({ icon: "cube", special: "trail", death: "deathEffect", color: "color1" }, formNames)
-const achFormName = { "tab1": "tab1", "tab3": "tab3", "tab5": "tab5", "color1": "color", "deathEffect": "death", "trail": "special" }
 const specialFormNames = { "trail": "Trail", "deathEffect": "Death Effect", "shipFire": "Ship Fire", "item": "Item" }
 const qualities = { low: 'low', sd: 'low', med: 'hd', medium: 'hd', hd: 'hd' }
 const positionMultipliers = { uhd: 4, hd: 2, low: 1 }
@@ -12,6 +10,7 @@ const cubeOffsets = {
     bird: { "x": 0, "y": 6, "scale": 0.55 },
     jetpack: { "x": 3, "y": 2, "scale": 0.6 }
 }
+const loader = PIXI.Loader.shared
 
 const loadedAssets = {}
 
@@ -218,6 +217,7 @@ class Icon {
         this.sprite = new PIXI.Container();
         this.form = data.form || "tab1"
         this.id = data.isCustom ? data.id : validateIconID(data.id, this.form)
+        this.new = !!data.new
         this.colors = data.rawColors || {
             "1": validNum(data.col1, 0xafafaf),    // primary
             "2": validNum(data.col2, WHITE),       // secondary
@@ -225,7 +225,7 @@ class Icon {
             "w": validNum(data.colW, validNum(+data.colW, WHITE)), // white
             "u": validNum(data.colU, validNum(+data.colU, WHITE)), // ufo
         }
-
+                
         this.glow = !!data.glow
         this.layers = []
         this.glowLayers = []
@@ -342,6 +342,11 @@ class Icon {
         return this.glowLayers[0] && this.glowLayers[0].sprite.visible
     }
 
+    setGlow(toggle) {
+        this.glow = !!toggle
+        this.glowLayers.forEach(x => x.sprite.visible = (this.colors["1"] == 0 || this.glow))
+    }
+
     // icon inside ships, ufos, etc
     addSecondaryIcon(id = 1, skipLoad, cb) {
         let offset = cubeOffsets[this.form]
@@ -399,7 +404,7 @@ class Icon {
     }
 
     getAnimation(name, animForm) {
-        let animationList = iconStuff.robotAnimations.animations[animForm || this.form]
+        let animationList = iconData.robotAnimations.animations[animForm || this.form]
         return animationList[name || "idle"] || animationList["idle"]
     }
 
@@ -519,6 +524,49 @@ class Icon {
             snapFrame()
         }, FRAME_DELAY);
         snapFrame()
+    }
+
+    autocrop() {
+        // find actual icon size by reading pixel data (otherwise there's whitespace and shit)
+        if (this.new) this.sprite.scale.set(1)
+        let spriteSize = [Math.round(this.sprite.width), Math.round(this.sprite.height)]
+        let pixels = this.app.renderer.plugins.extract.pixels(this.sprite);
+        let xRange = [spriteSize[0], 0]
+        let yRange = [spriteSize[1], 0]
+
+        this.preCrop = { pos: [this.sprite.position.x, this.sprite.position.y], canvas: [this.app.renderer.width, this.app.renderer.height] }
+
+        for (let i=3; i < pixels.length; i += 4) {
+            let alpha = pixels[i]
+            let realIndex = (i-3) / 4
+            let pos = [realIndex % spriteSize[0], Math.floor(realIndex / spriteSize[0])]
+
+            if (alpha > 10) { // if pixel is not blank...
+                if (pos[0] < xRange[0]) xRange[0] = pos[0]      // if x pos is < the lowest x pos so far
+                else if (pos[0] > xRange[1]) xRange[1] = pos[0] // if x pos is > the highest x pos so far
+                if (pos[1] < yRange[0]) yRange[0] = pos[1]      // if y pos is < the lowest y pos so far
+                else if (pos[1] > yRange[1]) yRange[1] = pos[1] // if y pos is > the highest y pos so far
+            }
+        }
+
+        xRange[1]++
+        yRange[1]++
+        
+        let realWidth = xRange[1] - xRange[0]
+        let realHeight = yRange[1] - yRange[0]
+
+        this.app.renderer.resize(realWidth, realHeight)
+        let bounds = this.sprite.getBounds()
+        this.sprite.position.x -= bounds.x
+        this.sprite.position.y -= bounds.y
+
+        this.sprite.position.x += (spriteSize[0] - xRange[1]) - xRange[0]
+    }
+
+    revertCrop() {
+        this.app.renderer.resize(...this.preCrop.canvas)
+        this.sprite.position.set(...this.preCrop.pos)
+        if (this.new) this.sprite.scale.set(2)
     }
 
     async getDataURL() {
