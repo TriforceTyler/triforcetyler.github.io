@@ -1,14 +1,47 @@
 const WHITE = 0xffffff
 const colorNames = { "1": "Color 1", "2": "Color 2", "g": "Glow", "w": "White", "u": "UFO Dome" }
 const formNames = { "tab1": "tab1", "tab3": "tab3", "tab4": "tab4", "tab5": "tab5" }
-const loader = PIXI.Loader.shared
+const extendedFormNames = Object.assign({ icon: "cube", special: "trail", death: "deathEffect", color: "color1" }, formNames)
+const achFormName = { "tab1": "tab1", "tab3": "tab3", "tab5": "tab5", "color1": "color", "deathEffect": "death", "trail": "special" }
+const specialFormNames = { "trail": "Trail", "deathEffect": "Death Effect", "shipFire": "Ship Fire", "item": "Item" }
+const qualities = { low: 'low', sd: 'low', med: 'hd', medium: 'hd', hd: 'hd' }
+const positionMultipliers = { uhd: 4, hd: 2, low: 1 }
+const yOffsets = { player_ball: -10, bird: 30, spider: 7, swing: -15 }
+const cubeOffsets = {
+    ship: { "x": 0, "y": 5, "scale": 0.55 },
+    bird: { "x": 0, "y": 6, "scale": 0.55 },
+    jetpack: { "x": 3, "y": 2, "scale": 0.6 }
+}
 
-const loadedNewIcons = {}
+const loadedAssets = {}
 
-let positionMultiplier = 4
-function positionPart(part, partIndex, layer, formName, isNew, isGlow) {
-    layer.position.x += (part.pos[0] * positionMultiplier * (isNew ? 0.5 : 1))
-    layer.position.y -= (part.pos[1] * positionMultiplier * (isNew ? 0.5 : 1))
+async function loadTexture(name, path) {
+    let loaded = await PIXI.Assets.load(path)
+    if (loaded) loadedAssets[name] = loaded
+    return loaded
+}
+
+function downloadFile(data, name) {
+    let url = window.URL.createObjectURL(data);
+    let downloader = document.createElement('a');
+    downloader.href = url
+    downloader.setAttribute("download", name);
+    document.body.appendChild(downloader);
+    downloader.click();
+    document.body.removeChild(downloader);
+}
+
+const loadedIcons = {}
+const iconFrames = {}
+
+function getPositionMultiplier(quality) {
+    return positionMultipliers[quality || 'uhd']
+}
+
+function positionPart(part, partIndex, layer, formName, isGlow, quality) {
+    let positionMultiplier = getPositionMultiplier(quality)
+    layer.position.x += (part.pos[0] * positionMultiplier)
+    layer.position.y -= (part.pos[1] * positionMultiplier)
     layer.scale.x = part.scale[0]
     layer.scale.y = part.scale[1]
     if (part.flipped[0]) layer.scale.x *= -1
@@ -17,10 +50,10 @@ function positionPart(part, partIndex, layer, formName, isNew, isGlow) {
     layer.zIndex = part.z
 
     if (!isGlow) {
-        let tintInfo = iconData.robotAnimations.info[formName].tints
+        let tintInfo = iconStuff.robotAnimations.info[formName].tints
         let foundTint = tintInfo[partIndex]
         if (foundTint > 0) {
-            let darkenFilter = new PIXI.filters.ColorMatrixFilter();
+            let darkenFilter = new PIXI.ColorMatrixFilter();
             darkenFilter.brightness(0)
             darkenFilter.alpha = (255 - foundTint) / 255
             layer.filters = [darkenFilter]
@@ -34,106 +67,142 @@ function validNum(val, defaultVal) {
 }
 
 function getGlowColor(colors) {
-    let glowCol = colors["g"] || (colors[2] === 0 ? colors[1] : colors[2])
-    if (glowCol === 0) glowCol = WHITE // white glow if both colors are black
+    let glowCol = Number.isInteger(colors["g"]) ? colors["g"] : (colors[2] === 0 ? colors[1] : colors[2])
+    // if (glowCol === 0) glowCol = WHITE // white glow if both colors are black
     return glowCol
 }
 
 function validateIconID(id, form) {
-    let realID = Math.min(iconData.newIconCounts[form], Math.abs(validNum(id, 1)))
-    if (realID == 0 && !["player", "player_ball"].includes(form)) realID = 1
+    let realID = Math.min(iconStuff.iconCounts[form], Math.abs(validNum(id, 1)))
+    if (realID == 0 && !["player", "player_ball", "ship"].includes(form)) realID = 1
     return realID
 }
 
 function parseIconColor(col) {
-    if (!col) return WHITE
-    else if (typeof col == "string" && col.length >= 6) return parseInt(col, 16)
-    let rgb = iconData.colors[col]
+    if (!col && col != 0) return WHITE
+    else if (typeof col == "string" && col.length == 6) return parseInt(col, 16)
+    let rgb = iconStuff.colors[col]
     return rgb ? rgbToDecimal(rgb) : WHITE;
 }
 
-function parseIconForm(form) {
-    let foundForm = iconData.forms[form]
-    return foundForm ? foundForm.form : "player"
+function parseIconForm(form, def="player") {
+    let foundForm = iconStuff.forms[form] || iconStuff.forms[formNames]
+    return foundForm ? foundForm.form : def
 }
 
 function loadIconLayers(form, id, cb) {
     let iconStr = `${form}_${padZero(validateIconID(id, form))}`
-    let texturesToLoad = Object.keys(iconData.gameSheet).filter(x => x.startsWith(iconStr + "_"))
-
-    if (loadedNewIcons[texturesToLoad[0]]) return cb(loader, loader.resources, true)
-
-    else if (!texturesToLoad.length) {
-        if (iconData.newIcons.includes(iconStr)) return loadNewIcon(iconStr, cb)
-    }
-
-    loader.add(texturesToLoad.filter(x => !loader.resources[x]).map(x => ({ name: x, url: `/iconkit/icons/${x}` })))
-    loader.load(cb) // no params
+    return loadIconSheet(iconStr, cb)
 }
 
-// 2.2 icon spritesheets
-function loadNewIcon(iconStr, cb) {
-    fetch(`/iconkit/newicons/${iconStr}-hd.plist`).then(pl => pl.text()).then(plist => {
+function loadIconSheet(iconStr, cb) {
+    fetch(`/iconkit/icons/${iconStr}-uhd.plist`).then(pl => pl.text()).then(plist => {
 
-        let data = parseNewPlist(plist)
-        let sheetName = iconStr + "-sheet"
-        loader.add({ name: sheetName, url: `/iconkit/newicons/${iconStr}-hd.png` })
-        loader.load((l, resources) => {
-            let texture = resources[sheetName].texture
-            Object.keys(data).forEach(x => {
-                let bounds = data[x]
-                let textureRect = new PIXI.Rectangle(bounds.pos[0], bounds.pos[1], bounds.size[0], bounds.size[1])
-                let partTexture = new PIXI.Texture(texture, textureRect)
-                loadedNewIcons[x] = partTexture
-            })
-            cb(l, resources, true)
+        let data = parsePlist(plist)
+
+        Object.keys(data.frames).forEach(x => {
+            iconFrames[x] = data.frames[x]
         })
 
+        let sheetName = iconStr + "-sheet"
+        loadTexture(sheetName, `/iconkit/icons/${iconStr}-uhd.png`).then(texture => {
+            readIconData(texture, data.pos, cb)
+        })
     })
 }
 
+async function extendTexture(texture, endX, endY) {
+    let img = texture.baseTexture.resource.source
+    let canv = document.createElement('canvas')
+    let ctx = canv.getContext('2d')
+    canv.width = endX
+    canv.height = endY
+    ctx.drawImage(img, 0, 0)
+    let url = canv.toDataURL()
+    let loaded = await PIXI.Assets.load({ src: url, alias: "temp_extended_texture_" + url.slice(-32) + String(Math.random()).slice(2) })
+    return loaded
+}
+
+async function readIconData(texture, data, cb, folder = loadedIcons, warnings = []) {
+    let hasError = false;
+    for (const x of Object.keys(data)) {
+        let bounds = data[x]
+        let size = bounds.rotated ? [bounds.size[1], bounds.size[0]] : bounds.size
+
+        let textureRect = new PIXI.Rectangle(bounds.pos[0], bounds.pos[1], size[0], size[1])
+
+        let endX = bounds.pos[0] + size[0]
+        let endY = bounds.pos[1] + size[1]
+        if (endX > texture.width || endY > texture.height) {
+            if (warnings.length < 1) alert(`Warning: Frame '${x}' expects pixels outside of the width/height of the image file! This is supported by Geometry Dash, but should never happen. ` +
+                `\n\nThe image will be automatically extended, but please consider fixing your sprite offset.\n\nX pos: ${endX} (width: ${texture.width})\nY pos: ${endY} (height: ${texture.height})`)
+            warnings.push(x)
+            if (warnings.length > 99) return
+
+            hasError = true
+            let newTexture = await extendTexture(texture, Math.max(endX, texture.width), Math.max(endY, texture.height))
+            readIconData(newTexture, data, cb, folder, warnings)
+            break;
+        }
+
+        let partTexture = new PIXI.Texture(texture, textureRect)
+        folder[x] = partTexture
+    }
+
+    if (cb && !hasError) {
+        if (warnings.length > 1) alert("The same issue also applies to:\n\n" + warnings.join("\n"))
+        cb(texture, loadedAssets, true)
+    }
+}
+
 let dom_parser = new DOMParser()
-function parseNewPlist(data) {
+function parsePlist(data) {
     let plist = dom_parser.parseFromString(data, "text/xml")
-    let iconFrames = plist.children[0].children[0].children[1].children
+    let frames = plist.children[0].children[0].children[1].children
     let positionData = {}
-    for (let i=0; i < iconFrames.length; i += 2) {
-        let frameName = iconFrames[i].innerHTML
-        let frameData = iconFrames[i + 1].children
+    let dataFrames = {}
+    for (let i = 0; i < frames.length; i += 2) {
+        let frameName = frames[i].innerHTML
+        let frameData = frames[i + 1].children
         let isRotated = false
-        iconData.gameSheet[frameName] = {}
+        dataFrames[frameName] = {}
         positionData[frameName] = {}
 
-        for (let n=0; n < frameData.length; n += 2) {
+        for (let n = 0; n < frameData.length; n += 2) {
             let keyName = frameData[n].innerHTML
             let keyData = frameData[n + 1].innerHTML
             if (["spriteOffset", "spriteSize", "spriteSourceSize"].includes(keyName)) {
-                iconData.gameSheet[frameName][keyName] = parseWeirdArray(keyData)
+                dataFrames[frameName][keyName] = parseWeirdArray(keyData)
             }
 
             else if (keyName == "textureRotated") {
                 isRotated = frameData[n + 1].outerHTML.includes("true")
-                iconData.gameSheet[frameName][keyName] = isRotated
+                dataFrames[frameName][keyName] = isRotated
             }
 
             else if (keyName == "textureRect") {
                 let textureArr = keyData.slice(1, -1).split("},{").map(x => parseWeirdArray(x))
                 positionData[frameName].pos = textureArr[0]
                 positionData[frameName].size = textureArr[1]
-            }  
+            }
         }
 
-        if (isRotated) positionData[frameName].size.reverse()
+        if (isRotated) {
+            if (dataFrames[frameName].spriteSize.join(",") == positionData[frameName].size.join(",")) {
+                positionData[frameName].size.reverse()
+            }
+        }
 
     }
-    return positionData
+    return { pos: positionData, frames: dataFrames }
 }
 
 function parseWeirdArray(data) {
-    return data.replace(/[^0-9,-]/g, "").split(",").map(x => +x)
+    return data.replace(/[^0-9,-.]/g, "").split(",").map(x => +x)
 }
 
 function padZero(num) {
+    if (isNaN(num)) return num
     let numStr = num.toString()
     if (num < 10) numStr = "0" + numStr
     return numStr
@@ -144,52 +213,63 @@ function rgbToDecimal(rgb) {
 }
 
 class Icon {
-    constructor(data={}, cb) {
+    constructor(data = {}, cb) {
         this.app = data.app
         this.sprite = new PIXI.Container();
-        this.form = data.form || "player"
-        this.id = validateIconID(data.id, this.form)
-        this.new = !!data.new
-        this.colors = {
+        this.form = data.form || "tab1"
+        this.id = data.isCustom ? data.id : validateIconID(data.id, this.form)
+        this.colors = data.rawColors || {
             "1": validNum(data.col1, 0xafafaf),    // primary
             "2": validNum(data.col2, WHITE),       // secondary
-            "g": validNum(data.colG, validNum(+data.colg, null)), // glow
-            "w": validNum(data.colW, validNum(+data.colw, WHITE)), // white
-            "u": validNum(data.colU, validNum(+data.colu, WHITE)), // ufo
+            "g": validNum(data.colG, validNum(+data.colG, null)), // glow
+            "w": validNum(data.colW, validNum(+data.colW, WHITE)), // white
+            "u": validNum(data.colU, validNum(+data.colU, WHITE)), // ufo
         }
-                
+
         this.glow = !!data.glow
         this.layers = []
         this.glowLayers = []
+        this.customFiles = null
         this.complex = ["spider", "robot"].includes(this.form)
+        this.quality = data.quality ? (qualities[data.quality.toLowerCase()] || 'uhd') : 'uhd'
+
+        if (data.isCustom && data.files) this.customFiles = data.files
 
         // most forms
         if (!this.complex) {
-            let extraSettings = { new: this.new }
+            let extraSettings = {}
             if (data.noUFODome) extraSettings.noDome = true
+            if (data.isCustom) extraSettings.customFiles = this.customFiles
+            if (this.form == "player_ball") {
+                this.ballSpeed = (data.ballSpeed || 0)
+                if (this.ballSpeed != 0 && !this.ballRolling) this.rollBall()
+            }
             let basicIcon = new IconPart(this.form, this.id, this.colors, this.glow, extraSettings)
             this.sprite.addChild(basicIcon.sprite)
             this.layers.push(basicIcon)
-            this.glowLayers.push(basicIcon.sections.find(x => x.colorType == "g"))
+
+            let foundGlow = basicIcon.sections.find(x => x.colorType == "g")
+            if (foundGlow) this.glowLayers.push(foundGlow)
         }
 
         // spider + robot
         else {
             let idlePosition = this.getAnimation(data.animation, data.animationForm).frames[0]
+            let cFiles = data.isCustom ? this.customFiles : undefined
             idlePosition.forEach((x, y) => {
-                x.name = iconData.robotAnimations.info[this.form].names[y]
-                let part = new IconPart(this.form, this.id, this.colors, false, { part: x, skipGlow: true, new: this.new })
-                positionPart(x, y, part.sprite, this.form, this.new)
-    
-                let glowPart = new IconPart(this.form, this.id, this.colors, true, { part: x, onlyGlow: true, new: this.new })
-                positionPart(x, y, glowPart.sprite, this.form, this.new, true)
-                glowPart.sprite.visible = this.glow
+                x.name = iconStuff.robotAnimations.info[this.form].names[y]
+                let part = new IconPart(this.form, this.id, this.colors, false, { part: x, skipGlow: true, customFiles: cFiles })
+                positionPart(x, y, part.sprite, this.form, false, this.quality)
+
+                let glowPart = new IconPart(this.form, this.id, this.colors, true, { part: x, onlyGlow: true, customFiles: cFiles })
+                positionPart(x, y, glowPart.sprite, this.form, true, this.quality)
+                glowPart.sprite.visible = (this.glow || this.colors[1] === 0)
                 this.glowLayers.push(glowPart)
-    
+
                 this.layers.push(part)
                 this.sprite.addChild(part.sprite)
             })
-    
+
             let fullGlow = new PIXI.Container();
             this.glowLayers.forEach(x => fullGlow.addChild(x.sprite))
             this.sprite.addChildAt(fullGlow, 0)
@@ -198,13 +278,19 @@ class Icon {
             if (data.animation) this.setAnimation(data.animation, data.animationForm)
         }
 
-        if (this.new) this.sprite.scale.set(2)
+        if (this.quality != 'uhd') this.sprite.scale.set(4 / getPositionMultiplier(this.quality))
 
-        this.app.stage.removeChildren()
-        this.app.stage.addChild(this.sprite)
+        if (!data.dontAdd) {
+            this.app.stage.removeChildren()
+            this.app.stage.addChild(this.sprite)
+        }
 
         if (cb) cb(this)
 
+    }
+
+    updatePosition() {
+        this.sprite.position.set(this.app.renderer.width / 2, (this.app.renderer.height / 2) + (yOffsets[this.form] || 0))
     }
 
     getAllLayers() {
@@ -213,7 +299,12 @@ class Icon {
         return allLayers
     }
 
-    setColor(colorType, newColor, extra={}) {
+    getLayerArr() {
+        if (!this.complex) return this.layers
+        else return this.layers.concat({ sections: this.glowLayers.map(x => x.sections[0]), part: { name: "Glow" } })
+    }
+
+    setColor(colorType, newColor, extra = {}) {
         let colorStr = String(colorType).toLowerCase()
         if (!colorType || !Object.keys(this.colors).includes(colorStr)) return
         else this.colors[colorStr] = newColor
@@ -226,6 +317,21 @@ class Icon {
             let shouldGlow = newColor == 0
             this.glowLayers.forEach(x => x.sprite.visible = shouldGlow)
         }
+
+        if (this.secondaryIcon) this.secondaryIcon.setColor(colorType, newColor, extra)
+    }
+
+    copyColorsFrom(i1) {
+        Object.entries(i1.colors).forEach(c => {
+            this.setColor(c[0], c[1])
+        })
+    }
+
+    setGlow(toggle) {
+        this.glow = !!toggle
+        this.glowLayers.forEach(x => x.sprite.visible = (this.colors["1"] == 0 || this.glow))
+
+        if (this.secondaryIcon) this.secondaryIcon.setGlow(toggle)
     }
 
     formName() {
@@ -233,23 +339,80 @@ class Icon {
     }
 
     isGlowing() {
-        return this.glowLayers[0].sprite.visible
+        return this.glowLayers[0] && this.glowLayers[0].sprite.visible
     }
 
-    setGlow(toggle) {
-        this.glow = !!toggle
-        this.glowLayers.forEach(x => x.sprite.visible = (this.colors["1"] == 0 || this.glow))
+    // icon inside ships, ufos, etc
+    addSecondaryIcon(id = 1, skipLoad, cb) {
+        let offset = cubeOffsets[this.form]
+        if (!offset) return
+
+        let providedIcon = (typeof id == "object" && id.sprite)
+
+        if (!providedIcon && !skipLoad) return loadIconLayers("player", id, () => this.addSecondaryIcon(id, true, cb))
+
+        let i2 = providedIcon ? id : new Icon({
+            app: this.app, form: "player", id, dontAdd: true,
+            rawColors: this.colors, glow: this.glow
+        })
+
+        // remove existing
+        if (this.secondaryIcon) this.removeSecondaryIcon()
+
+        this.secondaryIcon = i2
+
+        let iconScale = getPositionMultiplier(this.quality) / 4
+        
+        i2.sprite.scale.set(offset.scale * iconScale)
+        i2.sprite.position.set(offset.x * 8 * iconScale, offset.y * -8 * iconScale)
+        this.sprite.children[0].addChildAt(i2.sprite, 1)
+
+        if (providedIcon) {
+            i2.copyColorsFrom(this)
+            i2.setGlow(this.glow)
+        }
+
+        if (cb) cb(this)
+    }
+
+    removeSecondaryIcon(destroy) {
+        if (this.secondaryIcon) {
+            if (destroy) this.secondaryIcon.sprite.destroy()
+            else this.sprite.children[0].children = this.sprite.children[0].children.filter(x => x != this.secondaryIcon.sprite)
+            this.secondaryIcon = null
+        }
+    }
+
+    setBallSpeed(speed, stop) {
+        if (this.form != "player_ball") return
+        this.ballSpeed = speed
+
+        if (stop) this.sprite.angle = 0
+        else if (this.ballSpeed != 0 && !this.ballRolling) this.rollBall()
+    }
+
+    rollBall() {
+        if (!this.ballSpeed) return this.ballRolling = false
+        this.ballRolling = true
+        this.sprite.angle += this.ballSpeed
+        requestAnimationFrame(() => this.rollBall())
     }
 
     getAnimation(name, animForm) {
-        let animationList = iconData.robotAnimations.animations[animForm || this.form]
+        let animationList = iconStuff.robotAnimations.animations[animForm || this.form]
         return animationList[name || "idle"] || animationList["idle"]
+    }
+
+    clearAnimation() {
+        this.ease.removeAll()
+        this.isRecording = false
+        this.recordedFrames = []
+        this.animationFrame = 0
     }
 
     setAnimation(data, animForm) {
         let animData = this.getAnimation(data, animForm) || this.getAnimation("idle")
-        this.ease.removeAll()
-        this.animationFrame = 0
+        this.clearAnimation()
         this.animationName = data
         this.runAnimation(animData, data)
     }
@@ -258,10 +421,11 @@ class Icon {
         animData.frames[this.animationFrame].forEach((newPart, index) => {
             let section = this.layers[index]
             let glowSection = this.glowLayers[index]
-            let truePosMultiplier = this.new ? positionMultiplier * 0.5 : positionMultiplier
+            let truePosMultiplier = getPositionMultiplier(this.quality)
             if (!section) return
 
             // gd is weird with negative rotations
+            // this isn't perfect (e.g. robot run2) but it's the best i can do
             let realRot = newPart.rotation
             if (realRot < -180) realRot += 360
 
@@ -270,11 +434,12 @@ class Icon {
                 y: newPart.pos[1] * truePosMultiplier * -1,
                 scaleX: newPart.scale[0],
                 scaleY: newPart.scale[1],
-                rotation: realRot * (Math.PI / 180) // radians
+                angle: realRot
             }
             if (newPart.flipped[0]) movementData.scaleX *= -1
             if (newPart.flipped[1]) movementData.scaleY *= -1
 
+            let dur = (!duration ? 1 : (animData.info.duration / (this.animationSpeed || 1)))
             let bothSections = [section, glowSection]
             bothSections.forEach((x, y) => {
                 let easing = this.ease.add(x.sprite, movementData, { duration: duration || 1, ease: 'linear' })
@@ -282,27 +447,99 @@ class Icon {
                 if (continueAfterEase) easing.on('complete', () => {
                     this.animationFrame++
                     if (this.animationFrame >= animData.frames.length) {
-                        if (animData.info.loop) this.animationFrame = 0
+                        if (animData.info.loop) {
+                            this.animationFrame = 0;
+                        }
+                        else setTimeout(() => {
+                            this.animationFrame = 0;
+                            this.runAnimation(animData, animName, dur);
+                        }, 1000);
                     }
-                    if (this.animationFrame < animData.frames.length) this.runAnimation(animData, animName, !duration ? 1 : (animData.info.duration / (this.animationSpeed || 1)))
+                    if (this.animationFrame < animData.frames.length) this.runAnimation(animData, animName, dur)
                 })
             })
         })
     }
 
-    autocrop() {
-        // find actual icon size by reading pixel data (otherwise there's whitespace and shit)
-        if (this.new) this.sprite.scale.set(1)
-        let spriteSize = [Math.round(this.sprite.width), Math.round(this.sprite.height)]
-        let pixels = this.app.renderer.plugins.extract.pixels(this.sprite);
+    recordAnimation(animName = this.animationName) {
+
+        if (!window.UPNG) appendScript("upng")
+        if (!window.pako) appendScript("pako")
+
+        alert("Animation recording is a work in progress!!! If you found this function then feel free to use it, but looping might be a bit buggy.")
+
+        if (!this.animationFrame || this.animationSpeed < 0.1) return console.info("No animation to record!")
+
+        let w = this.app.view.width
+        let h = this.app.view.height
+
+        // needed because so canvas doesn't autocrop :v
+        let bounds = new PIXI.Graphics();
+        bounds.lineStyle(1, 0xFF0000);
+        bounds.drawRect(0, 0, w - 1, h - 1);
+        bounds.alpha = 0
+        this.app.stage.addChild(bounds);
+
+        const RECORDING_FPS = (this.animationSpeed <= 0.5 ? 30 : 60)
+        const FRAME_DELAY = (1000 / RECORDING_FPS)
+
+        this.setAnimation(animName)
+        this.isRecording = true
+        this.recordedFrames = []
+
+        let firstFrame = -1
+        let passedFrame = false
+
+        let snapFrame = () => {
+            if (firstFrame == -1 && this.animationFrame == 0) return // no idea why this works but removing it breaks things
+
+            let frame = new Uint8Array(this.app.renderer.extract.pixels(this.app.stage)).buffer
+            // console.log([this.animationFrame, firstFrame])
+
+            if (firstFrame == -1) firstFrame = this.animationFrame  // on first frame
+            else if (firstFrame != this.animationFrame) passedFrame = true  // on passing first frame
+            else if (passedFrame) { // on returning to first frame
+                clearInterval(recorder)
+                this.app.stage.removeChild(bounds)
+                this.isRecording = false
+
+                console.info("[animation] Downloading .apng file")
+                let apng = UPNG.encode(this.recordedFrames, w, h, 0, new Array(this.recordedFrames.length).fill(FRAME_DELAY))
+                let apngBlob = new Blob([apng], { type: "image/apng" })
+                downloadFile(apngBlob, this.getDownloadString() + "_" + animName + ".apng")
+
+                return
+            }
+
+            this.recordedFrames.push(frame)
+            console.info(`[animation] Recorded frame ${this.animationFrame}`)
+        }
+
+        let recorder = setInterval(async () => {
+            snapFrame()
+        }, FRAME_DELAY);
+        snapFrame()
+    }
+
+    async getDataURL() {
+        let [imgData, pixels] = await Promise.all([
+            this.app.renderer.extract.image(this.sprite, "image/png", 1),
+            this.app.renderer.extract.pixels(this.sprite)
+        ]);
+
+        await new Promise((res, rej) => {
+            imgData.onload = () => res(imgData);
+            imgData.onerror = (e) => rej(e);
+        })
+
+        let spriteSize = [imgData.width || Math.ceil(this.sprite.width), imgData.height || Math.ceil(this.sprite.height)]
+
         let xRange = [spriteSize[0], 0]
         let yRange = [spriteSize[1], 0]
 
-        this.preCrop = { pos: [this.sprite.position.x, this.sprite.position.y], canvas: [this.app.renderer.width, this.app.renderer.height] }
-
-        for (let i=3; i < pixels.length; i += 4) {
+        for (let i = 3; i < pixels.length; i += 4) {
             let alpha = pixels[i]
-            let realIndex = (i-3) / 4
+            let realIndex = (i - 3) / 4
             let pos = [realIndex % spriteSize[0], Math.floor(realIndex / spriteSize[0])]
 
             if (alpha > 10) { // if pixel is not blank...
@@ -315,84 +552,80 @@ class Icon {
 
         xRange[1]++
         yRange[1]++
-        
-        let realWidth = xRange[1] - xRange[0]
-        let realHeight = yRange[1] - yRange[0]
 
-        this.app.renderer.resize(realWidth, realHeight)
-        let bounds = this.sprite.getBounds()
-        this.sprite.position.x -= bounds.x
-        this.sprite.position.y -= bounds.y
+        let canv = document.createElement("canvas")
+        let ctx = canv.getContext('2d')
 
-        this.sprite.position.x += (spriteSize[0] - xRange[1]) - xRange[0]
+        canv.width = xRange[1] - xRange[0]
+        canv.height = yRange[1] - yRange[0]
+        ctx.drawImage(imgData, -xRange[0], -yRange[0])
+
+        return canv.toDataURL("image/png")
     }
 
-    revertCrop() {
-        this.app.renderer.resize(...this.preCrop.canvas)
-        this.sprite.position.set(...this.preCrop.pos)
-        if (this.new) this.sprite.scale.set(2)
+    getDownloadString() {
+        return `${this.formName()}_${this.id}`
     }
 
-    toDataURL(dataType="image/png") {
-        this.autocrop()
-        this.app.renderer.render(this.app.stage);
-        let b64data = this.app.view.toDataURL(dataType);
-        this.revertCrop()
-        return b64data
-    }
-
-    pngExport() {
-        let b64data = this.toDataURL()
+    async pngExport() {
+        let b64data = await this.getDataURL()
         let downloader = document.createElement('a');
         downloader.href = b64data
-        downloader.setAttribute("download", `${this.formName()}_${this.id}.png`);
+        downloader.setAttribute("download", `${this.getDownloadString()}.png`);
         document.body.appendChild(downloader);
         downloader.click();
         document.body.removeChild(downloader);
     }
 
-    copyToClipboard() {
-        this.autocrop()
-        this.app.renderer.render(app.stage);
-        this.app.view.toBlob(blob => {
-            let item = new ClipboardItem({ "image/png": blob });
-            navigator.clipboard.write([item]); 
-        });
-        this.revertCrop()
-
+    async copyToClipboard() {
+        let b64data = await this.getDataURL()
+        let blob = await fetch(b64data).then(res => res.blob())
+        if (typeof ClipboardItem == "undefined") return alert("Clipboard copying is not supported on this browser! :(")
+        let item = new ClipboardItem({ [blob.type]: blob });
+        navigator.clipboard.write([item]);
     }
 
     psdExport() {
-        if (typeof agPsd === "undefined") throw new Error("ag-psd not imported!")
+        if (!window.agPsd) return appendScript("ag-psd").then(x => this.psdExport())
+            
         let glowing = this.isGlowing()
         this.setGlow(true)
 
         let psd = { width: this.app.stage.width, height: this.app.stage.height, children: [] }
-        let allLayers = this.getAllLayers()
+        
+        let ic2 = this.secondaryIcon ? this.secondaryIcon.getAllLayers() : []
+        let allLayers = this.getAllLayers().concat(ic2)
         let renderer = this.app.renderer
         let complex = this.complex
 
         function addPSDLayer(layer, parent, sprite) {
             allLayers.forEach(x => x.sprite.alpha = 0)
             layer.sprite.alpha = 255
-        
-            let layerChild = { name: layer.colorName, canvas: renderer.plugins.extract.canvas(sprite) }
+
+            let layerChild = { name: layer.colorName, canvas: renderer.extract.canvas(sprite) }
             if (layer.colorType == "g") {
                 if (parent.part) layerChild.name = parent.part.name + " glow"
-                else layerChild.blendMode = "linear dodge"
                 if (!complex && !glowing) layerChild.hidden = true
             }
             return layerChild
         }
 
-        this.layers.forEach(x => {
-            let partName = x.part ? x.part.name : "Icon"
-            let folder = {
-                name: partName,
-                children: x.sections.map(layer => addPSDLayer(layer, x, this.sprite)),
-                opened: true
-            }
-            psd.children.push(folder)
+        let diffIcons = [this]
+        if (this.secondaryIcon) diffIcons.push(this.secondaryIcon)
+
+        diffIcons.forEach((i, idx) => {
+            i.layers.forEach(x => {
+                let iconType = (formNames[i.form] || i.form)
+
+                let partName = x.part ? x.part.name : (iconType[0].toUpperCase() + iconType.slice(1))
+                let folder = {
+                    name: partName,
+                    children: x.sections.map(layer => addPSDLayer(layer, x, this.sprite)),
+                    opened: true
+                }
+                if (idx == 0) psd.children.push(folder)      // main icon
+                else psd.children[0].children.splice(1, 0, folder)    // secondary icon
+            })
         })
 
         if (complex) {
@@ -404,23 +637,24 @@ class Icon {
         allLayers.forEach(x => x.sprite.alpha = 255)
         let output = agPsd.writePsd(psd)
         let blob = new Blob([output]);
-        let downloader = document.createElement('a');
-        downloader.href = URL.createObjectURL(blob);
-        downloader.setAttribute("download", `${this.formName()}_${this.id}.psd`);
-        document.body.appendChild(downloader);
-        downloader.click();
-        document.body.removeChild(downloader); 
+        downloadFile(blob, `${this.getDownloadString()}.psd`)
         this.setGlow(glowing)
+    }
+
+    destroy() {
+        if (this.ease) this.ease.destroy()
+        this.sprite.destroy()
     }
 }
 
 class IconPart {
-    constructor(form, id, colors, glow, misc={}) {
+    constructor(form, id, colors, glow, misc = {}) {
 
-        if (colors[1] == 0 && !misc.skipGlow) glow = true // add glow if p1 is black
+        if (colors[1] === 0 && !misc.skipGlow) glow = true // add glow if p1 is black
 
         let iconPath = `${form}_${padZero(id)}`
         let partString = misc.part ? "_" + padZero(misc.part.part) : ""
+
         let sections = {}
         if (misc.part) this.part = misc.part
 
@@ -429,21 +663,36 @@ class IconPart {
 
         if (!misc.skipGlow) {
             let glowCol = getGlowColor(colors)
-            sections.glow = new IconLayer(`${iconPath}${partString}_glow_001.png`, glowCol, "g", misc.new)
-            if (!glow) sections.glow.sprite.visible = false
+            let glowPath = `${iconPath}${partString}_glow_001.png`
+
+            if (misc.customFiles) {
+                let foundCustomGlow = misc.customFiles[glowPath]
+                if (!foundCustomGlow) {
+                    alert(`Warning: This icon's glow texture (${glowPath}) could not be found! It will be rendered without a glow layer.`)
+                    glowPath = null
+                }
+            }
+
+            if (glowPath) {
+                sections.glow = new IconLayer(glowPath, glowCol, "g", misc.customFiles)
+                if (!glow) sections.glow.sprite.visible = false
+            }
+
         }
 
         if (!misc.onlyGlow) {
-            if (form == "bird" && !misc.noDome) { // ufo top
-                sections.ufo = new IconLayer(`${iconPath}_3_001.png`, WHITE, "u", misc.new)
+            if (form == "bird") { // ufo top
+                sections.ufo = new IconLayer(`${iconPath}_3_001.png`, colors["u"] || WHITE, "u", misc.customFiles)
+                if (misc.noDome) sections.ufo.sprite.visible = false
             }
 
-            sections.col1 = new IconLayer(`${iconPath}${partString}_001.png`, colors["1"], "1", misc.new)
-            sections.col2 = new IconLayer(`${iconPath}${partString}_2_001.png`, colors["2"], "2", misc.new)
+            sections.col1 = new IconLayer(`${iconPath}${partString}_001.png`, colors["1"], "1", misc.customFiles)
+            sections.col2 = new IconLayer(`${iconPath}${partString}_2_001.png`, colors["2"], "2", misc.customFiles)
 
             let extraPath = `${iconPath}${partString}_extra_001.png`
-            if (iconData.gameSheet[extraPath]) {
-                sections.white = new IconLayer(extraPath, colors["w"], "w", misc.new)
+            let hasExtra = misc.customFiles ? misc.customFiles[extraPath] : iconFrames[extraPath]
+            if (hasExtra) {
+                sections.white = new IconLayer(extraPath, colors["w"], "w", misc.customFiles)
             }
         }
 
@@ -456,18 +705,27 @@ class IconPart {
 }
 
 class IconLayer {
-    constructor(path, color, colorType, isNew) {
-        let loadedTexture = isNew ? loadedNewIcons[path] : loader.resources[path]
-        this.offsets = iconData.gameSheet[path] || { spriteOffset: [0, 0] }
-        this.sprite = new PIXI.Sprite(loadedTexture ? isNew ? loadedTexture : loadedTexture.texture : PIXI.Texture.EMPTY)
+    constructor(path, color, colorType, customFiles) {
+
+        let loadedTexture = loadedIcons[path]
+
+        if (customFiles) {
+            let customPath = customFiles[path];
+            if (!customPath) throw new Error(`Could not find texture: ${path}`)
+            loadedTexture = customPath.texture
+        }
+
+        let loadedOffsets = iconFrames[path]
+        if (customFiles) loadedOffsets = customFiles[path].frames
+
+        this.offsets = loadedOffsets || { spriteOffset: [0, 0] }
+        this.sprite = new PIXI.Sprite(loadedTexture || PIXI.Texture.EMPTY)
+        this.name = path
 
         this.colorType = colorType
         this.colorName = colorNames[colorType]
         this.setColor(color)
-
-        this.sprite.position.x += this.offsets.spriteOffset[0]
-        this.sprite.position.y -= this.offsets.spriteOffset[1]
-
+        this.applyOffset()
 
         if (this.offsets.textureRotated) {
             this.sprite.angle = -90
@@ -475,6 +733,11 @@ class IconLayer {
         this.angleOffset = this.sprite.angle
 
         this.sprite.anchor.set(0.5)
+    }
+
+    applyOffset() {
+        this.sprite.position.x = Number(this.offsets.spriteOffset[0] || 0)
+        this.sprite.position.y = Number(this.offsets.spriteOffset[1] || 0) * -1
     }
 
     setColor(color) {
