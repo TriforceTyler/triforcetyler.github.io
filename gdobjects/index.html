@@ -302,8 +302,9 @@ let currentForm = 'tab1'
 let glowbtnformCopy = 'tab1'
 const yOffsets = { ball: -10, ufo: 30, spider: 7, swing: -15 }
 
-let selectedIcon = 1
-let selectedForm = 'tab1'
+let selectedIcon = 1      // object #
+let selectedForm = 'tab1' // selected tab
+let extraItemsformCopy = 'tab1'     // Form for copying
 
 let selectedCol1 = 0
 let selectedCol2 = 3
@@ -912,5 +913,587 @@ $(document).on('click', '.brownbox', function (e) {
 $(document).on('click', '.popup', function () {
     $('.popup').hide()
 })
+
+// Get form name
+function validateForm(form) {
+    if (forms.includes(form)) return form
+    return formNames[form] || "tab1"
+}
+
+// info button, spawns popup
+function extraInfoPopup(form, id) {
+    let extraStuff = getExtraInfo(true, form, id) || {}
+    
+    let custom = (!form && icon && icon.customFiles)
+    if (!form) form = selectedForm
+    if (!id) id = selectedIcon
+
+    let isCol = form.startsWith("color")
+
+    if (!(isCol ? extraStuff["Color ID"] : extraStuff.ID)) return
+
+    $('#extraInfoText').text(!isCol ? extraStuff.ID : (form == "color1" ? "Primary" : "Secondary") + " Color " + selectedCol[form.slice(5)])
+    let extraLines = []
+    let colLines = ({"Col 1": 1, "Col 2": 2, "Glow": "g"})
+    generateUnlocks()
+    Object.entries(extraStuff).forEach(x => {
+        if (x[0] == "ID") return;
+        let isBaseCol = colLines[x[0]]
+        let foundCol = (x[1].match(/#[a-z0-9]{6}/i) || [""])[0]
+        let extraStr = ""
+        let base = `<span${isBaseCol && !x[1].startsWith("#") ? " colInfo=" + isBaseCol : ""}>${x[0]}</span>`
+        if (foundCol) {
+            if (!x[1].startsWith("#")) extraStr += `<span class="faded"> (${foundCol})</span>`
+            extraStr += `<span class="miniColPrev" style="background-color: ${foundCol}"></span>`
+        }
+        extraLines.push(`<p>${base}: <span class="lime">${x[1].split(" (")[0]}</span>${extraStr}</p>`)
+    })
+
+    let toUnlock = custom ? null : getUnlockMethod(id, form)
+    if (toUnlock) {
+        extraLines.push(`<div class="extraUnlockContainer">`)
+        let ach = getIconAchievement(id, form)
+        if (ach) extraLines.push(`<p class="extraUnlockMethod extraUnlockName">${ach.name}</p>`)
+        extraLines.push(`<p class="extraUnlockMethod">${toUnlock}</p></div>`)
+    }
+    $("#extraInfoPopup").html(extraLines.join(""))
+    $('#iconInfoPopup').show()
+}
+
+
+// update filters
+function updateFilters() {
+
+    // set of icons to filter from, starts empty
+    let filterSet = new Set()
+    filteredColors = { 1: [], 2: [] }
+
+    let shouldShowExtras = false  // if the extra tab should show
+
+    // check which icons are in the version range
+    let minVersion = +$('#filter-startversion').val()
+    let maxVersion = +$('#filter-endversion').val()
+
+    // swap versions if they're backwards
+    if (minVersion > maxVersion) {
+        let oldMin = minVersion
+        minVersion = maxVersion
+        maxVersion = oldMin
+        $('#filter-startversion').val(minVersion)
+        $('#filter-endversion').val(maxVersion)
+    }
+
+    // if version filter, add the list of allowed icons to the base set to filter from
+    if (minVersion != 0 || maxVersion != iconStuff.iconVersions.Order.length - 1) {
+        shouldShowExtras = true
+        extendedForms.forEach(f => {
+            getAllInVersionRange(f, minVersion, maxVersion).forEach(x => filterSet.add(`${f}-${x}`))
+        })
+    }
+
+    // if no version filter, just filter from every icon
+    else filterSet = new Set(Object.values(filterList).flat())
+
+    // if filtering by artist, filter to just the ones made by them
+    let artistFilter = $('#filter-artist').val()
+    if (artistFilter) {
+        let artistIcons =
+            (artistFilter == "EveryoneButRobTop") ? { icons: cachedArtists.filter(x => x.name != "RobTop").map(x => x.icons).flat() }
+            : cachedArtists.find(x => x.name == artistFilter)
+        
+        if (artistIcons.icons && artistIcons.icons.length) {
+            let iconIDs = artistIcons.icons.map(x => `${x.form}-${x.id}`)
+            filterSet = new Set([...filterSet].filter(x => !filterList.icons.includes(x) || iconIDs.includes(x)))
+        }
+    }
+
+    // remove the icons that are part of the unchecked filters
+    $('#filterCheckboxList .iconFilterBox:not(:checked)').each(function() {
+        shouldShowExtras = true
+        let filter = $(this).attr("filter")
+        getFilter(filter).forEach(x => {
+           filterSet.delete(`${x.form}-${x.id}`)
+        })
+    })
+
+    // iterate through all icons, filtering out the ones not in the filter set
+    filterList.icons.concat(filterList.extras).forEach(x => {
+        document.getElementById(x).classList.toggle("filteredOut", !filterSet.has(x))
+    })
+
+    // colors
+    filterList.colors.forEach(x => {
+        if (filterSet.has(x)) return
+        let [colType, id] = x.split("-")
+        filteredColors[colType.slice(5)].push(id)
+    })
+
+    // check if anything was actually filtered
+    isFiltering = $('.iconButton.filteredOut').length > 0
+    let filterSRC = $('#openFilters').attr("src")
+
+    // hide form tabs if all are filtered out
+    $('#iconTabs .blankButton[form]').each(function() {
+        let formElement = $('#' + $(this).attr("form") + 's')
+        let dontShow = formElement.find(".iconButton:not(.filteredOut)").length < 1
+        $(this).toggleClass("filteredOut", dontShow)
+
+        if (filterHide && dontShow && formElement.is(":visible")) {
+            let goToCube = $(`.iconTabButton[form="${selectedForm}"]`).hasClass("filteredOut")
+            $(`.iconTabButton[form="${goToCube ? "cube" : selectedForm}"]`).click()
+        }
+    })
+
+    // filter the colors
+    updateColorFilter()
+
+    if (!unlockMode) $('#extraItemsToggle').hide()
+
+    if (isFiltering) {
+        $('#openFilters').attr("src", filterSRC.replace("off.png", "on.png"))
+        if (!filterHide) $('.hasNoUnlock').removeClass("hasNoUnlock")
+        if (shouldShowExtras || unlockMode) $('#extraItemsToggle').show()
+    }
+
+    else {
+        $('#openFilters').attr("src", filterSRC.replace("on.png", "off.png"))
+        if (!filterHide) checkMissingUnlocks()
+    }
+
+    // hide extra hrs in the items tab
+    if (filterHide) {
+        $('.extraItemSection').each(function() {
+            let isEmpty = $(this).find(".iconButton:not(.filteredOut)").length < 1
+            $(this).prev().toggle(!isEmpty)
+        })
+    }
+    else $('.extraItemHR').show()
+
+}
+
+// filter the colors
+function updateColorFilter() {
+    if (!filteredColors[1]) return
+    let colType = selectedColorType
+    if (colType == "g") colType = 2
+    let dontFilter = (colType != 1 && colType != 2)
+
+    $('.iconColor').each(function() {
+        let dontShow = dontFilter ? false : filteredColors[colType].includes($(this).attr("col"))
+        $(this).toggleClass("filteredOut", dontShow)
+    })
+}
+
+// reset filters
+$('#resetAllFilters').click(function() {
+    $('.iconFilter').each(function() {
+        $(this).val($(this).find("option[default]").val())
+    })
+
+    $('.filterCheckbox input').each(function() {
+        $(this).prop("checked", true)
+    })
+
+    updateFilters()
+})
+
+// toggle checkbox filters
+function toggleAllFilters(enabled) {
+    $('.filterCheckbox input').each(function() {
+        $(this).prop("checked", enabled)
+    }) 
+    updateFilters()
+}
+
+// toggle filter hide
+$('#filterhide').change(function() {
+    filterHide = $(this).prop("checked")
+    document.body.classList.toggle("filterHide", filterHide)
+    updateFilters()
+})
+
+// shuffle button
+$("#randomIcon").click(function() {
+    if ($('#extraItems').is(":visible")) return
+
+    let iconPool = $('.iconButton, .iconColor').filter(':visible:not(.filteredOut)')
+    if (iconPool.length > 0) iconPool.eq(randInt(0, iconPool.length - 1)).trigger("click")
+})
+
+// expand icon list
+$('#expand').click(function() {
+    let exp = $('#expandIcon')
+    let ikp = $('#iconKitParent')
+    let expanded = ikp.hasClass("expanded")
+    if (!expanded) {
+        toggleButtonImage(exp, true)
+        ikp.addClass("expanded")
+    }
+    else {
+        toggleButtonImage(exp, false)
+        ikp.removeClass("expanded")
+    }
+})
+
+// on clicking a new icon
+$(document).on('click', '.iconButton', function (e) {
+    
+    // show popup if already selected, or it's an extra item
+    if (($(this).hasClass("iconSelected") && !iconSettings.includes("nodoubleclick")) || $(this).parents('#extraItems').length) {
+        if (e.originalEvent && e.originalEvent.isTrusted) return extraInfoPopup($(this).attr('form'), $(this).attr('num'))
+    }
+
+    $(".iconButton").removeClass("iconSelected");
+    $(this).addClass('iconSelected');
+    let oldForm = selectedForm
+    selectedIcon = $(this).attr('num');
+    selectedForm = $(this).attr('form');
+
+    if (selectedForm != oldForm) currentAnimation = {}
+
+    generateIcon()
+})
+
+// fetch way too much icon kit related data
+fetch('../api/iconkit').then(res => res.json()).then(iconKitData => {
+
+    iconStuff = iconKitData
+    forms = Object.keys(iconStuff.forms)
+    extendedForms = forms.concat(["color1", "color2", "trail", "deathEffect", "shipFire", "item"])
+
+    // fix gd world achievements being prioritized
+    iconStuff.achievements = [...iconStuff.achievements.filter(x => !x.key.startsWith("world.")), ...iconStuff.achievements.filter(x => x.key.startsWith("world."))]
+
+    // add a button for each form, and set up their container
+    forms.forEach(form => {
+        $("#iconTabs").append(`<button form="${form}" title="${iconStuff.forms[form].name}" class="blankButton iconTabButton"><img src="../assets/iconkitbuttons/${form}_off.png" style="width: 50px"></button>`)
+        $("#copyForms").append(`<button form="${form}" title="${iconStuff.forms[form].name}" class="blankButton copyForm"><img src="../assets/iconkitbuttons/${form}_off.png" style="width: 50px"></button>`)
+        $("#iconKitParent").append(`<div id="${form}s" class="iconContainer" unloaded></div>`)
+        appendIcon(form)
+    })
+
+    // extra items tab, if unlock mode is on
+    $("#iconTabs").append(`<button form="extraItem" title="Extra" class="blankButton" id="extraItemsToggle" style="display: none"><img src="../assets/iconkitbuttons/extra_off.png" style="width: 50px"></button>`)
+    $('#iconKitParent').append(`<div id="extraItems" class="iconContainer" style="flex-direction: column; display: none"></div>`)
+    $('#extraItemsToggle').click(onExtraItems)
+
+    // add icon to the full icon list
+    function appendIcon(formName) {
+        
+        let formInfo = iconStuff.forms[formName]
+        let formStr = (formInfo ? formInfo.form : formName) // get internal name
+        let formCount = iconStuff.iconCounts[formStr] // get amount of that form
+        let formContainer = $('#' + formName + 's')
+
+        let hasMini = formsWithZero.includes(formName)
+
+        // add each icon to the container
+        for (let i = 1; i <= formCount; i++) {
+            let ic = $(`<button num="${i}" form="${formName}" class="blankButton iconButton" id="${formName}-${i}"><img data-src="./premade/${formName}_${i}.png" title="${formInfo.name} ${i}"></button>`)
+            formContainer.append(ic)
+            if (generatedUnlocks) checkElementUnlock(ic)
+        }
+
+        if (hasMini) formContainer.append(`<button num="0" form="${formName}" class="blankButton iconButton" id="${formName}-0"><img data-src="./premade/${formName}_0.png" title="Mini ${formInfo.name}"></button>`)
+    }
+
+    // load the preview images
+    function loadPreviewImages(parent) {
+        parent.removeAttr("unloaded")
+        let iconButtons = parent.find(`.iconButton img[data-src]`)
+        iconButtons.each(function() {
+            $(this).attr("src", $(this).attr("data-src"))
+            $(this).removeAttr("data-src")
+        })
+
+        let imagesLoaded = 0
+        parent.imagesLoaded(function() {}).progress(function() {
+            imagesLoaded += 1;
+            totalLoaded = imagesLoaded / iconButtons.length * 100
+            $('#iconloading').css('width', `${totalLoaded}%`)
+        })
+    }
+
+    // prepare color list
+    reloadColors = function() { 
+        let group = []
+        $('#colorList').empty()
+
+        function addGroup() {
+            let g = $('<div class="colorGroup"></div>')
+            $('#colorList').append(g)
+            group.forEach(x => g.append(x))
+            group = []
+        }
+
+        let unsort = iconSettings.includes("sort")
+        iconStuff.colorOrder.new.forEach(function (p, n) {
+            if (unsort) p = n;
+            let colRGB = iconStuff.colors[p]
+            let hexCode = toHexCode(rgbToDecimal(colRGB)).slice(1)
+            let isSelected = false
+            let newCol = $(`<button col=${p} class="gdButton blankButton iconColor" hex="${hexCode}" title="Color ${p} (#${hexCode})" id="col-${p}"><div style="background-color: rgb(${colRGB.r}, ${colRGB.g}, ${colRGB.b})"></button>`)
+            group.push(newCol)
+            if (group.length % 4 == 0 && (unsort || n != 103)) addGroup()
+            if (generatedUnlocks) checkElementUnlock(newCol)
+        })
+        addGroup()
+        checkMissingUnlocks()
+        updateSelectedColors()
+        updateColorFilter()
+    }
+
+    reloadColors()
+
+    // add extra items
+    addExtraSection("trail", "Trail")
+    addExtraSection("deathEffect", "Death Effect")
+    addExtraSection("shipFire", "Ship Fire")
+    addExtraSection("item", "Special Item", [18, 19, 20])
+    addExtraSection("item", "Special Item", [1, 2, 3, 5, 4, 16, 17])
+
+    // check url params
+
+    let url = new URL(window.location.href);
+    let useSample = true;
+
+    if (url.searchParams.size > 0) {
+
+        let urlParams = {}
+        let colorParams = {}
+
+        url.searchParams.forEach((val, key) => {
+            if (!val) return
+            let k = key.toLowerCase()
+            if (k.length == 4 && k.startsWith("col")) colorParams[k.slice(-1)] = val
+            else urlParams[k] = val
+        })
+
+        function fromParam(str, func) {
+            let param = urlParams[str];
+            if (param) {
+                useSample = false;
+                func(param)
+            }
+        }
+
+        for (const [colType, colVal] of Object.entries(colorParams)) {
+            if (selectedCol[colType] !== undefined) {
+                useSample = false
+                setColor(colType, colVal)
+            }
+        }
+
+        fromParam('id', x => selectedIcon = parseInt(x))
+        fromParam('icon', x => selectedIcon = parseInt(x))
+        fromParam('form', x => selectedForm = validateForm(x))
+        fromParam('glow', x => {
+            enableGlow = x > 0
+            if (!colorParams["g"]) selectedCol["g"] = selectedCol["2"]
+            setColor("g", selectedCol["g"])
+        })
+
+        getExtraInfo()
+    }
+    
+    // sample icon
+    if (useSample)
+    {
+        let sample = JSON.parse(iconStuff.sample);
+        enableGlow = sample[3] > 0;
+        selectedIcon = sample[0]
+
+        setColor(1, sample[1])
+        setColor(2, sample[2])
+        setColor("g", isNaN(sample[4]) ? selectedCol[2] : sample[4])
+    }
+
+    // set first icon to selected
+    $('body').imagesLoaded(function () {
+        $(`[num="${selectedIcon}"][form="${selectedForm}"]`).addClass('iconSelected');
+    })
+
+    // generate first icon, disable glow after first generated
+    generateIcon(() => {
+        if (!useSample) return
+        icon.glow = false;
+        enableGlow = false
+        updateSelectedColors()
+    }) 
+
+    // changing tabs
+    $(document).on('click', '.iconTabButton', function () {
+        const form = $(this).attr('form')
+        const formElement = $('#' + form + 's')
+        
+        let oldForm = currentForm;
+        currentForm = form  // set form
+        closeDevTab()
+        toggleTabImage(form)
+
+        $('#colorLayer').hide()
+        $('#iconKitParent').show()
+
+        $('#iconKitParent .iconContainer').hide()
+
+        if (formElement[0].hasAttribute("unloaded")) loadPreviewImages(formElement)
+        
+        if (icon && iconSettings.includes("rememberform") && form != oldForm) {
+            $(`.iconButton[form="${form}"][num="${lastForms[form] || 1}"]`).trigger("click")
+        }
+
+        checkMissingUnlocks()
+        
+        formElement.show()
+    })
+
+    // select first tab
+    $('#iconTabs').find(selectedForm == "cube" ? ".iconTabButton" : `.iconTabButton[form="${selectedForm}"]`).first().click();
+})
+
+// When the icon changes...
+function handleNewIcon(newIcon) {
+
+    let oldIcon = icon
+    icon = newIcon  // global
+    selectedForm = icon.formName()
+
+    icon.updatePosition()
+
+    getExtraInfo()           // update the info string
+    checkGlow()              // check if glow is on
+    checkFormOptions()       // check form-specific options
+    checkWhite()             // check if it has white
+    updateDevTools()         // change dev tools layers
+    updateSelectedColors()   // change selected colors
+
+    refreshDevTools()
+    if (enableSecondary) addSecondary()
+
+    // cache or dispose old icon
+    if (icon.form == "player") {
+        if (lastCube) lastCube.destroy()
+        lastCube = icon
+    }
+    else if (oldIcon && oldIcon != lastCube) oldIcon.destroy()
+}
+
+// generate the actual icon!
+function generateIcon(cb) {
+    let foundForm = parseIconForm(selectedForm)
+    loadIconLayers(foundForm, selectedIcon, function(l, sprites) {
+        let iconArgs = {app, form: foundForm, id: selectedIcon,
+            col1: parseIconColor(selectedCol[1]),
+            col2: parseIconColor(selectedCol[2]),
+            colG: parseIconColor(selectedCol.g),
+            glow: enableGlow
+        }
+
+        if (selectedCol.w) iconArgs.colW = parseIconColor(selectedCol.w)
+        if (selectedCol.u) iconArgs.colU = parseIconColor(selectedCol.u)
+        if (selectedForm == "ball" && ballSpeed != 0) iconArgs.ballSpeed = ballSpeed
+
+        if (animationMultiplier != 1) iconArgs.animationSpeed = animationMultiplier
+
+        if (currentAnimation.form && (iconSettings.includes("cursed") || currentAnimation.form == selectedForm)) {
+            iconArgs.animation = currentAnimation.name
+            iconArgs.animationForm = currentAnimation.form
+        }
+
+        handleNewIcon(new Icon(iconArgs))
+
+        lastForms[selectedForm] = selectedIcon
+
+        if (cb) cb()
+    })
+}
+
+// Toggles a button's icon between the on and off state
+function toggleButtonImage(img, force) {
+    let src = img.attr("src")
+    let isOn = (force !== undefined) ? force : !src.endsWith("_on")
+    if (!isOn) src = src.replace("_on", "_off")
+    else src = src.replace("_off", "_on")
+    img.attr("src", src)
+}
+
+// Toggles off all form icons except for the target one
+function toggleTabImage(form) {
+    $('#iconTabs button img').each(function(x, y) {
+        toggleButtonImage($(this), false)
+        $(this).parent().removeClass('activeForm')
+    })
+
+    let img = $(`#iconTabs button[form="${form}"] img`)
+    toggleButtonImage(img, true)
+    img.parent().addClass('activeForm')
+}
+
+// Displays extra icon info in the corner of the screen
+// raw = just return it, don't set
+function getExtraInfo(raw, form, id) {
+    let custom = (!form && icon && icon.customFiles)
+
+    if (!form) form = selectedForm
+    if (!id) id = custom ? icon.id : selectedIcon
+
+    let foundForm = iconStuff.forms[form]
+    let formName = foundForm ? foundForm.name : specialFormNames[form] || form
+    
+    let isCol = form.startsWith("color")
+    let colType = isCol ? form.slice(5) : null
+    if (colType && (colType != 1 && colType != 2 && colType != "g")) colType = null
+
+    let extraInfo = {}
+
+    // normal icons
+    if (foundForm && !colType) {
+        extraInfo = {
+            "ID": custom ? `Custom ${formName} (${id || "-"})` : `${formName} ${+id}`,
+            "Col 1": extraColString(selectedCol[1]),
+            "Col 2": extraColString(selectedCol[2])
+        }
+
+        if (enableGlow) extraInfo["Glow"] = extraColString(selectedCol.g)
+        if ($('#ccw').is(":visible") && (parseIconColor(selectedCol.w) != 0xffffff)) extraInfo["White"] = extraColString(selectedCol.w)
+        if ($('#ccu').is(":visible") && (parseIconColor(selectedCol.u) != 0xffffff)) extraInfo["UFO Dome"] = extraColString(selectedCol.u)
+ 
+        if (icon && icon.secondaryIcon) {
+            let i2 = icon.secondaryIcon
+            extraInfo["Cube"] = (i2.customFiles ? `Custom (${i2.id || "-"})` : (+i2.id).toString())
+        }
+    }
+
+    // colors
+    else if (colType) {
+        extraInfo = { "Color ID": extraColString(selectedCol[colType]) }
+    }
+
+    // extras
+    else {
+        extraInfo = { "ID": `${formName} ${+id}` }
+    }
+
+    if (!custom) {
+        let iconVersion = (!colType ? getVersion(form, +id) : getVersion("color", selectedCol[colType])) || {}
+        extraInfo["Update"] = iconVersion.version || "Unknown"
+        if (iconVersion.obtainable) extraInfo["Obtainable"] = iconVersion.obtainable
+
+        if (!colType) {
+            let foundData = iconStuff.allUnlocks[form][+id]
+            if (foundData && foundData.artist) {
+                extraInfo["🎨 Artist"] = foundData.artistID ? `<a style="color: ${raw ? "cyan" : "white"} !important;" target="_blank" href="/u/${foundData.artistID}.">${foundData.artist}</a>` : foundData.artist
+            }
+        }
+    }
+
+    if (raw) return extraInfo
+
+    let extraData = Object.entries(extraInfo).map(x => `<div><p>${x[0]}: ${x[1]}</p></div>`)
+
+    $('#extraInfo').show()
+    $('#extraInfo').html(extraData)
+    $('#extraInfo p').first().append(`<img class="gdButton" onclick="extraInfoPopup()" style="vertical-align: middle; margin-left: 12px; height: 1em" src="../assets/smallinfo.png"">`)
+}
     
 </script>
