@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Geometry Dash Objects
+        </title>
+        <link href="style.css?v=1f" type="text/css" rel="stylesheet">
+        <meta charset="utf-8">
+        <link rel="icon" href="assets/favicon.png">
+    </head>
+
+    <body>
+        <div class="center" style="margin-top: 25px; display: none;" id="gdstats">
+            <img class="inline middle" id="gdIcon" height="72px" style="margin-top: 0"; src="">
+            <h1 id="username" class="inline middle" style="margin-left: 10px; margin-top: 0; margin-bottom: 0px;">GD objects</h1>
+            <br><br>
+
+            <div class="categoryBtn gdButton selectedCategory" category="basicStats">
+                <img src="assets/star.png">
+                <p>Tab 1</p>
+            </div>
+
+            <div class="categoryBtn gdButton" category="statBreakdown">
+                <img src="assets/diamond.png">
+                <p>Tab 2</p>
+            </div>
+
+            <div class="categoryBtn gdButton" category="allLevels">
+                <img src="assets/online.png">
+                <p>Tab 3</p>
+            </div>
+
+            <div class="categoryBtn gdButton" category="chestRewards">
+                <img src="assets/chests/large.png">
+                <p>Tab 4</p>
+            </div>
+
+            <div class="categoryBtn gdButton" category="levelStats">
+                <img src="assets/orbs.png">
+                <p>Tab 5</p>
+            </div>
+
+            <div class="categoryBtn gdButton" category="questList">
+                <img src="assets/reward.png">
+                <p>Tab 6</p>
+            </div>
+
+            <div class="categoryBtn gdButton" category="achievementList">
+                <img src="assets/trophy2.png">
+                <p>Tab 7</p>
+            </div>
+
+            <div class="categoryBtn gdButton" category="misc">
+                <img src="assets/stats.png">
+                <p>Tab 8</p>
+            </div>
+
+            <div class="categoryBtn gdButton" category="tab9">
+                <img src="assets/stats.png">
+                <p>Tab 9</p>
+            </div>
+
+            <div class="categoryBtn gdButton" category="tab10">
+                <img src="assets/stats.png">
+                <p>Tab 10</p>
+            </div>
+
+            <div class="categoryBtn gdButton" category="tab11">
+                <img src="assets/stats.png">
+                <p>Tab 11</p>
+            </div>
+
+            <div class="categoryBtn gdButton" category="tab12">
+                <img src="assets/stats.png">
+                <p>Tab 12</p>
+            </div>
+
+            <div class="categoryBtn gdButton" category="tab13">
+                <img src="assets/stats.png">
+                <p>Tab 13</p>
+            </div>
+
+            <br><hr class="divider" noshade>
+
+            <div id="basicStats" class="category">
+                <p>(Hover over an object for information)</p>
+                <div id="statDivs" style="margin-top: 15px; margin-bottom: 50px"></div>
+            </div>
+            
+            <div id="statBreakdown" class="category">
+                <div class="allInline allMiddle" style="margin-bottom: 32px" id="statBreakdownTypes"></div>
+                <div id="mainStatBreakdown" class="statBox statBreakdown"></div>
+            </div>
+
+            <div id="allLevels" class="category" style="display: none">
+
+                <div id="levelSearchFilters" style="display: none">
+
+                    <div id="saveLevelFilters" style="margin-bottom: 20px;" class="allMiddle allInline gdButton filterBtn">
+                        <img src="assets/reward.png" style="height: 42px; margin-right: 5px"> <p style="color: cyan; text-decoration: underline;">Done</p>
+                    </div>
+
+                    <div class="allMiddle filterPage gdButton" page="1"><p>Level</p></div>
+                    <div class="filterPage gdButton" page="2"><p>Stats</p></div>
+                    <div class="filterPage gdButton" page="3"><p>Ratings</p></div>
+
+                    <br>
+                
+                    <div class="searchFilter" style="height: 250px"; page="1" filter="stars">
+                        <h2><img src="assets/star.png">Star Rating</h2><br>
+                        <img class="imgFilter" v="0" src="assets/diff/0.png"><img class="imgFilter" v="1" src="assets/diff/1.png"><img class="imgFilter" v="2" src="assets/diff/2.png">
+                        <img class="imgFilter" v="3" src="assets/diff/3.png"><img class="imgFilter" v="4" src="assets/diff/4.png"><img class="imgFilter" v="5" src="assets/diff/5.png">
+                        <img class="imgFilter" v="6" src="assets/diff/6.png"><img class="imgFilter" v="7" src="assets/diff/7.png"><img class="imgFilter" v="8" src="assets/diff/8.png">
+                        <img class="imgFilter" v="9" src="assets/diff/9.png"><img class="imgFilter" v="10" src="assets/diff/10.png">
+                    </div>
+
+                    <div class="searchFilter" style="height: 250px" page="1" filter="savedInfo">
+                        <h2><img src="assets/online.png">Saved Info</h2><br>
+                        <p class="imgFilter textImgFilter gdButton" v="id">Level ID only</p>
+                        <p class="imgFilter textImgFilter gdButton" v="metadata">ID and metadata only</p>
+                        <p class="imgFilter textImgFilter gdButton" v="leveldata">Level data saved</p>
+                        <p class="imgFilter textImgFilter gdButton" v="buggedID" enabled="false">Bugged official level</p>
+                    </div>
+
+                    <br class="searchFilter" page="1">
+
+                    <div class="searchFilter" style="height: 210px" page="1" filter="demon">
+                        <h2><img src="assets/demon.png">Demon Type</h2><br>
+                        <img class="imgFilter" v="3" src="assets/diff/demon-3.png">
+                        <img class="imgFilter" v="4" src="assets/diff/demon-4.png">
+                        <img class="imgFilter" v="1" src="assets/diff/demon-1.png">
+                        <img class="imgFilter" v="5" src="assets/diff/demon-5.png">
+                        <img class="imgFilter" v="6" src="assets/diff/demon-6.png">
+                        <p style="margin-top: 0px">(approximate)</p>
+                    </div>
+
+                    <div class="searchFilter" style="height: 210px" page="1" filter="type">
+                        <h2><img src="assets/cp.png">Level Type</h2><br>
+                        <img class="imgFilter" v="Official" src="assets/official.png">
+                        <img class="imgFilter" v="Online" src="assets/online.png">
+                        <img class="imgFilter" v="Gauntlet" src="assets/gauntlet.png">
+                        <img class="imgFilter" v="Daily" src="assets/daily.png">
+                        <img class="imgFilter" v="Weekly" src="assets/weekly.png">
+                        <img class="imgFilter" v="Event" src="assets/event.png">
+                    </div>
+
+                    <div class="searchFilter minFilter" page="2" filter="percentage">
+                        <h2><img src="assets/play.png">Normal %</h2>
+                        <div class="minmax"><p class="allMiddle">Min<br><input type="number" max="100" value="0"></p></div>
+                        <div class="minmax"><p class="allMiddle">Max<br><input type="number" max="100" value="100"></p></div>
+                    </div>
+
+                    <div class="searchFilter minFilter" page="2" filter="practicePercentage">
+                        <h2><img src="assets/buttons/practice.png">Practice %</h2>
+                        <div class="minmax"><p class="allMiddle">Min<br><input type="number" max="100" value="0"></p></div>
+                        <div class="minmax"><p class="allMiddle">Max<br><input type="number" max="100"value="100"></p></div>
+                    </div>
+
+                    <div class="searchFilter minFilter" page="2" filter="leaderboardPercentage">
+                        <h2><img src="assets/trophy2.png">Leaderboard %</h2>
+                        <div class="minmax"><p class="allMiddle">Min<br><input type="number" max="100" value="0"></p></div>
+                        <div class="minmax"><p class="allMiddle">Max<br><input type="number" max="100" value="100"></p></div>
+                    </div>
+
+                    <div class="searchFilter minFilter" page="2" filter="manaOrbPercentage">
+                        <h2><img src="assets/orbs.png">Orb %</h2>
+                        <div class="minmax"><p class="allMiddle">Min<br><input type="number" max="100" value="0"></p></div>
+                        <div class="minmax"><p class="allMiddle">Max<br><input type="number" max="100" value="100"></p></div>
+                    </div>
+
+                    <div class="searchFilter minFilter" page="2" filter="id">
+                        <h2><img src="assets/info.png">Level ID</h2>
+                        <div class="minmax"><p class="allMiddle">Min<br><input type="number" value="0"></p></div>
+                        <div class="minmax"><p class="allMiddle">Max<br><input type="number"></p></div>
+                    </div>           
+
+                    <div class="searchFilter minFilter" page="2" filter="attempts">
+                        <h2><img src="assets/attempts.png">Attempts</h2>
+                        <div class="minmax"><p class="allMiddle">Min<br><input type="number" value="0"></p></div>
+                        <div class="minmax"><p class="allMiddle">Max<br><input type="number"></p></div>
+                    </div>
+
+                    <div class="searchFilter minFilter" page="2" filter="jumps">
+                        <h2><img src="assets/jumps.png">Jumps</h2>
+                        <div class="minmax"><p class="allMiddle">Min<br><input type="number" value="0"></p></div>
+                        <div class="minmax"><p class="allMiddle">Max<br><input type="number"></p></div>
+                    </div>
+
+                    <!-- <div class="searchFilter minFilter" page="2" filter="clicks">
+                        <h2><img src="assets/clicks.png">Clicks</h2>
+                        <div class="minmax"><p class="allMiddle">Min<br><input type="number" value="0"></p></div>
+                        <div class="minmax"><p class="allMiddle">Max<br><input type="number"></p></div>
+                    </div> -->
+
+                    <div class="searchFilter" page="3" style="height: 160px" filter="userRating">
+                        <h2><img src="assets/quality.png">Personal Ratings</h2><br>
+                        <img class="imgFilter" v="liked" enabled="false" src="assets/buttons/like.png">
+                        <img class="imgFilter" v="disliked" enabled="false" src="assets/buttons/dislike.png">
+                        <img class="imgFilter" v="ratedStars" enabled="false" src="assets/buttons/rate.png">
+                        <img class="imgFilter" v="ratedDemon" enabled="false" src="assets/buttons/demon.png">
+                        <img class="imgFilter" v="reported" enabled="false" src="assets/buttons/report.png">
+                        <img class="imgFilter" v="favorited" enabled="false" src="assets/heart.png">
+                    </div>
+
+                    <div class="searchFilter" page="3" style="height: 160px" filter="uncompletedFilter">
+                        <h2><img src="assets/nostar.png">Uncompleted</h2><br>
+                        <img class="imgFilter" v="stars" enabled="false" src="assets/star.png">
+                        <img class="imgFilter" v="orbs" enabled="false" src="assets/orbs.png">
+                        <img class="imgFilter" v="leaderboard" enabled="false" src="assets/trophy2.png">
+                    </div>
+                    <br class="searchFilter" page="3">
+
+                    <div class="searchFilter" page="3" style="height: 160px; width: 500px;">
+                        <h2><img src="assets/folder.png">Folder</h2>
+                        <div>
+                            <div class="allMiddle allInline">
+                                <img class="gdButton" id="folderLeft" style="margin: 0px 12px 0px 0px; height: 50px" src="assets/arrowLeft.png">
+                                <input type="number" value="0" id="lvlFolder">
+                                <img class="gdButton" id="folderRight" style="margin: 0px 0px 0px 12px; height: 50px" src="assets/arrowRight.png">
+                            </div>
+                            <p id="folderName" style="margin-top: 16px" id="folderName" class="allMiddle">All Levels</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="levelTableDiv">
+
+                    <div id="levelFilterToggleOn" style="margin-bottom: 20px" class="allMiddle allInline gdButton filterBtn">
+                        <img src="assets/plus.png" style="height: 42px; margin-right: 5px"> <p style="color: lime; text-decoration: underline;">Search Filters</p>
+                    </div>
+
+                    <div class="allInline allMiddle" style="margin-bottom: 20px">
+                        <p>Search:</p>
+                        <input class="searchBar" id="levelSearchQuery" maxlength=99 style="margin-left: 10px; width: 300px" placeholder="(name, creator, or ID)">
+                    </div>
+
+                    <div class="allInline allMiddle" style="margin-bottom: 32px">
+                        <p>Sort by:</p>
+                        <img class="levelSort gdButton" src="assets/cp.png" title="Level Type" sort="type">
+                        <img class="levelSort gdButton" src="assets/info.png" title="Level ID" sort="id">
+                        <img class="levelSort gdButton" src="assets/play.png" title="Percentage" sort="percentage">
+                        <img class="levelSort gdButton" src="assets/buttons/practice.png" title="Practice Mode Percentage" sort="practicePercentage">
+                        <img class="levelSort gdButton" src="assets/buttons/score.png" title="Leaderboard Percentage" sort="leaderboardPercentage">
+                        <img class="levelSort gdButton" src="assets/star.png" title="Stars" sort="stars">
+                        <img class="levelSort gdButton" src="assets/points.png" title="Platformer" sort="platformer">
+                        <img class="levelSort gdButton" src="assets/attempts.png" title="Attempts" sort="attempts">
+                        <img class="levelSort gdButton" src="assets/jumps.png" title="Jumps" sort="jumps">
+                        <!-- <img class="levelSort gdButton" src="assets/clicks.png" sort="clicks"> -->
+                    </div>
+
+                    <div class="allInline allMiddle" id="seekButtons">
+                        <img class="gdButton seekbtn" id="pageStart" src="assets/doubleLeft.png">
+                        <img class="gdButton seekbtn" id="pageLeft" src="assets/arrowLeft.png">
+                        <p style="margin: 0px 20px 0px 0px">Page <input type="number" id="pageNumber" class="pageNum" min="1" max="999" style="vertical-align: unset" value="1"> of <span id="totalPages" style="vertical-align: unset">0</span></p>
+                        <img class="gdButton seekbtn" id="pageRight" src="assets/arrowRight.png">
+                        <img class="gdButton seekbtn" id="pageEnd" src="assets/doubleRight.png">
+                    </div>
+
+                    <table id="levelTable" style="margin-top: 30px" style="display: none">
+                        <tr>
+                            <th style="width: 320px">Level</th>
+                            <th>Percent</th>
+                            <th style="width: 260px">Info</th>
+                            <th style="width: 240px">Details</th>
+                            <th>Rewards</th>
+                            <th style="width: 110px">Coins</th>
+                            <th style="width: 220px">Stats</th>
+                            <th style="width: 200px">Ratings</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div id="chestRewards" class="category" style="display: none">
+
+                <div class="allInline allMiddle" style="margin-bottom: 32px">
+                    <p style="cursor: pointer; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 10px;" onclick="flipChestTypes()">Chest type:</p>
+                    <img class="chestType" src="assets/chests/large.png" chest="Large Daily">
+                    <img class="chestType" src="assets/chests/small.png" chest="Daily">
+                    <img class="chestType" src="assets/chests/demon1.png" chest="1 key">
+                    <img class="chestType" src="assets/chests/demon5.png" chest="5 key">
+                    <img class="chestType" src="assets/chests/demon10.png" chest="10 key">
+                    <img class="chestType" src="assets/chests/demon25.png" chest="25 key">
+                    <img class="chestType" src="assets/chests/demon50.png" chest="50 key">
+                    <img class="chestType" src="assets/chests/demon100.png" chest="100 key">
+                    <img class="chestType" src="assets/chests/gold.png" chest="Gold">
+                    <img class="chestType" src="assets/wraith.png" chest="Wraith">
+                    <img class="chestType" src="assets/paths/soul.png" chest="Path">
+                    <img class="chestType" src="assets/gauntlet.png" chest="Gauntlet">
+                    <img class="chestType" src="assets/weekly.png" chest="Weekly">
+                    <img class="chestType" src="assets/event.png" chest="Event">
+                    <img class="chestType" src="assets/quality.png" chest="Special">
+                </div>
+
+                <div id="chestSortBy" class="allInline allMiddle" style="margin-bottom: 32px">
+                    <p>Sort by:</p>
+                    <img class="chestSort gdButton" src="assets/chests/large.png" sort="chest">
+                    <img class="chestSort gdButton" src="assets/info.png" sort="id">
+                    <img class="chestSort gdButton" src="assets/orbs.png" sort="Mana Orbs">
+                    <img class="chestSort gdButton" src="assets/diamond.png" sort="Diamonds">
+                    <img class="chestSort gdButton" src="assets/key.png" sort="Demon Key">
+                    <img class="chestSort gdButton" src="assets/shards/fire.png" sort="Fire Shard">
+                    <img class="chestSort gdButton" src="assets/shards/ice.png" sort="Ice Shard">
+                    <img class="chestSort gdButton" src="assets/shards/poison.png" sort="Poison Shard">
+                    <img class="chestSort gdButton" src="assets/shards/shadow.png" sort="Shadow Shard">
+                    <img class="chestSort gdButton" src="assets/shards/lava.png" sort="Lava Shard">
+                    <img class="chestSort gdButton" src="assets/shards/earth.png" sort="Earth Shard">
+                    <img class="chestSort gdButton" src="assets/shards/blood.png" sort="Blood Shard">
+                    <img class="chestSort gdButton" src="assets/shards/metal.png" sort="Metal Shard">
+                    <img class="chestSort gdButton" src="assets/shards/light.png" sort="Light Shard">
+                    <img class="chestSort gdButton" src="assets/shards/soul.png" sort="Soul Shard">
+                    <img class="chestSort gdButton" src="assets/icon.png" sort="Icon">
+                    <img class="chestSort gdButton" src="assets/goldKey.png" sort="Gold Key">
+                    <img class="chestSort gdButton" src="assets/items/blueKey.png" sort="Item">
+                </div>
+
+                <div class="allInline allMiddle" id="chestSeek">
+                    <img class="gdButton seekbtn" id="chestStart" src="assets/doubleLeft.png">
+                    <img class="gdButton seekbtn" id="chestLeft" src="assets/arrowLeft.png">
+                    <p style="margin: 0px 20px 0px 0px">Page <input type="number" id="chestPage" class="pageNum" min="1" max="999" style="vertical-align: unset" value="1"> of <span id="chestTotal" style="vertical-align: unset">0</span></p>
+                    <img class="gdButton seekbtn" id="chestRight" src="assets/arrowRight.png">
+                    <img class="gdButton seekbtn" id="chestEnd" src="assets/doubleRight.png">
+                </div>
+                
+                <table id="rewardTable" style="margin-top: 30px">
+                    <tr>
+                        <th style="width: 100px">Chest</th>
+                        <th style="width: 100px">ID</th>
+                        <th style="width: 400px" colspan="3">Rewards</th>
+                        <th style="width: 250px">Shards</th>
+                        <th style="width: 300px">Special</th>
+                    </tr>
+                </table>
+            </div> 
+
+            <div id="levelStats" class="category" style="display: none">
+                <p>(A: Average, M: Median, T: Total)</p>
+                <table id="diffTable" style="margin-top: 25px">
+                    <tr>
+                        <th style="width: 80px">Stars</th>
+                        <th style="width: 150px">Played</th>
+                        <th style="width: 150px">Complete</th>
+                        <th style="width: 150px">Rewards</th>
+                        <th style="width: 150px">Best %</th>
+                        <th style="width: 180px">Attempts (All)</th>
+                        <th style="width: 180px">Attempts (✓)</th>
+                        <th style="width: 150px">Jumps (✓)</th>
+                        <th style="width: 190px">Orbs</th>
+                        <th style="width: 180px">Diamonds</th>
+                        <th style="width: 150px">Coins</th>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="questList" class="category" style="display: none">
+                <table id="questTable" style="margin-top: 30px; margin-bottom: 30px;">
+                    <tr>
+                        <th style="width: 300px">Name</th>
+                        <th style="width: 140px">Objective</th>
+                        <th style="width: 140px">Progress</th>
+                        <th style="width: 140px">Reward</th>
+                        <th style="width: 140px">Slot</th>
+                        <th style="width: 140px">Queue</th>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="achievementList" class="category" style="display: none; position: relative;">
+                <div id="achievementBars"></div>
+            </div>
+
+            <div id="misc" class="category textStuff" style="display: none">
+                
+                <div><img src="assets/user.png"><h2>General Info</h2>
+                <p id="misc-general"></p></div>
+
+                <div><img src="assets/death.png"><h2>Icons</h2>
+                <p id="misc-icons"></p></div>
+
+                <div><img src="assets/door.png"><h2>Events</h2>
+                <p id="misc-events"></p></div>
+
+                <div><img src="assets/info.png"><h2>One-Time Messages</h2>
+                <p id="misc-onetime"></p></div>
+
+                <div><img src="assets/cp.png"><h2>Editor Preferences</h2>
+                <p id="misc-editor"></p></div>
+
+                <p id="forgorPassword" style="opacity: 66%; width: fit-content; text-decoration: underline; font-size: 24px; cursor: pointer; margin-bottom: 40px; display: none">Forgot your password?</p>
+                
+            </div>
+
+            <div id="download" class="category">
+                <h2>Download your data!</h2>
+
+                <div style="display: inline-block; vertical-align: top;">
+                    <div id="downloadXML" class="takeout gdButton">
+                        <p>Raw Data (.xml)</p>
+                        <img src="assets/DL.png">
+                    </div>
+
+                    <p>Include password: 
+                        <span class="incPass downloadSetting" id="passFalse" style="color: lime">False</span>
+                        <span class="incPass downloadSetting" id="passTrue" style="color: salmon; display: none">True</span>
+                    </p>
+                </div>
+
+                <div style="display: inline-block; margin-left: 40px">
+                    <div id="downloadJSON" class="takeout gdButton">
+                        <p>Fancy Data (.json)</p>
+                        <img src="assets/online.png">
+                    </div>
+
+                    <div id="downloadLevels" class="takeout gdButton">
+                        <p>Level Stats (.json)</p>
+                        <img src="assets/stats.png">
+                    </div>
+
+                    <p style="margin-bottom: 18px">Include levels: 
+                        <span class="incLevels downloadSetting" id="downloadLevels-0" style="color: lime">All levels in save</span>
+                        <span class="incLevels downloadSetting" id="downloadLevels-1" style="color: yellow; display: none">With metadata saved</span>
+                        <span class="incLevels downloadSetting" id="downloadLevels-2" style="color: yellow; display: none">Matching "All Levels" filter</span>
+                        <span class="incLevels downloadSetting" id="downloadLevels-3" style="color: salmon; display: none">None</span>
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div id="faq" class="category" style="display: none">
+                <div id="questions" class="textStuff"></div>
+            </div>
+
+        </div>
+
+        <!-- CUSTOM LEVEL STUFF -->
+
+        <div class="center" style="margin-top: 25px; display: none;" id="createdLevels">
+            <h1 class="middle" style="margin-top: 0; margin-bottom: 0px;">Created Levels</h1>
+            <br><br>
+
+            <div class="categoryBtn gdButton selectedCategory" category="createdLevelList">
+                <img src="assets/cp.png">
+                <p>Level Table</p>
+            </div>
+
+            <div class="categoryBtn gdButton" category="customDownload">
+                <img src="assets/download.png">
+                <p>Download</p>
+            </div>
+
+            <br><hr class="divider" noshade>
+
+            <div id="createdLevelList" class="category">
+
+                <div class="allInline allMiddle" style="margin-bottom: 16px">
+                    <p>Search:</p>
+                    <input id="customSearch" class="searchBar" maxlength=64 style="margin-left: 10px; width: 300px" placeholder="(level name)">
+                </div>
+
+                <div class="allInline allMiddle" style="margin-bottom: 12px">
+                    <p>Sort by:</p>
+                    <img class="customSort gdButton" src="assets/recent.png" sort="savedLevelIndex" by="position">
+                    <img class="customSort gdButton" src="assets/a.png" special="name" by="name">
+                    <img class="customSort gdButton" src="assets/info.png" sort="id" by="ID">
+                    <img class="customSort gdButton" src="assets/copied.png" sort="copiedID" by="copied ID">
+                    <img class="customSort gdButton" src="assets/time.png" sort="editorTime" special="time" by="editor time">
+                    <img class="customSort gdButton" src="assets/time2.png" special="totalTime" by="editor time, including copies">
+                    <img class="customSort gdButton" src="assets/online.png" special="size" by="level size">
+                    <img class="customSort gdButton" src="assets/star.png" sort="requestedStars" by="requested stars">
+                    <img class="customSort gdButton" src="assets/object.png" sort="objects" by="object count">
+                    <img class="customSort gdButton" src="assets/attempts.png" sort="attempts" by="attempts">
+                    <img class="customSort gdButton" src="assets/folder.png" sort="folder" by="folder">
+                </div>
+                <p style="font-size: 28px; margin-bottom: 26px">Sorting by <span id="customSortBy" style="color: aqua">position</span></p>
+
+                <div class="allInline allMiddle" id="customSeek">
+                    <img class="gdButton seekbtn" id="customStart" src="assets/doubleLeft.png">
+                    <img class="gdButton seekbtn" id="customLeft" src="assets/arrowLeft.png">
+                    <p style="margin: 0px 20px 0px 0px">Page <input type="number" id="customPage" class="pageNum" min="1" max="999" style="vertical-align: unset" value="1"> of <span id="customTotal" style="vertical-align: unset">0</span></p>
+                    <img class="gdButton seekbtn" id="customRight" src="assets/arrowRight.png">
+                    <img class="gdButton seekbtn" id="customEnd" src="assets/doubleRight.png">
+                </div>
+
+                <div id="createdLevelButtons" style="margin-top: 25px">
+                </div>
+            </div>
+
+            <div id="customDownload" class="category" style="display: none">
+                <h2>Download your level info!</h2>
+
+                <div style="display: inline-block; vertical-align: top;">
+                    <div id="downloadCustomXML" class="takeout gdButton">
+                        <p>Raw Data (.xml)</p>
+                        <img src="assets/DL.png">
+                    </div>
+                </div>
+
+                <div id="downloadCustomJSON" class="takeout gdButton">
+                    <p>Fancy Data (.json)</p>
+                    <img src="assets/online.png">
+                </div>
+
+                <p style="margin-top: 10px">(large!!) Include full level data: 
+                    <span class="incCreatedLevels downloadSetting" id="dataFalse" style="color: yellow; display: none">False</span>
+                    <span class="incCreatedLevels downloadSetting" id="dataTrue" style="color: lime">True</span>
+                </p>
+
+            </div>
+        <br>
+    </body>
+
+    <script type="text/javascript" src="libs/jquery.js"></script>
+    <script type="text/javascript" src="libs/pako.js"></script>
+    <script type="text/javascript" src="libs/base64.js"></script>
+    <script type="text/javascript" src="libs/aes.js"></script>
+
+    <!-- <script type="text/javascript" src="./CCGameManager.js"></script> -->
+    <!-- <script type="text/javascript" src="./LocalLevels.js"></script> -->
+
+    <!-- <script type="text/javascript" src="./EmptyGameManager.js"></script> -->
+    <script type="text/javascript" src="keys.js?v=1f"></script>
+    <script type="text/javascript" src="./functions/append.js?v=1f"></script>
+    <script type="text/javascript" src="./functions/buttons.js?v=1f"></script>
+    <script type="text/javascript" src="./functions/levelParser.js?v=1f"></script>
+    <script type="text/javascript" src="./functions/levelTable.js?v=1fb"></script>
+    <script type="text/javascript" src="./functions/createdLevelTable.js?v=1f"></script>
+    <script type="text/javascript" src="./functions/rewardTable.js?v=1f"></script>
+    <script type="text/javascript" src="./functions/diffTable.js?v=1f"></script>
+    <script type="text/javascript" src="./functions/questTable.js?v=1f"></script>
+    <script type="text/javascript" src="./functions/achievementTable.js?v=1f"></script>
+    <script type="text/javascript" src="./functions/statsBreakdown.js?v=1f"></script>
+    <script type="text/javascript" src="./functions/misc.js?v=1f"></script>
+    <script type="text/javascript" src="./functions/faq.js?v=1f"></script>
+    <script type="text/javascript" src="index.js?v=1f"></script>
+
+</html>
