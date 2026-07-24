@@ -120,19 +120,19 @@
     </div>
 
     <div id="iconTabs">
-		<button form="tab1" title="Tab1" class="blankButton iconTabButton activeForm"><img src="./assets/tab1_on.png" style="width: 50px"></button>
-		<button form="tab2" title="Tab2" class="blankButton iconTabButton"><img src="./assets/tab2_off.png" style="width: 50px"></button>
-		<button form="tab3" title="Tab3" class="blankButton iconTabButton"><img src="./assets/tab3_off.png" style="width: 50px"></button>
-		<button form="tab4" title="Tab4" class="blankButton iconTabButton"><img src="./assets/tab4_off.png" style="width: 50px"></button>
-		<button form="tab5" title="Tab5" class="blankButton iconTabButton"><img src="./assets/tab5_off.png" style="width: 50px"></button>
-		<button form="tab6" title="Tab6" class="blankButton iconTabButton"><img src="./assets/tab6_off.png" style="width: 50px"></button>
-		<button form="tab7" title="Tab7" class="blankButton iconTabButton"><img src="./assets/tab7_off.png" style="width: 50px"></button>
-		<button form="tab8" title="Tab8" class="blankButton iconTabButton"><img src="./assets/tab8_off.png" style="width: 50px"></button>
-		<button form="tab9" title="Tab9" class="blankButton iconTabButton"><img src="./assets/tab9_off.png" style="width: 50px"></button>
-		<button form="tab10" title="Tab10" class="blankButton iconTabButton"><img src="./assets/tab10_off.png" style="width: 50px"></button>
-		<button form="tab11" title="Tab11" class="blankButton iconTabButton"><img src="./assets/tab11_off.png" style="width: 50px"></button>
-		<button form="tab12" title="Tab12" class="blankButton iconTabButton"><img src="./assets/tab12_off.png" style="width: 50px"></button>
-		<button form="tab13" title="Tab13" class="blankButton iconTabButton"><img src="./assets/tab13_off.png" style="width: 50px"></button>
+		<button form="tab1" title="Tab1" class="blankButton .iconTabButton activeForm"><img src="./assets/tab1_on.png" style="width: 50px"></button>
+		<button form="tab2" title="Tab2" class="blankButton .iconTabButton"><img src="./assets/tab2_off.png" style="width: 50px"></button>
+		<button form="tab3" title="Tab3" class="blankButton .iconTabButton"><img src="./assets/tab3_off.png" style="width: 50px"></button>
+		<button form="tab4" title="Tab4" class="blankButton .iconTabButton"><img src="./assets/tab4_off.png" style="width: 50px"></button>
+		<button form="tab5" title="Tab5" class="blankButton .iconTabButton"><img src="./assets/tab5_off.png" style="width: 50px"></button>
+		<button form="tab6" title="Tab6" class="blankButton .iconTabButton"><img src="./assets/tab6_off.png" style="width: 50px"></button>
+		<button form="tab7" title="Tab7" class="blankButton .iconTabButton"><img src="./assets/tab7_off.png" style="width: 50px"></button>
+		<button form="tab8" title="Tab8" class="blankButton .iconTabButton"><img src="./assets/tab8_off.png" style="width: 50px"></button>
+		<button form="tab9" title="Tab9" class="blankButton .iconTabButton"><img src="./assets/tab9_off.png" style="width: 50px"></button>
+		<button form="tab10" title="Tab10" class="blankButton .iconTabButton"><img src="./assets/tab10_off.png" style="width: 50px"></button>
+		<button form="tab11" title="Tab11" class="blankButton .iconTabButton"><img src="./assets/tab11_off.png" style="width: 50px"></button>
+		<button form="tab12" title="Tab12" class="blankButton .iconTabButton"><img src="./assets/tab12_off.png" style="width: 50px"></button>
+		<button form="tab13" title="Tab13" class="blankButton .iconTabButton"><img src="./assets/tab13_off.png" style="width: 50px"></button>
 	</div><br>
 
 	<div id="extraUnlockText_off" style="display: none">
@@ -286,10 +286,6 @@
 
 </body>
 
-<script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;96784c950e9b40cb8b486dd06aaa549f&quot;,&quot;r&quot;:1,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/6.2.2/browser/pixi.js"></script>
 <script type="text/javascript" src="./libs/ag-psd.js"></script>
 <script type="text/javascript" src="./libs/pixi.js"></script>
 <script type="text/javascript" src="./libs/pixi-ease.js"></script>
@@ -1287,7 +1283,7 @@ $('#enableSecondaryIcon').click(function() {
 
 // add secondary icon
 function addSecondary() {
-    if (hasSecondary()) icon.addSecondaryIcon(lastCube || lastForms.cube || 1, false, () => {
+    if (hasSecondary()) icon.addSecondaryIcon(lastCube || lastForms.tab1 || 1, false, () => {
         refreshDevTools()
         checkWhite()
     })
