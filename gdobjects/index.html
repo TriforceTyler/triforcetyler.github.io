@@ -102,12 +102,12 @@
     </div>
 
 	<!-- Icon kit (object kit??) -->
-    <img id="iconkitlogo" src="./assets/title.png" style="margin: 7px 0px; height: 50px"><br>
+    <img id="iconKitLogo" src="./assets/title.png" style="margin: 7px 0px; height: 50px"><br>
     <h2 style="margin: 5 auto 0 auto; display: none; height: 45px" id="howto"><span style='color: #aaaaaa'>(hover over an icon for info)</span></h2>
 
     <div class="iconbox">
-        <canvas id="result" style="transform: translateY(-35px); touch-action: none; cursor: inherit;" width="300" height="300">
-    </canvas></div>
+        <canvas id="result" style="transform: translateY(-35px)">
+    </div>
 
     <hr id="gdfloor">
     <div id="menuButtons" style="height: 65px; margin: 0 0 8 0;">
@@ -116,23 +116,22 @@
         <button class="blankButton menuButton" onclick="icon.pngExport()" title="Download icon"><img src="./assets/save.png" width=60px></a></button>
         <button class="blankButton menuButton" onclick="$('#steal').show()" id="getUserIcon" title="Get player icon"><img src="./assets/steal.png" width=60px></button>
         <button class="blankButton menuButton" id="randomIcon" title="Random Icon"><img src="./assets/shuffle.png" width=60px></button>
-        <button class="blankButton menuButton" id="unlockIcon" title="Unlock details"><img id="lock" src="./assets/unlock.png" width=60px></button>
     </div>
 
     <div id="iconTabs">
-		<button form="tab1" title="Tab1" class="iconTabButton activeForm"><img src="./assets/tab1_on.png" style="width: 50px"></button>
-		<button form="tab2" title="Tab2" class="iconTabButton"><img src="./assets/tab2_off.png" style="width: 50px"></button>
-		<button form="tab3" title="Tab3" class="iconTabButton"><img src="./assets/tab3_off.png" style="width: 50px"></button>
-		<button form="tab4" title="Tab4" class="iconTabButton"><img src="./assets/tab4_off.png" style="width: 50px"></button>
-		<button form="tab5" title="Tab5" class="iconTabButton"><img src="./assets/tab5_off.png" style="width: 50px"></button>
-		<button form="tab6" title="Tab6" class="iconTabButton"><img src="./assets/tab6_off.png" style="width: 50px"></button>
-		<button form="tab7" title="Tab7" class="iconTabButton"><img src="./assets/tab7_off.png" style="width: 50px"></button>
-		<button form="tab8" title="Tab8" class="iconTabButton"><img src="./assets/tab8_off.png" style="width: 50px"></button>
-		<button form="tab9" title="Tab9" class="iconTabButton"><img src="./assets/tab9_off.png" style="width: 50px"></button>
-		<button form="tab10" title="Tab10" class="iconTabButton"><img src="./assets/tab10_off.png" style="width: 50px"></button>
-		<button form="tab11" title="Tab11" class="iconTabButton"><img src="./assets/tab11_off.png" style="width: 50px"></button>
-		<button form="tab12" title="Tab12" class="iconTabButton"><img src="./assets/tab12_off.png" style="width: 50px"></button>
-		<button form="tab13" title="Tab13" class="iconTabButton"><img src="./assets/tab13_off.png" style="width: 50px"></button>
+		<button form="tab1" title="Tab1" class="blankButton iconTabButton activeForm"><img src="./assets/tab1_on.png" style="width: 50px"></button>
+		<button form="tab2" title="Tab2" class="blankButton iconTabButton"><img src="./assets/tab2_off.png" style="width: 50px"></button>
+		<button form="tab3" title="Tab3" class="blankButton iconTabButton"><img src="./assets/tab3_off.png" style="width: 50px"></button>
+		<button form="tab4" title="Tab4" class="blankButton iconTabButton"><img src="./assets/tab4_off.png" style="width: 50px"></button>
+		<button form="tab5" title="Tab5" class="blankButton iconTabButton"><img src="./assets/tab5_off.png" style="width: 50px"></button>
+		<button form="tab6" title="Tab6" class="blankButton iconTabButton"><img src="./assets/tab6_off.png" style="width: 50px"></button>
+		<button form="tab7" title="Tab7" class="blankButton iconTabButton"><img src="./assets/tab7_off.png" style="width: 50px"></button>
+		<button form="tab8" title="Tab8" class="blankButton iconTabButton"><img src="./assets/tab8_off.png" style="width: 50px"></button>
+		<button form="tab9" title="Tab9" class="blankButton iconTabButton"><img src="./assets/tab9_off.png" style="width: 50px"></button>
+		<button form="tab10" title="Tab10" class="blankButton iconTabButton"><img src="./assets/tab10_off.png" style="width: 50px"></button>
+		<button form="tab11" title="Tab11" class="blankButton iconTabButton"><img src="./assets/tab11_off.png" style="width: 50px"></button>
+		<button form="tab12" title="Tab12" class="blankButton iconTabButton"><img src="./assets/tab12_off.png" style="width: 50px"></button>
+		<button form="tab13" title="Tab13" class="blankButton iconTabButton"><img src="./assets/tab13_off.png" style="width: 50px"></button>
 	</div><br>
 
 	<div id="extraUnlockText_off" style="display: none">
@@ -239,14 +238,14 @@
         </div>
     </div>
 
-	<div id="secondaryIconOptions" style="display: none">
+	<div id="secondaryIconOptions" style="">
         <div id="showSecondaryIcon" class="specialIconSetting">
             <input type="checkbox" id="enableSecondaryIcon"><label for="enableSecondaryIcon" class="gdcheckbox gdButton"></label>
             <h2>Show icon</h2>
         </div>
     </div>
 
-    <div id="ballRollOptions" style="display: none;">
+    <div id="ballRollOptions" style="">
         <div class="animationSelector" style="margin-top: 10px">
             <h2 style="margin-right: 20px">Roll speed:</h2>
             <input id="rollSpeed" style="width: 250px" type="range" value="0" placeholder="0" min="-10" max="10" step="0.1">
@@ -1091,6 +1090,7 @@ function checkMissingUnlocks() {
     if (unlockMode && (!isFiltering || filterHide)) missingUnlocks.forEach(x => x.addClass("hasNoUnlock"))
 }
 
+// Unlock details button clicked
 $('#unlockIcon').click(function() {
     generateUnlocks()
 
