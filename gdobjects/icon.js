@@ -84,7 +84,7 @@ function parseIconColor(col) {
     return rgb ? rgbToDecimal(rgb) : WHITE;
 }
 
-function parseIconForm(form, def="player") {
+function parseIconForm(form, def="tab1") {
     let foundForm = iconStuff.forms[form] || iconStuff.forms[formNames]
     return foundForm ? foundForm.form : def
 }
