@@ -4,7 +4,7 @@ const formNames = { "tab1": "tab1", "tab3": "tab3", "tab4": "tab4", "tab5": "tab
 const specialFormNames = { "trail": "Trail", "deathEffect": "Death Effect", "shipFire": "Ship Fire", "item": "Item" }
 const qualities = { low: 'low', sd: 'low', med: 'hd', medium: 'hd', hd: 'hd' }
 const positionMultipliers = { uhd: 4, hd: 2, low: 1 }
-const yOffsets = { player_ball: -10, bird: 30, spider: 7, swing: -15 }
+const yOffsets = { tab3: -10, tab4: 30, tab7: 7, tab8: -15 }
 const cubeOffsets = {
     ship: { "x": 0, "y": 5, "scale": 0.55 },
     bird: { "x": 0, "y": 6, "scale": 0.55 },
@@ -73,7 +73,7 @@ function getGlowColor(colors) {
 
 function validateIconID(id, form) {
     let realID = Math.min(iconStuff.iconCounts[form], Math.abs(validNum(id, 1)))
-    if (realID == 0 && !["player", "player_ball", "ship"].includes(form)) realID = 1
+    if (realID == 0 && !["tab1", "tab3", "tab2"].includes(form)) realID = 1
     return realID
 }
 
@@ -95,7 +95,7 @@ function loadIconLayers(form, id, cb) {
 }
 
 function loadIconSheet(iconStr, cb) {
-    fetch(`/iconkit/icons/${iconStr}-uhd.plist`).then(pl => pl.text()).then(plist => {
+    fetch(`/icons/${iconStr}-uhd.plist`).then(pl => pl.text()).then(plist => {
 
         let data = parsePlist(plist)
 
@@ -104,7 +104,7 @@ function loadIconSheet(iconStr, cb) {
         })
 
         let sheetName = iconStr + "-sheet"
-        loadTexture(sheetName, `/iconkit/icons/${iconStr}-uhd.png`).then(texture => {
+        loadTexture(sheetName, `/icons/${iconStr}-uhd.png`).then(texture => {
             readIconData(texture, data.pos, cb)
         })
     })
@@ -230,7 +230,7 @@ class Icon {
         this.layers = []
         this.glowLayers = []
         this.customFiles = null
-        this.complex = ["spider", "robot"].includes(this.form)
+        this.complex = ["tab7", "tab6"].includes(this.form)
         this.quality = data.quality ? (qualities[data.quality.toLowerCase()] || 'uhd') : 'uhd'
 
         if (data.isCustom && data.files) this.customFiles = data.files
@@ -240,7 +240,7 @@ class Icon {
             let extraSettings = {}
             if (data.noUFODome) extraSettings.noDome = true
             if (data.isCustom) extraSettings.customFiles = this.customFiles
-            if (this.form == "player_ball") {
+            if (this.form == "tab3") {
                 this.ballSpeed = (data.ballSpeed || 0)
                 if (this.ballSpeed != 0 && !this.ballRolling) this.rollBall()
             }
@@ -389,7 +389,7 @@ class Icon {
     }
 
     setBallSpeed(speed, stop) {
-        if (this.form != "player_ball") return
+        if (this.form != "tab3") return
         this.ballSpeed = speed
 
         if (stop) this.sprite.angle = 0
