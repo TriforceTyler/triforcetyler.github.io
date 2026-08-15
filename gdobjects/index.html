@@ -12,11 +12,13 @@
     <link rel="icon" type="image/x-icon" href="/assets/tab13_on.png">
     </link>
 </head>
+
 <body style="background: linear-gradient(rgb(139, 139, 139), rgb(100, 100, 100)) no-repeat center center fixed;" onbeforeunload="sessionStorage.setItem('prevUrl', window.location.href)">
 
 <!-- Popups -->
 <div class="center"><br>
 
+	<!-- steal icon popup (remove later) -->
     <div class="popup" id="steal">
         <div id="stealBox" class="brownbox bounce center supercenter" style="height: 350px; width: 700px">
             <h1 class="center gold" style="margin-top: 10px">Copy Icon</h1>
@@ -27,14 +29,13 @@
             <img class="gdButton xButton" src="./assets/close.png" width="70px" onclick="$('#steal').hide()">
 		</div>
     </div>
-    
+
+	<!-- settings popup -->
     <div class="popup" data-nosnippet="" id="settings">
         <div class="brownbox bounce center supercenter" style="height: 380px; width: 820px">
             <h1 class="center gold" style="margin-top: 10px; margin-bottom: 20px;">Settings</h1>
-            <div id="settingList">
-                <div class="help" help="Removes the clear dome on top of UFOs"><input type="checkbox" class="iconsetting" id="box-ufo"><label for="box-ufo" class="gdcheckbox gdButton"></label><h2>No UFO Dome</h2></div>
-                <div class="help" help="Sorts the colors by internal ID instead of their in-game order"><input type="checkbox" class="iconsetting" id="box-sort"><label for="box-sort" class="gdcheckbox gdButton"></label><h2>Unsort Colors</h2></div>
-                <div class="help" help="Allows robots to play spider animations and vice versa"><input type="checkbox" class="iconsetting" id="box-cursed"><label for="box-cursed" class="gdcheckbox gdButton"></label><h2>Cursed animations</h2></div>
+            <div class="settingList">
+                <div class="help" help="Remembers the last object you selected for each tab, and automatically re-selects it when switching to that tab" style="color: rgb(255, 255, 255);"><input type="checkbox" class="iconsetting" id="box-rememberform"><label for="box-rememberform" class="gdcheckbox gdButton"></label><h2>Object set mode</h2></div>
             </div> 
             <p class="white" id="helpText" style="font-size: 24px; margin-bottom: 0;">(Hover over a setting for information)</p>
             <img src="./assets/ok.png" height=55px; class="postButton gdButton center" style="margin-top: 30px" onclick="$('#settings').hide()">
@@ -42,6 +43,7 @@
         </div>
 	</div>
 
+	<!-- spoiler popup (remove later) -->
     <div class="popup" id="spoilerwarning">
         <div id="stealBox" class="brownbox bounce center supercenter" style="height: 440px; width: 800px">
             <h1 class="center gold" style="margin-top: 12px">Enable 2.2 icons?</h1>
@@ -53,6 +55,7 @@
         </div>
     </div>
 
+	<!-- filter popup -->
 	<div class="popup" id="filter">
         <div class="brownbox bounce center supercenter" style="width: 820px">
             <h1 class="center gold" style="margin-top: 10px">Filter</h1>
@@ -140,7 +143,7 @@
 
     <div id="iconLayer">
         <div class="sideButtons" id="leftSide">
-            <button title="Colors" class="blankButton gdButton"  id="colorToggle"><img src="./assets/colors.png" style="width: 75px"></button>
+            <button title="Colors" class="blankButton gdButton" id="colorToggle"><img src="./assets/colors.png" style="width: 75px"></button>
             <button title="Glow" class="blankButton glowToggle gdButton" id="glowbtn"><img id="glow" src="./assets/streak_off.png"></button>
             <button title="Dev Tools" class="blankButton gdButton" id="devToolsToggle"><img id="devToolsIcon" src="./assets/dev_off.png"></button>
         </div>
@@ -153,8 +156,8 @@
             <div id="iconprogressbar"><div class="fakeloading"></div></div>
 
             <div id="colorLabels">
-                <button id="cc1" coltype="1" altcol="2" class="colorLabel blankButton selectedColorType" title="Primary Color"><img src="./assets/col1.png" style="background-color: rgb(125, 0, 255);"></button><input type="color" id="cp1" class="colorPicker">
-                <button id="cc2" coltype="2" altcol="1" class="colorLabel blankButton" title="Secondary Color"><img src="./assets/col2.png" style="background-color: rgb(0, 255, 255);"></button><input type="color" id="cp2" class="colorPicker">
+                <button id="cc1" coltype="1" altcol="2" class="colorLabel blankButton selectedColorType" title="Base Color"><img src="./assets/col1.png" style="background-color: rgb(125, 0, 255);"></button><input type="color" id="cp1" class="colorPicker">
+                <button id="cc2" coltype="2" altcol="1" class="colorLabel blankButton" title="Detail Color"><img src="./assets/col2.png" style="background-color: rgb(0, 255, 255);"></button><input type="color" id="cp2" class="colorPicker">
                 <button id="ccg" coltype="g" altcol="2" class="colorLabel blankButton" title="Glow Color" style="display: none"><img src="./assets/colG.png" style="background-color: rgb(125, 255, 0);"></button><input type="color" id="cpg" class="colorPicker">
                 <button id="ccw" coltype="w" altcol="1" class="colorLabel blankButton" title="White Highlights" style=""><img src="./assets/colW.png" style="background-color: rgb(255, 255, 255)" ;=""></button><input type="color" id="cpw" class="colorPicker">
                 <button id="ccu" coltype="u" altcol="1" class="colorLabel blankButton" title="UFO Dome" style="display: none"><img src="./assets/colU.png" style="background-color: rgb(255, 255, 255)" ;=""></button><input type="color" id="cpu" class="colorPicker">
@@ -282,9 +285,6 @@
 </div>
 
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"96784c950e9b40cb8b486dd06aaa549f","r":1}' crossorigin="anonymous"></script>
-
-</body>
-
 <script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;96784c950e9b40cb8b486dd06aaa549f&quot;,&quot;r&quot;:1,&quot;server_timing&quot;:{&quot;name&quot;:{&quot;cfCacheStatus&quot;:true,&quot;cfEdge&quot;:true,&quot;cfExtPri&quot;:true,&quot;cfL4&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfSpeedBrain&quot;:true},&quot;location_startswith&quot;:null}}" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -295,6 +295,7 @@
 <script type="text/javascript" src="./libs/imagesloaded.js"></script>
 <script type="text/javascript" src="./icon.js"></script>
 <script type="text/javascript" src="./devTools.js?v=10a"></script>
+
 <script type="text/javascript">
 
 const iconCanvas = document.getElementById('result');
@@ -1974,3 +1975,4 @@ async function appendScript(name) {
 }
     
 </script>
+</body>
