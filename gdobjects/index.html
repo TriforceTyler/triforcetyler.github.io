@@ -123,7 +123,7 @@
     </div>
 
     <div id="iconTabs">
-		<button form="cube" title="Cube" class="blankButton iconTabButton activeForm"><img src="./assets/tab1_on.png" style="width: 50px"></button>
+		<button form="tab1" title="Tab1" class="blankButton iconTabButton"><img src="./assets/tab1_on.png" style="width: 50px"></button>
 		<button form="tab2" title="Tab2" class="blankButton iconTabButton"><img src="./assets/tab2_off.png" style="width: 50px"></button>
 		<button form="tab3" title="Tab3" class="blankButton iconTabButton"><img src="./assets/tab3_off.png" style="width: 50px"></button>
 		<button form="tab4" title="Tab4" class="blankButton iconTabButton"><img src="./assets/tab4_off.png" style="width: 50px"></button>
@@ -151,7 +151,7 @@
 	
     	<div id="iconKitParent" class="iconKit iconSetup">
             <div id="iconprogressbar"><div id="iconloading" style="width: 100%;"></div></div>
-			<div id="cubes" class="iconContainer" style=""><button num="1" form="cube" class="blankButton iconButton" id="cube-1"><img title="Tab1 1" src="./premade/tab1_1.png"></button></button></div>
+			<div id="tab1s" class="iconContainer" style=""><button num="1" form="tab1" class="blankButton iconButton" id="tab1-1"><img title="Tab1 1" src="./premade/tab1_1.png"></button></button></div>
         </div><br>
 
     	<div id="colorLayer" class="iconKit iconSetup" style="display: none;">
@@ -315,7 +315,7 @@ let selectedColorType = "1"     // Color tab selection (primary, secondary, etc)
 let altColorType = "2"          // Color tab selection when right-clicking
 let enableGlow = false          // Glow?
 
-const formsWithZero = ["cube", "ball", "ship"]  // forms with an id 0 (mini icon, etc)
+const formsWithZero = ["tab1", "ball", "ship"]  // forms with an id 0 (mini icon, etc)
 
 // Icon colors
 let selectedCol = {
@@ -980,7 +980,7 @@ $('#copyURL').click(function() {
     if ($(this).hasClass('greyedOut') || !icon) return
 
     let params = [`id=${icon.id}`, `col1=${selectedCol["1"]}`, `col2=${selectedCol["2"]}`]
-    if (icon.form != "player") params.splice(1, 0, `form=${icon.formName()}`)
+    if (icon.form != "tab1") params.splice(1, 0, `form=${icon.formName()}`)
     if (icon.glowLayers[0].sprite.visible) params.push("glow=1")
     if (icon.colors["g"] != icon.colors["2"]) params.push(`colG=${selectedCol['g']}`)
     if (icon.colors["w"] != 0xffffff) params.push(`colW=${selectedCol["w"]}`)
