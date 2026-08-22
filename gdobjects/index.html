@@ -1,5 +1,6 @@
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135255146-3"></script><script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'UA-135255146-3');</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135255146-3"></script>
+	<script>window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'UA-135255146-3');</script>
     <title>gd objects (oh no)</title>
     <link href="./style.css?v=3" type="text/css" rel="stylesheet">
     <meta name="viewport" content="width=1024">
@@ -13,10 +14,19 @@
     </link>
 </head>
 
-<body style="background: linear-gradient(rgb(139, 139, 139), rgb(100, 100, 100)) no-repeat center center fixed;" onbeforeunload="sessionStorage.setItem('prevUrl', window.location.href)">
+<body style="background: linear-gradient(rgb(139, 139, 139), rgb(100, 100, 100)) no-repeat center center fixed;" onbeforeunload="sessionStorage.setItem('prevUrl', window.location.href)" class="filterHide">
 
 <!-- Popups -->
 <div class="center"><br>
+
+	<!-- icon info popup ig -->
+	<div class="popup" id="iconInfoPopup">
+        <div class="fancybox bounce center supercenter" style="min-width: 580px; padding: 0px 25px 20px">
+            <h1 id="extraInfoText" class="center gold" style="margin-top: 14px; margin-bottom: 20px; overflow: visible;">Info</h1>
+            <div id="extraInfoPopup"></div>
+            <img src="../assets/ok.png" class="gdButton center" style="height: 55px; margin-top: 30px" onclick="$('#iconInfoPopup').hide()"">
+		</div>
+    </div>
 
 	<!-- steal icon popup (remove later) -->
     <div class="popup" id="steal">
@@ -31,7 +41,7 @@
     </div>
 
 	<!-- settings popup -->
-    <div class="popup" data-nosnippet="" id="settings">
+    <div class="popup" data-nosnippet id="settings">
         <div class="brownbox bounce center supercenter" style="height: 380px; width: 820px">
             <h1 class="center gold" style="margin-top: 10px; margin-bottom: 20px;">Settings</h1>
             <div class="settingList">
@@ -291,14 +301,14 @@
 </div>
 </body>
 
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon="{&quot;version&quot;:&quot;2024.11.0&quot;,&quot;token&quot;:&quot;96784c950e9b40cb8b486dd06aaa549f&quot;,&quot;r&quot;:1}" crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"96784c950e9b40cb8b486dd06aaa549f","r":1}' crossorigin="anonymous"></script>
 <script type="text/javascript" src="./jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script type="text/javascript" src="./libs/pixi.js"></script>
 <script type="text/javascript" src="./libs/pixi-ease.js"></script>
 <script type="text/javascript" src="./libs/imagesloaded.js"></script>
-<script type="text/javascript" src="./icon.js"></script>
-<script type="text/javascript" src="./devTools.js"></script>
+<script type="text/javascript" src="./icon.js?v=10a"></script>
+<script type="text/javascript" src="./devTools.js?v=10a"></script>
 
 <script type="text/javascript">
 
