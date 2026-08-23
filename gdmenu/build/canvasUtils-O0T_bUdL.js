@@ -302,3 +302,4 @@ var canvasUtils = {
 canvasUtils.tintMethod = canvasUtils.canUseMultiply ? canvasUtils.tintWithMultiply : canvasUtils.tintWithPerPixel;
 //#endregion
 export { canUseNewCanvasBlendModes as n, ImageSource as r, canvasUtils as t };
+
