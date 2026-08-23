@@ -4,3 +4,4 @@ import { n as FilterPipe, r as CanvasFilterSystem, t as FilterSystem } from "./i
 extensions.add(FilterSystem, CanvasFilterSystem);
 extensions.add(FilterPipe);
 //#endregion
+
