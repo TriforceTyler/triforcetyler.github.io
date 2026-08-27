@@ -84,11 +84,11 @@
                         </div>
                     </div>
                     
-                    <div class="tinyBox gdButton" id="toBorderSettings" style="width: 425px; margin-top: 40px; background-image: url(https://gdcolon.com/assets/gdfont/longbox.png);" onclick="loadTab($('#borderSettings'))" tabindex="0"> <h2 id="borderName">Border: None</h2> </div>
+                    <div class="tinyBox gdButton" id="toBorderSettings" style="width: 375px; margin-top: 40px; background-image: url(https://gdcolon.com/assets/gdfont/longbox.png);" onclick="loadTab($('#borderSettings'))" tabindex="0"> <h2 id="borderName">Border: None</h2> </div>
 
                 </div>
 
-                <!-- Extra Tab (hidden for Logo font) -->
+                <!-- Extra Tab -->
                 <div class="settingTab" style="display: none" tab="Extra">
 
                     <h3 class="tabHeader" style="margin-bottom: 40px">Extra settings</h3>
@@ -180,11 +180,17 @@
                     <div class="extraSetting">
                         <h3 class="smaller">Border Width (px)</h3>
                         <input id="logoBorderWidth" type="number" min=0 max=20 decimal="true" empty="2.5" placeholder="2.5" value=2.5>
+                        <button class="blankButton gdButton" id="resetBorderWidth" style="margin-left: 15px">
+                        <img src="./assets/trash2.png" style="width: 58px">
+                        </button>
                     </div>
 
                     <div class="extraSetting">
                         <h3 class="smaller">Shadow Opacity (%)</h3>
                         <input id="logoShadowOpacity" type="number" min=0 max=100 empty="30" placeholder="30" value=30>
+                        <button class="blankButton gdButton" id="resetShadowOpacity" style="margin-left: 15px">
+                        <img src="./assets/trash2.png" style="width: 58px">
+                        </button>
                     </div>
 
                     <br>
@@ -192,11 +198,17 @@
                     <div class="extraSetting">
                         <h3 class="smaller">Shadow X (px)</h3>
                         <input id="logoShadowX" type="number" min=-30 max=30 empty="9" placeholder="9" value=9>
+                        <button class="blankButton gdButton" id="resetShadowX" style="margin-left: 15px">
+                        <img src="./assets/trash2.png" style="width: 58px">
+                        </button>
                     </div>
 
                     <div class="extraSetting">
                         <h3 class="smaller">Shadow Y (px)</h3>
                         <input id="logoShadowY" type="number" min=-30 max=30 empty="5" placeholder="5" value=5>
+                        <button class="blankButton gdButton" id="resetShadowY" style="margin-left: 15px">
+                        <img src="./assets/trash2.png" style="width: 58px">
+                        </button>
                     </div>
 
                     <br>
@@ -878,6 +890,7 @@ function changePage(amt) {
 
 const charmapButton = $(`<div tabindex="0" class="gdButton greyBox char"><canvas></div>`)
 
+/* Load Charmap */
 function renderCharmap() {
     $('#charmapFailed').hide()
     $('#charmap').empty()
@@ -933,5 +946,23 @@ $(document).on('keydown', '.gdButton', function(k) {
         $(this).trigger('click');
     }
 });
+
+/* THINGS ADDED BY ME (probably won't work) */
+
+$('#resetBorderWidth').click(function() {
+    $('#logoBorderWidth').val(2.5)
+})
+
+$('#resetShadowOpacity').click(function() {
+    $('#logoShadowOpacity').val(30)
+})
+
+$('#resetShadowX').click(function() {
+    $('#logoShadowX').val(9)
+})
+
+$('#resetShadowY').click(function() {
+    $('#logoShadowY').val(5)
+})
 
 </script>
