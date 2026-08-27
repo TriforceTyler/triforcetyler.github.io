@@ -11,7 +11,7 @@
     <meta name="og:image" itemprop="image" content="https://gdcolon.com/assets/gdfont/fontgen_logo.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="theme-color" content="#287DFF">
-    <link rel="icon" href="./assets/gdfont/icon.png">
+    <link rel="icon" href="https://gdcolon.com/assets/gdfont/icon.png">
     </link>
 </head>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
@@ -20,7 +20,7 @@
 
     <div id="canvasBox" class="center mAdjust">
         <canvas id="result"></canvas>
-        <img style="margin-top: 35px; display: none" src="./assets/gdfont/loading.png" id="loading" class="spin">
+        <img style="margin-top: 35px; display: none" src="https://gdcolon.com/assets/gdfont/loading.png" id="loading" class="spin">
     </div>
 
     <div class="center mainBox mAdjust">
@@ -30,9 +30,9 @@
         </div>
 
         <div style="margin-bottom: 35px" id="optionButtons">
-            <img class="buttonOption gdButton" id="downloadBtn" title="Download" src="./assets/gdfont/btn_download.png"><!--
+            <img class="buttonOption gdButton" id="downloadBtn" title="Download" src="https://gdcolon.com/assets/gdfont/btn_download.png"><!--
             --><img class="buttonOption gdButton" id="copyBtn" title="Copy to Clipboard" src="https://gdcolon.com/assets/gdfont/btn_copy.png"><!--
-            --><img class="buttonOption gdButton" id="toggleTextbox" title="Move textbox" src="./assets/gdfont/btn_down.png">
+            --><img class="buttonOption gdButton" id="toggleTextbox" title="Move textbox" src="https://gdcolon.com/assets/gdfont/btn_down.png">
         </div>
 
         <div class="optionBoxes mAdjust">
@@ -53,7 +53,7 @@
         <div style="display: flex; align-items: center; justify-content: center;">
 
             <div class="arrowBox">
-                <img id="prevPage" class="gdButton" src="./assets/gdfont/arrow_left.png" onclick="changePage(-1)" style="display: none">
+                <img id="prevPage" class="gdButton" src="https://gdcolon.com/assets/gdfont/arrow_left.png" onclick="changePage(-1)" style="display: none">
             </div>
 
             <div id="extraSettings" class="mAdjust">
@@ -63,7 +63,7 @@
                     <div page="1" id="chatFontList" style="margin-bottom: 20px"></div>
                     <div page="2" id="customFontList"></div>
                 </div>
-
+                
                 <div class="settingTab" style="display: none" tab="Color">
                     <h3 style="margin-bottom: 15px; margin-top: 5px">Select color:</h3>
                     <div style="position: relative">
@@ -72,17 +72,18 @@
                     </div>
                     <div id="colorChannels" style="white-space: normal; padding-top: 15px;"><!--
                     --><div class="colorChannel gdButton" resetgold="true" color="#ffffff" style="background-color: #ffffff">
-                            <img id="trashIcon" style="display: none; left: 0" src="./assets/gdfont/trash.png">
+                            <img id="trashIcon" style="display: none; left: 0" src="https://gdcolon.com/assets/gdfont/trash.png">
                         </div><!--
                     --><div class="colorChannel gdButton" id="customColorChannel" onclick="$('#colorPicker').trigger('click')" style="background-color: #A6A6A6">
                             <h2>+</h2>
                         </div>
                     </div>
                     
-                    <div class="tinyBox gdButton" id="toBorderSettings" style="width: 375px; margin-top: 40px; background-image: url(./assets/gdfont/longbox.png);" onclick="loadTab($('#borderSettings'))" tabindex="0"> <h2 id="borderName">Border: None</h2> </div>
+                    <div class="tinyBox gdButton" id="toBorderSettings" style="width: 375px; margin-top: 40px; background-image: url(https://gdcolon.com/assets/gdfont/longbox.png);" onclick="loadTab($('#borderSettings'))" tabindex="0"> <h2 id="borderName">Border: None</h2> </div>
 
                 </div>
 
+                <!-- Extra Tab (hidden for Logo font) -->
                 <div class="settingTab" style="display: none" tab="Extra">
 
                     <h3 class="tabHeader" style="margin-bottom: 40px">Extra settings</h3>
@@ -102,7 +103,8 @@
                     </div>
 
                     <br>
-                    
+
+                    <!-- color correct only shows for Gold and Logo fonts -->
                     <div class="extraSetting" id="colCorrectOption" style="margin-top: 12px; display: none">
                         <h3 class="smaller">Color Correct</h3>
                         <label>
@@ -116,7 +118,8 @@
                         <input id="kerning" type="number" infinite="true" min="-1000" max="5000" placeholder="0" value=0 style="width: 200px; margin-top: 12px";>
                     </div>
                 </div>
-
+                
+                <!-- border selection (hidden for Logo font) -->
                 <div class="settingTab" style="display: none" tab="Border" id="borderSettings">
                     <h3 class="tabHeader" style="margin-bottom: 20px">Border settings</h3>
 
@@ -125,8 +128,8 @@
                         <select id="borderType">
                             <option value="none">None</option>
                             <option value="green">Green</option>
-                            <option value="grey">Grey</option>
-                            <option value="darkgrey" str="DGrey">Dark Grey</option>
+                            <option value="grey">Gray</option>
+                            <option value="darkgrey" str="DGrey">Dark Gray</option>
                             <option value="cyan">Cyan</option>
                             <option value="magenta">Magenta</option>
                             <option value="red">Red</option>
@@ -135,7 +138,8 @@
                             <option value="pink">Pink</option>
                             <option value="white">White</option>
                             <option value="black">Black</option>
-                            <option value="fancy">Fancy</option>
+                            <option value="fancy">FLAlertLayer</option>
+                            <option value="placeholder1">Menu</option>
                         </select>
                     </div>
 
@@ -148,6 +152,7 @@
                     </div>
                 </div>
 
+                <!-- Charmap Tab -->
                 <div class="settingTab" style="display: none" tab="Charmap">
 
                     <h3 class="tabHeader" style="margin-bottom: 16px">Character Map (<span id="charmapCount"></span> chars)</h3>
@@ -157,7 +162,7 @@
                     <div id="charmap"></div>
 
                 </div>
-
+                <!-- Logo Tab - only shows for Logo font -->
                 <div class="settingTab" style="display: none" tab="Logo">
                     <h3 class="tabHeader">Logo settings</h3>
                 
@@ -198,6 +203,7 @@
                     </div>
                 </div>
 
+                <!-- Symbols Tab (only shows for Logo font) -->
                 <div class="settingTab" style="display: none" tab="Symbols">
                     <h3 class="smaller" style="display: inline-block; color: white; margin-top: 15px">Lowercase symbols: </h3>
                     <div style="display: inline-block; transform: scale(0.85);"><div id="toggleSymbols" class="tinyBox tinyGreen gdButton"> <h2>Off</h2> </div></div>
@@ -208,7 +214,7 @@
             </div>
 
             <div class="arrowBox">
-                <img id="nextPage" class="gdButton" src="./assets/gdfont/arrow_right.png" onclick="changePage(1)">
+                <img id="nextPage" class="gdButton" src="https://gdcolon.com/assets/gdfont/arrow_right.png" onclick="changePage(1)">
             </div>
         </div>
 
@@ -352,7 +358,7 @@ function appendFonts(group, fontList, css, custom) {
         if (pg > 1) box.hide()
         if (pg > lastPage) lastPage = pg
 
-        box.append(`<div font="${id}" title="${data.title || data.name}" alt="${data.title || data.name}" class="gdButton fontBox${data.special ? " specialFont" : ""}"><img class="aFont${css ? " " + css : ""}" src="./assets/gdfont/fontpreviews/${custom ? "custom/" : ""}${id}.png"></div>`)
+        box.append(`<div font="${id}" title="${data.title || data.name}" alt="${data.title || data.name}" class="gdButton fontBox${data.special ? " specialFont" : ""}"><img class="aFont${css ? " " + css : ""}" src="https://gdcolon.com/assets/gdfont/fontpreviews/${custom ? "custom/" : ""}${id}.png"></div>`)
     }
 }
 
@@ -548,11 +554,11 @@ $('#toggleTextbox').click(function() {
     boxToggled = !boxToggled
     if (boxToggled) {
         $('#textboxBox').insertBefore($('#siteCredits'))
-        $(this).attr('src', './assets/gdfont/btn_up.png')
+        $(this).attr('src', 'https://gdcolon.com/assets/gdfont/btn_up.png')
     }
     else {
         $('#textboxBox').insertBefore($('#optionButtons'))
-        $(this).attr('src', './assets/gdfont/btn_down.png')
+        $(this).attr('src', 'https://gdcolon.com/assets/gdfont/btn_down.png')
     }
 })  
 
@@ -595,7 +601,7 @@ function generateText(message=$("#input").val(), noStall) {
         loading = true
         try {
             let fntID = trueFont
-            loader.add(`${fntID}.png`, `./assets/fonts/${fontData.custom ? "custom/" : ""}${fntID}.fnt`).load(() => {
+            loader.add(`${fntID}.png`, `https://gdcolon.com/assets/fonts/${fontData.custom ? "custom/" : ""}${fntID}.fnt`).load(() => {
                 loadedFonts.push(trueFont)
                 loading = false
                 drawText(message)
@@ -667,7 +673,7 @@ function drawText(message) {
         loading = true
         try {
             let fntID = trueFont
-            loader.add(`${fntID}.png`, `./assets/fonts/${fontData.custom ? "custom/" : ""}${fntID}.fnt`).load(() => {
+            loader.add(`${fntID}.png`, `https://gdcolon.com/assets/fonts/${fontData.custom ? "custom/" : ""}${fntID}.fnt`).load(() => {
                 loadedFonts.push(trueFont)
                 loading = false
                 drawText(message)
@@ -684,7 +690,7 @@ function drawText(message) {
         if (!loadedBorders.includes(borderID)) {
             loading = true
             try {
-                loader.add(borderID, `./assets/gdfont/borders/${border}.png`).load(() => {
+                loader.add(borderID, `https://gdcolon.com/assets/gdfont/borders/${border}.png`).load(() => {
                     loadedBorders.push(borderID)
                     loading = false
                     drawText(message)
@@ -835,8 +841,8 @@ $('#copyBtn').click(function() {
         let item = new ClipboardItem({ "image/png": blob });
         navigator.clipboard.write([item]); 
     });
-    $(this).attr('src', './assets/gdfont/btn_copied.png').addClass('greyscale').removeClass('gdButton')
-    setTimeout(() => { $(this).attr('src', './assets/gdfont/btn_copy.png').removeClass('greyscale').addClass('gdButton') }, 420);
+    $(this).attr('src', 'https://gdcolon.com/assets/gdfont/btn_copied.png').addClass('greyscale').removeClass('gdButton')
+    setTimeout(() => { $(this).attr('src', 'https://gdcolon.com/assets/gdfont/btn_copy.png').removeClass('greyscale').addClass('gdButton') }, 420);
 })
 
 function changePage(amt) {
