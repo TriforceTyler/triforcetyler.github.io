@@ -2,11 +2,11 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135255146-1"></script>
     <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'UA-135255146-1');</script>
     <title>GD Font Generator v2</title>
-    <link href="https://gdcolon.com/assets/gdfont/fontgen.css?v=1" type="text/css" rel="stylesheet">
+    <link href="./assets/gdfont/fontgen.css" type="text/css" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta property="og:description" content="Generate some wacky messages and custom logos with the exact font textures used by Geometry Dash!">
-    <meta property="og:title" content="Geometry Dash Font Generator">
+    <meta property="og:description" content="A slightly improved version of GD Colon's Geometry Dash Font Generator.">
+    <meta property="og:title" content="GD Font Generator v2">
     <meta property="og:type" content="website">
     <meta name="og:image" itemprop="image" content="https://gdcolon.com/assets/gdfont/fontgen_logo.png">
     <meta name="twitter:card" content="summary_large_image">
@@ -105,6 +105,9 @@
                     <div class="extraSetting">
                         <h3 class="smaller">Max Width (px)</h3>
                         <input id="maxWidth" type="number" infinite="true" min=500 max=20000 placeholder="(none)" value=3000 style="width: 200px; margin-top: 18px";>
+                        <button class="blankButton gdButton" id="resetMaxWidth" style="margin-left: 15px">
+                        <img src="./assets/trash2.png" style="width: 58px">
+                        </button>
                     </div>
 
                     <br>
@@ -121,6 +124,9 @@
                     <div class="extraSetting">
                         <h3 class="smaller">Kerning</h3>
                         <input id="kerning" type="number" infinite="true" min="-1000" max="5000" placeholder="0" value=0 style="width: 200px; margin-top: 12px";>
+                        <button class="blankButton gdButton" id="resetKerning" style="margin-left: 15px">
+                        <img src="./assets/trash2.png" style="width: 58px">
+                        </button>
                     </div>
                 </div>
                 
@@ -963,6 +969,14 @@ $('#resetShadowX').click(function() {
 
 $('#resetShadowY').click(function() {
     $('#logoShadowY').val(5)
+})
+
+$('#resetKerning').click(function() {
+    $('#kerning').val(0)
+})
+
+$('#resetMaxWidth').click(function() {
+    $('#maxWidth').val(3000)
 })
 
 </script>
