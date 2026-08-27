@@ -18,23 +18,27 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/6.2.2/browser/pixi.js"></script>
 <div class="center">
 
+    <!-- Text Display -->
     <div id="canvasBox" class="center mAdjust">
         <canvas id="result"></canvas>
         <img style="margin-top: 35px; display: none" src="https://gdcolon.com/assets/gdfont/loading.png" id="loading" class="spin">
     </div>
 
+    <!-- Text Input -->
     <div class="center mainBox mAdjust">
         <div id="textboxBox">
             <h3>Message</h3>
             <textarea class="mAdjust" id="input" placeholder="Type something!"></textarea>
         </div>
 
+        <!-- Buttons -->
         <div style="margin-bottom: 35px" id="optionButtons">
             <img class="buttonOption gdButton" id="downloadBtn" title="Download" src="https://gdcolon.com/assets/gdfont/btn_download.png"><!--
             --><img class="buttonOption gdButton" id="copyBtn" title="Copy to Clipboard" src="https://gdcolon.com/assets/gdfont/btn_copy.png"><!--
             --><img class="buttonOption gdButton" id="toggleTextbox" title="Move textbox" src="https://gdcolon.com/assets/gdfont/btn_down.png">
         </div>
 
+        <!-- Tab Buttons -->
         <div class="optionBoxes mAdjust">
             <div style="position: absolute; text-align: left">
                 <div class="fontTab tinyBox tinySelected gdButton"> <h2>Font</h2> </div>
@@ -63,7 +67,8 @@
                     <div page="1" id="chatFontList" style="margin-bottom: 20px"></div>
                     <div page="2" id="customFontList"></div>
                 </div>
-                
+
+                <!-- Color Tab -->
                 <div class="settingTab" style="display: none" tab="Color">
                     <h3 style="margin-bottom: 15px; margin-top: 5px">Select color:</h3>
                     <div style="position: relative">
@@ -79,7 +84,7 @@
                         </div>
                     </div>
                     
-                    <div class="tinyBox gdButton" id="toBorderSettings" style="width: 375px; margin-top: 40px; background-image: url(https://gdcolon.com/assets/gdfont/longbox.png);" onclick="loadTab($('#borderSettings'))" tabindex="0"> <h2 id="borderName">Border: None</h2> </div>
+                    <div class="tinyBox gdButton" id="toBorderSettings" style="width: 425px; margin-top: 40px; background-image: url(https://gdcolon.com/assets/gdfont/longbox.png);" onclick="loadTab($('#borderSettings'))" tabindex="0"> <h2 id="borderName">Border: None</h2> </div>
 
                 </div>
 
@@ -144,7 +149,7 @@
                             <option value="menublue">Menu Blue</option>
                             <option value="menugreen">Menu Green</option>
                             <option value="menupurple">Menu Purple</option>
-                            <option value="menudarkgrey">Menu Dark Gray</option>
+                            <option value="menudarkgrey" str="Menu DGray">Menu Dark Gray</option>
                             <option value="menugrey">Menu Gray</option>
                         </select>
                     </div>
