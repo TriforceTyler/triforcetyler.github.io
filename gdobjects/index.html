@@ -133,19 +133,7 @@
     </div>
 
     <div id="iconTabs">
-		<button form="tab1" title="Tab1" class="blankButton iconTabButton"><img src="./assets/tab1_on.png" style="width: 50px"></button>
-		<button form="tab2" title="Tab2" class="blankButton iconTabButton"><img src="./assets/tab2_off.png" style="width: 50px"></button>
-		<button form="tab3" title="Tab3" class="blankButton iconTabButton"><img src="./assets/tab3_off.png" style="width: 50px"></button>
-		<button form="tab4" title="Tab4" class="blankButton iconTabButton"><img src="./assets/tab4_off.png" style="width: 50px"></button>
-		<button form="tab5" title="Tab5" class="blankButton iconTabButton"><img src="./assets/tab5_off.png" style="width: 50px"></button>
-		<button form="tab6" title="Tab6" class="blankButton iconTabButton"><img src="./assets/tab6_off.png" style="width: 50px"></button>
-		<button form="tab7" title="Tab7" class="blankButton iconTabButton"><img src="./assets/tab7_off.png" style="width: 50px"></button>
-		<button form="tab8" title="Tab8" class="blankButton iconTabButton"><img src="./assets/tab8_off.png" style="width: 50px"></button>
-		<button form="tab9" title="Tab9" class="blankButton iconTabButton"><img src="./assets/tab9_off.png" style="width: 50px"></button>
-		<button form="tab10" title="Tab10" class="blankButton iconTabButton"><img src="./assets/tab10_off.png" style="width: 50px"></button>
-		<button form="tab11" title="Tab11" class="blankButton iconTabButton"><img src="./assets/tab11_off.png" style="width: 50px"></button>
-		<button form="tab12" title="Tab12" class="blankButton iconTabButton"><img src="./assets/tab12_off.png" style="width: 50px"></button>
-		<button form="tab13" title="Tab13" class="blankButton iconTabButton"><img src="./assets/tab13_off.png" style="width: 50px"></button>
+
 	</div><br>
 
 	<div id="extraUnlockText_off" style="display: none">
@@ -285,7 +273,7 @@
     </div>
 
     <p style="color: rgb(20, 20, 20); margin-top: 25px; margin-bottom: 25px; line-height: 16px">
-        All sprites/assets belong to <a target=_blank href="http://robtopgames.com">RobTop Games</a>
+        All sprites/assets belong to <a target=_blank href="http://robtopgames.com">RobTop Games</a> • Original website by GD Colon • Recode attempts by me
     </p>
 
 	<div style="position:absolute; top: 20px; left: 20px; pointer-events: none">
@@ -302,30 +290,30 @@
 </body>
 
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"96784c950e9b40cb8b486dd06aaa549f","r":1}' crossorigin="anonymous"></script>
-<script type="text/javascript" src="./jquery.min.js"></script>
+<script type="text/javascript" src="https://gdbrowser.com/iconkit/jquery.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script type="text/javascript" src="./libs/pixi.js"></script>
-<script type="text/javascript" src="./libs/pixi-ease.js"></script>
-<script type="text/javascript" src="./libs/imagesloaded.js"></script>
-<script type="text/javascript" src="./icon.js?v=10a"></script>
-<script type="text/javascript" src="./devTools.js?v=10a"></script>
+<script type="text/javascript" src="https://gdbrowser.com/iconkit/libs/pixi.js"></script>
+<script type="text/javascript" src="https://gdbrowser.com/iconkit/libs/pixi-ease.js"></script>
+<script type="text/javascript" src="https://gdbrowser.com/iconkit/libs/imagesloaded.js"></script>
+<script type="text/javascript" src="https://gdbrowser.com/iconkit/icon.js?v=10a"></script>
+<script type="text/javascript" src="https://gdbrowser.com/iconkit/devTools.js?v=10a"></script>
 
 <script type="text/javascript">
 
 const iconCanvas = document.getElementById('result');
 const app = new PIXI.Application({ view: iconCanvas, width: 300, height: 300, backgroundAlpha: 0 });
 
-let currentForm = 'tab1'
+let currentForm = 'cube'
 
 let selectedIcon = "1"          // Icon ID
-let selectedForm = 'tab1'       // Form
-let extraItemsformCopy = 'tab1'     // Form for copying
+let selectedForm = 'cube'       // Form
+let extraItemsformCopy = 'cube'     // Form for copying
 
 let selectedColorType = "1"     // Color tab selection (primary, secondary, etc)
 let altColorType = "2"          // Color tab selection when right-clicking
 let enableGlow = false          // Glow?
 
-const formsWithZero = ["tab1", "ball", "ship"]  // forms with an id 0 (mini icon, etc)
+const formsWithZero = ["cube", "ball", "ship"]  // forms with an id 0 (mini icon, etc)
 
 // Icon colors
 let selectedCol = {
@@ -407,7 +395,7 @@ function onDevTab() {
 // Get form name
 function validateForm(form) {
     if (forms.includes(form)) return form
-    return formNames[form] || "tab1"
+    return formNames[form] || "cube"
 }
 
 // Changes the color of the icon, and updates UI elements
@@ -574,7 +562,7 @@ function getExtraInfo(raw, form, id) {
 
     $('#extraInfo').show()
     $('#extraInfo').html(extraData)
-    $('#extraInfo p').first().append(`<img class="gdButton" onclick="extraInfoPopup()" style="vertical-align: middle; margin-left: 12px; height: 1em" src="./assets/smallinfo.png"">`)
+    $('#extraInfo p').first().append(`<img class="gdButton" onclick="extraInfoPopup()" style="vertical-align: middle; margin-left: 12px; height: 1em" src="../assets/smallinfo.png"">`)
 }
 
 // Converts a color ID to an info string, e.g. "1 (#00ff00)"
@@ -656,15 +644,15 @@ function handleNewIcon(newIcon) {
     if (enableSecondary) addSecondary()
 
     // cache or dispose old icon
-    if (icon.form == "tab1") {
+    if (icon.form == "player") {
         if (lastCube) lastCube.destroy()
-        lastCube = tab1
+        lastCube = icon
     }
     else if (oldIcon && oldIcon != lastCube) oldIcon.destroy()
 }
 
 // fetch way too much icon kit related data
-fetch('./api/iconkit.js').then(res => res.json()).then(iconKitData => {
+fetch('../api/iconkit').then(res => res.json()).then(iconKitData => {
 
     iconStuff = iconKitData
     forms = Object.keys(iconStuff.forms)
@@ -675,14 +663,14 @@ fetch('./api/iconkit.js').then(res => res.json()).then(iconKitData => {
 
     // add a button for each form, and set up their container
     forms.forEach(form => {
-        $("#iconTabs").append(`<button form="${form}" title="${iconStuff.forms[form].name}" class="blankButton iconTabButton"><img src="./assets/${form}_off.png" style="width: 50px"></button>`)
-        $("#copyForms").append(`<button form="${form}" title="${iconStuff.forms[form].name}" class="blankButton copyForm"><img src="./assets/${form}_off.png" style="width: 50px"></button>`)
+        $("#iconTabs").append(`<button form="${form}" title="${iconStuff.forms[form].name}" class="blankButton iconTabButton"><img src="../assets/iconkitbuttons/${form}_off.png" style="width: 50px"></button>`)
+        $("#copyForms").append(`<button form="${form}" title="${iconStuff.forms[form].name}" class="blankButton copyForm"><img src="../assets/iconkitbuttons/${form}_off.png" style="width: 50px"></button>`)
         $("#iconKitParent").append(`<div id="${form}s" class="iconContainer" unloaded></div>`)
         appendIcon(form)
     })
 
     // extra items tab, if unlock mode is on
-    $("#iconTabs").append(`<button form="extraItem" title="Extra" class="blankButton" id="extraItemsToggle" style="display: none"><img src="./assets/extra_off.png" style="width: 50px"></button>`)
+    $("#iconTabs").append(`<button form="extraItem" title="Extra" class="blankButton" id="extraItemsToggle" style="display: none"><img src="../assets/iconkitbuttons/extra_off.png" style="width: 50px"></button>`)
     $('#iconKitParent').append(`<div id="extraItems" class="iconContainer" style="flex-direction: column; display: none"></div>`)
     $('#extraItemsToggle').click(onExtraItems)
 
@@ -857,7 +845,7 @@ fetch('./api/iconkit.js').then(res => res.json()).then(iconKitData => {
     })
 
     // select first tab
-    $('#iconTabs').find(selectedForm == "tab1" ? ".iconTabButton" : `.iconTabButton[form="${selectedForm}"]`).first().click();
+    $('#iconTabs').find(selectedForm == "cube" ? ".iconTabButton" : `.iconTabButton[form="${selectedForm}"]`).first().click();
 })
 
 // icon copying - clicking button
@@ -978,10 +966,10 @@ $('#copyToClipboard').click(function() {
     icon.copyToClipboard()
     let copyIcon = $(this).find('img')
     $(this).addClass('greyedOut')
-    copyIcon.attr('src', './assets/copied.png')
+    copyIcon.attr('src', '../assets/iconkitbuttons/copied.png')
     setTimeout(() => {
         $(this).removeClass('greyedOut')
-        copyIcon.attr('src', './assets/copy.png')
+        copyIcon.attr('src', '../assets/iconkitbuttons/copy.png')
     }, 420);
 })
 
@@ -990,7 +978,7 @@ $('#copyURL').click(function() {
     if ($(this).hasClass('greyedOut') || !icon) return
 
     let params = [`id=${icon.id}`, `col1=${selectedCol["1"]}`, `col2=${selectedCol["2"]}`]
-    if (icon.form != "tab1") params.splice(1, 0, `form=${icon.formName()}`)
+    if (icon.form != "player") params.splice(1, 0, `form=${icon.formName()}`)
     if (icon.glowLayers[0].sprite.visible) params.push("glow=1")
     if (icon.colors["g"] != icon.colors["2"]) params.push(`colG=${selectedCol['g']}`)
     if (icon.colors["w"] != 0xffffff) params.push(`colW=${selectedCol["w"]}`)
@@ -1002,10 +990,10 @@ $('#copyURL').click(function() {
 
     let linkIcon = $(this).find('img')
     $(this).addClass('greyedOut')
-    linkIcon.attr('src', './assets/copied.png')
+    linkIcon.attr('src', '../assets/iconkitbuttons/copied.png')
     setTimeout(() => {
         $(this).removeClass('greyedOut')
-        linkIcon.attr('src', './assets/link.png')
+        linkIcon.attr('src', '../assets/iconkitbuttons/link.png')
     }, 420);
 })
 
@@ -1105,7 +1093,6 @@ function checkMissingUnlocks() {
     if (unlockMode && (!isFiltering || filterHide)) missingUnlocks.forEach(x => x.addClass("hasNoUnlock"))
 }
 
-// Unlock details button clicked
 $('#unlockIcon').click(function() {
     generateUnlocks()
 
@@ -1364,7 +1351,7 @@ $("#fetchUser").click(async function () {
     
     $("#steal").hide()
 
-    let info = await fetch('./api/profile/' + user).then(res => res.json()).catch(e => {})
+    let info = await fetch('../api/profile/' + user).then(res => res.json()).catch(e => {})
     if (info == "-1") info = {}
     info.cube = info.icon
 
@@ -1949,7 +1936,7 @@ $('#resetBallRotation').click(function() {
 
 function backButton() {
 	if (window.history.length > 1 && document.referrer.startsWith(window.location.origin)) window.history.back()
-	window.location.href = "./././././"
+	window.location.href = "../../../../../"
 }
 
 $(document).keydown(function(k) {
