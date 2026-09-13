@@ -2,7 +2,7 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135255146-1"></script>
     <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'UA-135255146-1');</script>
     <title>GD Font Generator v2</title>
-    <link href="https://gdcolon.com/assets/gdfont/fontgen.css" type="text/css" rel="stylesheet">
+    <link href="./assets/gdfont/fontgen.css" type="text/css" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta property="og:description" content="A slightly improved version of GD Colon's Geometry Dash Font Generator.">
@@ -85,6 +85,11 @@
                     </div>
                     
                     <div class="tinyBox gdButton" id="toBorderSettings" style="width: 375px; margin-top: 40px; background-image: url(https://gdcolon.com/assets/gdfont/longbox.png);" onclick="loadTab($('#borderSettings'))" tabindex="0"> <h2 id="borderName">Border: None</h2> </div>
+                    
+                    <div id="customBorderUpload">
+                    <p>Upload, drag, or paste an image to use as a border (WIP)</p>
+                    <input id="customBorderFileInput" type="file" accept="image/*" style="display: none;">
+                </div>
 
                 </div>
 
@@ -720,32 +725,109 @@ function drawText(message) {
 
     let slice = null
 
+    // BORDER THING - MODIFIED BY ME, IF IT BREAKS, REVERT BACK TO ORIGINAL VERSION
     if (border && !isLogo) {
-        // load border
-        let borderID = "border-" + border + ".png"
-        if (!loadedBorders.includes(borderID)) {
-            loading = true
-            try {
-                loader.add(borderID, `./assets/borders/${border}.png`).load(() => {
-                    loadedBorders.push(borderID)
-                    loading = false
-                    drawText(message)
-                })
-            }
-            catch(e) { console.log(e); loading = false }
-            return
-        }
+    // Determine whether border is an uploaded file or an existing border name
+    const isUploadedFile = border instanceof File;
 
-        else {
-            let truePos = text.getBounds()
-            let sliceSize = borderSliceSizes[border] || borderSliceSizes.default
-            slice = new PIXI.NineSlicePlane(loader.resources[borderID].texture, sliceSize, sliceSize, sliceSize, sliceSize)
-            slice.width = text.width + borderPadding[0]
-            slice.height = text.height + borderPadding[1]
-            slice.position.x = truePos.x + (truePos.width / 2) - (slice.width / 2)
-            slice.position.y = truePos.y + (truePos.height / 2) - (slice.height / 2)
+    let borderID;
+    let borderURL;
+
+    if (isUploadedFile) {
+        // Uploaded border
+        borderID = "uploaded-border-" + border.name + "-" + border.size;
+
+        if (!loadedBorders.includes(borderID)) {
+            loading = true;
+
+            try {
+                borderURL = URL.createObjectURL(border);
+
+                loader.add(borderID, borderURL).load(() => {
+                    loadedBorders.push(borderID);
+                    loading = false;
+
+                    URL.revokeObjectURL(borderURL);
+
+                    drawText(message);
+                });
+            }
+            catch (e) {
+                console.log(e);
+                loading = false;
+            }
+
+            return;
         }
     }
+    else {
+        // Original functionality
+        borderID = "border-" + border + ".png";
+
+        if (!loadedBorders.includes(borderID)) {
+            loading = true;
+
+            try {
+                loader.add(
+                    borderID,
+                    `./assets/borders/${border}.png`
+                ).load(() => {
+                    loadedBorders.push(borderID);
+                    loading = false;
+                    drawText(message);
+                });
+            }
+            catch (e) {
+                console.log(e);
+                loading = false;
+            }
+
+            return;
+        }
+    }
+
+    // Create the NineSlicePlane
+    let truePos = text.getBounds();
+
+    let sliceSize =
+        !isUploadedFile
+            ? (borderSliceSizes[border] || borderSliceSizes.default)
+            : borderSliceSizes.default;
+
+    slice = new PIXI.NineSlicePlane(
+        loader.resources[borderID].texture,
+        sliceSize,
+        sliceSize,
+        sliceSize,
+        sliceSize
+    );
+
+    slice.width = text.width + borderPadding[0];
+    slice.height = text.height + borderPadding[1];
+
+    slice.position.x =
+        truePos.x +
+        (truePos.width / 2) -
+        (slice.width / 2);
+
+    slice.position.y =
+        truePos.y +
+        (truePos.height / 2) -
+        (slice.height / 2);
+    }
+    
+    // END BORDER THINGY, BEGIN ANOTHER THING ADDED BY ME
+
+    document.getElementById("customBorderFileInput").addEventListener("change", (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    border = file;
+    drawText(message);
+    });
+
+    // END STUFF ADDED BY ME
     
     while (app.stage.children[0]) app.stage.removeChild(app.stage.children[0])
 
