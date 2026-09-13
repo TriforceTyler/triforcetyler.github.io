@@ -436,6 +436,8 @@ let align = "center"
 let defaultMessage = "Geometry Dash\nFont Generator V2!"
 let keepColor = false
 let border = null
+let uploadedBorderTexture = null;
+let uploadedBorderFile = null;
 
 if (mobile) {
     $('.mAdjust').addClass('mobile')
@@ -705,56 +707,30 @@ function drawText(message) {
     text.position.x = Math.max(bounds.x * -1, 0) + extraSpace[0] / 2
     text.position.y = Math.max(bounds.y * -1, 0) + extraSpace[1] / 2
 
-    if (!loadedFonts.includes(trueFont)) {
-        loading = true
-        try {
-            let fntID = trueFont
-            loader.add(`${fntID}.png`, `https://gdcolon.com/assets/fonts/${fontData.custom ? "custom/" : ""}${fntID}.fnt`).load(() => {
-                loadedFonts.push(trueFont)
-                loading = false
-                drawText(message)
-            })
-        }
-        catch(e) { console.log(e); loading = false }
-    }
-
     let slice = null
 
     // BORDER
 if (border && !isLogo) {
-    const isUploadedFile = border instanceof File;
 
-    let borderID;
+    let borderTexture;
+    let sliceSize;
 
-    if (isUploadedFile) {
-        // Uploaded image
-        borderID = "uploaded-border-" + border.name + "-" + border.size + "-" + border.lastModified;
+    // Custom uploaded border
+    if (border === "__uploaded__") {
 
-        if (!loadedBorders.includes(borderID)) {
-            loading = true;
-
-            try {
-                const borderURL = URL.createObjectURL(border);
-
-                loader.add(borderID, borderURL).load(() => {
-                    loadedBorders.push(borderID);
-                    loading = false;
-
-                    URL.revokeObjectURL(borderURL);
-
-                    drawText(message);
-                });
-
-            } catch (e) {
-                console.log(e);
-                loading = false;
-            }
-
+        if (!uploadedBorderTexture) {
             return;
         }
-    } else {
-        // Original built-in border functionality
-        borderID = "border-" + border + ".png";
+
+        borderTexture = uploadedBorderTexture;
+        sliceSize = borderSliceSizes.default;
+
+    }
+
+    // Normal built-in border
+    else {
+
+        const borderID = "border-" + border + ".png";
 
         if (!loadedBorders.includes(borderID)) {
             loading = true;
@@ -776,17 +752,15 @@ if (border && !isLogo) {
 
             return;
         }
+
+        borderTexture = loader.resources[borderID].texture;
+        sliceSize = borderSliceSizes[border] || borderSliceSizes.default;
     }
 
-    // Border is loaded, so create it
     let truePos = text.getBounds();
 
-    let sliceSize = isUploadedFile
-        ? borderSliceSizes.default
-        : (borderSliceSizes[border] || borderSliceSizes.default);
-
     slice = new PIXI.NineSlicePlane(
-        loader.resources[borderID].texture,
+        borderTexture,
         sliceSize,
         sliceSize,
         sliceSize,
@@ -805,8 +779,7 @@ if (border && !isLogo) {
         truePos.y +
         (truePos.height / 2) -
         (slice.height / 2);
-}
-    // END STUFF ADDED BY ME
+    }
     
     while (app.stage.children[0]) app.stage.removeChild(app.stage.children[0])
 
@@ -902,34 +875,63 @@ $(document).on('input blur', 'input[type="number"]', function (event) {
     }
 })
 
-$('#borderType').on("change", function() {
-    border = $(this).val()
-    let option = $('#borderType option:selected')
-    $('#borderName').text("Border: " + (option.attr("str") || option.text()))
-    if (border == "none") border = null;
-    $('.extraBorderSetting').toggle(!!border)
-    generateText()
-})
+// MODIFIED BY ME
 
-// MORE BORDER STUFF ADDED BY ME
+$('#borderType').on("change", function() {
+    const selected = $(this).val();
+
+    // Selecting a normal border cancels the uploaded border
+    if (selected !== "none") {
+        uploadedBorderTexture = null;
+        uploadedBorderFile = null;
+        border = selected;
+    } else {
+        border = null;
+    }
+
+    let option = $('#borderType option:selected');
+
+    $('#borderName').text(
+        "Border: " + (option.attr("str") || option.text())
+    );
+
+    $('.extraBorderSetting').toggle(!!border);
+
+    generateText();
+});
+
+// END MODIFIED BY ME, BEGIN MORE BORDER STUFF ADDED BY ME
 
 $('#customBorderFileInput').on('change', function(e) {
     const file = e.target.files[0];
 
     if (!file) return;
 
-    // Make the uploaded image the current border
-    border = file;
+    const url = URL.createObjectURL(file);
+    const img = new Image();
 
-    // Don't let the normal border dropdown override it
-    $('#borderType').val('none');
-    $('#borderName').text('Border: ' + file.name);
+    img.onload = function() {
+        const baseTexture = PIXI.BaseTexture.from(img);
+        uploadedBorderTexture = new PIXI.Texture(baseTexture);
+        uploadedBorderFile = file;
 
-    // Show border settings
-    $('.extraBorderSetting').show();
+        border = "__uploaded__";
 
-    // Redraw
-    generateText();
+        $('#borderType').val('none');
+        $('#borderName').text('Border: ' + file.name);
+        $('.extraBorderSetting').show();
+
+        URL.revokeObjectURL(url);
+
+        generateText();
+    };
+
+    img.onerror = function() {
+        console.error("Failed to load custom border image.");
+        URL.revokeObjectURL(url);
+    };
+
+    img.src = url;
 });
 
 // END BORDER STUFF 2
