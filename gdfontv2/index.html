@@ -150,11 +150,6 @@
                             <option value="cyan">Cyan</option>
                             <option value="magenta">Magenta</option>
                             <option value="red">Red</option>
-                            <option value="purple">Purple</option>
-                            <option value="blue">Blue</option>
-                            <option value="pink">Pink</option>
-                            <option value="white">White</option>
-                            <option value="black">Black</option>
                             <option value="fancy">FLAlertLayer</option>
                             <option value="menubrown">Menu Brown</option>
                             <option value="menublue">Menu Blue</option>
@@ -725,23 +720,21 @@ function drawText(message) {
 
     let slice = null
 
-    // BORDER THING - MODIFIED BY ME, IF IT BREAKS, REVERT BACK TO ORIGINAL VERSION
-    if (border && !isLogo) {
-    // Determine whether border is an uploaded file or an existing border name
+    // BORDER
+if (border && !isLogo) {
     const isUploadedFile = border instanceof File;
 
     let borderID;
-    let borderURL;
 
     if (isUploadedFile) {
-        // Uploaded border
-        borderID = "uploaded-border-" + border.name + "-" + border.size;
+        // Uploaded image
+        borderID = "uploaded-border-" + border.name + "-" + border.size + "-" + border.lastModified;
 
         if (!loadedBorders.includes(borderID)) {
             loading = true;
 
             try {
-                borderURL = URL.createObjectURL(border);
+                const borderURL = URL.createObjectURL(border);
 
                 loader.add(borderID, borderURL).load(() => {
                     loadedBorders.push(borderID);
@@ -751,17 +744,16 @@ function drawText(message) {
 
                     drawText(message);
                 });
-            }
-            catch (e) {
+
+            } catch (e) {
                 console.log(e);
                 loading = false;
             }
 
             return;
         }
-    }
-    else {
-        // Original functionality
+    } else {
+        // Original built-in border functionality
         borderID = "border-" + border + ".png";
 
         if (!loadedBorders.includes(borderID)) {
@@ -776,8 +768,8 @@ function drawText(message) {
                     loading = false;
                     drawText(message);
                 });
-            }
-            catch (e) {
+
+            } catch (e) {
                 console.log(e);
                 loading = false;
             }
@@ -786,13 +778,12 @@ function drawText(message) {
         }
     }
 
-    // Create the NineSlicePlane
+    // Border is loaded, so create it
     let truePos = text.getBounds();
 
-    let sliceSize =
-        !isUploadedFile
-            ? (borderSliceSizes[border] || borderSliceSizes.default)
-            : borderSliceSizes.default;
+    let sliceSize = isUploadedFile
+        ? borderSliceSizes.default
+        : (borderSliceSizes[border] || borderSliceSizes.default);
 
     slice = new PIXI.NineSlicePlane(
         loader.resources[borderID].texture,
@@ -814,19 +805,7 @@ function drawText(message) {
         truePos.y +
         (truePos.height / 2) -
         (slice.height / 2);
-    }
-    
-    // END BORDER THINGY, BEGIN ANOTHER THING ADDED BY ME
-
-    document.getElementById("customBorderFileInput").addEventListener("change", (e) => {
-    const file = e.target.files[0];
-
-    if (!file) return;
-
-    border = file;
-    drawText(message);
-    });
-
+}
     // END STUFF ADDED BY ME
     
     while (app.stage.children[0]) app.stage.removeChild(app.stage.children[0])
@@ -931,6 +910,29 @@ $('#borderType').on("change", function() {
     $('.extraBorderSetting').toggle(!!border)
     generateText()
 })
+
+// MORE BORDER STUFF ADDED BY ME
+
+$('#customBorderFileInput').on('change', function(e) {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    // Make the uploaded image the current border
+    border = file;
+
+    // Don't let the normal border dropdown override it
+    $('#borderType').val('none');
+    $('#borderName').text('Border: ' + file.name);
+
+    // Show border settings
+    $('.extraBorderSetting').show();
+
+    // Redraw
+    generateText();
+});
+
+// END BORDER STUFF 2
 
 function hexToRGB(hex) { // https://stackoverflow.com/a/39077686
     if (!hex.startsWith("#")) hex = "#" + hex
