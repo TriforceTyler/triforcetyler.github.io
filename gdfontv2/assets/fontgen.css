@@ -536,10 +536,51 @@ label input[type=checkbox]:checked + span {
   }
 }
 
-.blankButton {
-  padding: 0px 0px;
-  margin: 0px 0px;
-  background: none;
-  cursor: pointer;
-  border: none;
+/* added by me, which means it probably won't work: */
+
+#customBorderUpload {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    width: var(--characterButtonSize);
+    height: var(--characterButtonSize);
+    aspect-ratio: 1;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+#customBorderMobileUpload {
+    display: none;
+}
+
+#customBorderUpload {
+    background-color: rgba(0, 0, 0, 0.5);
+    outline: 2px dotted rgba(255, 255, 255, 0.5);
+    width: 95%;
+    padding: 5px 0px;
+    margin: 10px auto 0px auto;
+    grid-column: 1 / -1;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-in-out;
+    transition-property: scale;
+}
+
+#customBorderUpload:hover, #customBorderUpload:focus-visible {
+    scale: 1.025;
+    background-color: rgba(0, 0, 0, 0.66);
+}
+
+#characterPickerPopup.fileHover #customBorderUpload {
+    scale: 1.04;
+    background-color: rgba(255, 255, 255, 0.33);
+}
+
+#customBorderUpload p {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.66);
+    font-size: 16px;
 }
