@@ -87,8 +87,9 @@
                     <div class="tinyBox gdButton" id="toBorderSettings" style="width: 375px; margin-top: 40px; background-image: url(https://gdcolon.com/assets/gdfont/longbox.png);" onclick="loadTab($('#borderSettings'))" tabindex="0"> <h2 id="borderName">Border: None</h2> </div>
                     
                     <div id="customBorderUpload">
-                    <p>Upload, drag, or paste an image to use as a border (WIP)</p>
-                    <input id="customBorderFileInput" type="file" accept="image/*">
+                    <h3 style="margin-bottom: 15px; margin-top: 5px">Upload border:</h3>
+                    <div class="tinyBox gdButton" id="customBorderBtn" style="width: 375px; margin-top: 40px; background-image: url(https://gdcolon.com/assets/gdfont/longbox.png);" onclick="openBorderFileUploader()" tabindex="0"> <h2>Upload Border</h2> </div>
+                    <input id="customBorderFileInput" type="file" accept="image/*" style="display: none;">
                     </div>
 
                 </div>
@@ -110,7 +111,7 @@
                     <div class="extraSetting">
                         <h3 class="smaller">Max Width (px)</h3>
                         <input id="maxWidth" type="number" infinite="true" min=500 max=20000 placeholder="(none)" value=3000 style="width: 200px; margin-top: 18px";>
-                        <button class="blankButton gdButton" id="resetMaxWidth" style="margin-left: 15px">
+                        <button class="gdButton" id="resetMaxWidth" style="margin-left: 15px">
                         <img src="./assets/trash2.png" style="width: 58px">
                         </button>
                     </div>
@@ -129,7 +130,7 @@
                     <div class="extraSetting">
                         <h3 class="smaller">Kerning</h3>
                         <input id="kerning" type="number" infinite="true" min="-1000" max="5000" placeholder="0" value=0 style="width: 200px; margin-top: 12px";>
-                        <button class="blankButton gdButton" id="resetKerning" style="margin-left: 15px">
+                        <button class="gdButton" id="resetKerning" style="margin-left: 15px">
                         <img src="./assets/trash2.png" style="width: 58px">
                         </button>
                     </div>
@@ -186,7 +187,7 @@
                     <div class="extraSetting">
                         <h3 class="smaller">Border Width (px)</h3>
                         <input id="logoBorderWidth" type="number" min=0 max=20 decimal="true" empty="2.5" placeholder="2.5" value=2.5>
-                        <button class="blankButton gdButton" id="resetBorderWidth" style="margin-left: 15px">
+                        <button class="gdButton" id="resetBorderWidth" style="margin-left: 15px">
                         <img src="./assets/trash2.png" style="width: 58px">
                         </button>
                     </div>
@@ -194,7 +195,7 @@
                     <div class="extraSetting">
                         <h3 class="smaller">Shadow Opacity (%)</h3>
                         <input id="logoShadowOpacity" type="number" min=0 max=100 empty="30" placeholder="30" value=30>
-                        <button class="blankButton gdButton" id="resetShadowOpacity" style="margin-left: 15px">
+                        <button class="gdButton" id="resetShadowOpacity" style="margin-left: 15px">
                         <img src="./assets/trash2.png" style="width: 58px">
                         </button>
                     </div>
@@ -204,7 +205,7 @@
                     <div class="extraSetting">
                         <h3 class="smaller">Shadow X (px)</h3>
                         <input id="logoShadowX" type="number" min=-30 max=30 empty="9" placeholder="9" value=9>
-                        <button class="blankButton gdButton" id="resetShadowX" style="margin-left: 15px">
+                        <button class="gdButton" id="resetShadowX" style="margin-left: 15px">
                         <img src="./assets/trash2.png" style="width: 58px">
                         </button>
                     </div>
@@ -212,7 +213,7 @@
                     <div class="extraSetting">
                         <h3 class="smaller">Shadow Y (px)</h3>
                         <input id="logoShadowY" type="number" min=-30 max=30 empty="5" placeholder="5" value=5>
-                        <button class="blankButton gdButton" id="resetShadowY" style="margin-left: 15px">
+                        <button class="gdButton" id="resetShadowY" style="margin-left: 15px">
                         <img src="./assets/trash2.png" style="width: 58px">
                         </button>
                     </div>
@@ -1064,5 +1065,10 @@ $('#resetKerning').click(function() {
 $('#resetMaxWidth').click(function() {
     $('#maxWidth').val(3000)
 })
+
+function openBorderFileUploader() {
+  // Simulate a click on the hidden file input
+  document.getElementById("customBorderFileInput").click();
+}
 
 </script>
