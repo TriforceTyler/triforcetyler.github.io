@@ -166,9 +166,9 @@
                         <h3 class="smaller">Padding</h3>
                         <input id="borderPaddingX" type="number" min=-1000 max=5000 placeholder="65" empty="65" value=65 style="width: 130px";>
                         <input id="borderPaddingY" type="number" min=-1000 max=5000 placeholder="35" empty="35" value=35 style="width: 130px; margin-left: 10px";>
-                        <h3 class="smaller">Slider test.</h3>
-                        <input class="config" type="range" value="0.65" min="0.01" max="4" step="0.01">
-                        <input class="gdInput config sliderBox" type="number" value="0.65">
+                        <h3 class="smaller">Opacity (unfinished)</h3>
+                        <input class="config" id="borderOpacity" type="range" value="1" min="0" max="1" step="0.01">
+                        <input class="gdInput config sliderBox" id="borderOpacityBox" type="number" value="1">
                     </div>
                 </div>
 
@@ -1072,5 +1072,21 @@ function openBorderFileUploader() {
   // Simulate a click on the hidden file input
   document.getElementById("customBorderFileInput").click();
 }
+
+let borderTrans = 1
+
+// Border opacity slider
+$('#borderOpacity').on('input', function() {
+    borderTrans = Number($(this).val())
+    $('#borderOpacityBox').val(borderTrans)
+})
+
+$('#borderOpacityBox').change(function() {
+    borderTrans = Number(Math.abs(Number($(this).val()) || 1).toFixed(2))
+    if (borderTrans > 1) borderTrans = 1
+    else if (borderTrans < 0) borderTrans = 0
+    $('#borderOpacity').val(borderTrans)
+    $('#borderOpacityBox').val(borderTrans)
+})
 
 </script>
