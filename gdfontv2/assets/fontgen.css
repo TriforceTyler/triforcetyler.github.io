@@ -155,7 +155,7 @@ hr {
   border-radius: 8px;
   border: 25px solid transparent;
   border-radius: 25px;
-  border-image: url('./brownbox.png') 10% round;
+  border-image: url('https://gdcolon.com/assets/gdfont/brownbox.png') 10% round;
 }
 
 .mainBox.mobile {
@@ -170,21 +170,21 @@ hr {
   text-align: center;
   width: 180px;
   height: 60px;
-  background-image: url('./tinybox_grey.png');
+  background-image: url('https://gdcolon.com/assets/gdfont/tinybox_grey.png');
   background-size: 100% 100%;
   margin-right: 15px;
 }
 
 .tinySelected {
-  background-image: url('./tinybox_blue.png');
+  background-image: url('https://gdcolon.com/assets/gdfont/tinybox_blue.png');
 }
 
 .tinySelected.tinyPink {
-  background-image: url('./tinybox_pink.png') !important;
+  background-image: url('https://gdcolon.com/assets/gdfont/tinybox_pink.png') !important;
 }
 
 .tinySelected.tinyGreen {
-  background-image: url('./tinybox_green.png') !important;
+  background-image: url('https://gdcolon.com/assets/gdfont/tinybox_green.png') !important;
 }
 
 .tinyBox h2 {
@@ -256,17 +256,17 @@ hr {
   border-radius: 10px;
 
   border: 14px solid transparent;
-  border-image: url('./button_darkgrey.png') 16% round;
+  border-image: url('https://gdcolon.com/assets/gdfont/button_darkgrey.png') 16% round;
   background-color: var(--btn_darkgrey);
 }
 
 .fontBox.specialFont {
-  border-image-source: url('./button_purple.png');
+  border-image-source: url('https://gdcolon.com/assets/gdfont/button_purple.png');
   background-color: var(--btn_purple);
 }
 
 .fontBox.fontSelected {
-  border-image-source: url('./button_green.png');
+  border-image-source: url('https://gdcolon.com/assets/gdfont/button_green.png');
   background-color: var(--btn_green);
 }
 
@@ -400,7 +400,7 @@ label input[type=checkbox]:checked + span {
   text-align: center;
   width: 70px;
   height: 70px;
-  background-image: url('./button_grey.png');
+  background-image: url('https://gdcolon.com/assets/gdfont/button_grey.png');
   background-size: 100% 100%;
   margin: 18px 10px 0px 10px;
 }
@@ -497,7 +497,7 @@ label input[type=checkbox]:checked + span {
   justify-content: center;
   width: 80px;
   height: 80px;
-  background-image: url('./button_grey.png');
+  background-image: url('https://gdcolon.com/assets/gdfont/button_grey.png');
   background-size: 100% 100%;
 }
 
