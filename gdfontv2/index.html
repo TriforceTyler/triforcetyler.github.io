@@ -110,9 +110,9 @@
                     <div class="extraSetting">
                         <h3 class="smaller">Max Width (px)</h3>
                         <input id="maxWidth" type="number" infinite="true" min=500 max=20000 placeholder="(none)" value=3000 style="width: 200px; margin-top: 18px";>
-                        <button class="buttonOption gdButton" id="resetMaxWidth" style="margin-left: 15px">
+                        <!-- <button class="buttonOption gdButton" id="resetMaxWidth" style="margin-left: 15px">
                         <img src="./assets/trash2.png" style="width: 58px">
-                        </button>
+                        </button> -->
                     </div>
 
                     <br>
@@ -129,9 +129,15 @@
                     <div class="extraSetting">
                         <h3 class="smaller">Kerning</h3>
                         <input id="kerning" type="number" infinite="true" min="-1000" max="5000" placeholder="0" value=0 style="width: 200px; margin-top: 12px";>
-                        <button class="buttonOption gdButton" id="resetKerning" style="margin-left: 15px">
+                        <!-- <button class="buttonOption gdButton" id="resetKerning" style="margin-left: 15px">
                         <img src="./assets/trash2.png" style="width: 58px">
-                        </button>
+                        </button> -->
+                    </div>
+
+                    <div class="extraSetting">
+                    <h3 class="smaller">Opacity</h3>
+                    <input class="config" id="textOpacity" type="range" value="1" min="0" max="1" step="0.01">
+                    <input class="gdInput config sliderBox" id="textOpacityBox" type="number" value="1">
                     </div>
                 </div>
                 
@@ -166,9 +172,6 @@
                         <h3 class="smaller">Padding</h3>
                         <input id="borderPaddingX" type="number" min=-1000 max=5000 placeholder="65" empty="65" value=65 style="width: 130px";>
                         <input id="borderPaddingY" type="number" min=-1000 max=5000 placeholder="35" empty="35" value=35 style="width: 130px; margin-left: 10px";>
-                        <h3 class="smaller">Opacity (unfinished)</h3>
-                        <input class="config" id="borderOpacity" type="range" value="1" min="0" max="1" step="0.01">
-                        <input class="gdInput config sliderBox" id="borderOpacityBox" type="number" value="1">
                     </div>
                 </div>
 
@@ -189,17 +192,17 @@
                     <div class="extraSetting">
                         <h3 class="smaller">Border Width (px)</h3>
                         <input id="logoBorderWidth" type="number" min=0 max=20 decimal="true" empty="2.5" placeholder="2.5" value=2.5>
-                        <button class="buttonOption gdButton" id="resetBorderWidth" style="margin-left: 15px">
+                        <!-- <button class="buttonOption gdButton" id="resetBorderWidth" style="margin-left: 15px">
                         <img src="./assets/trash2.png" style="width: 58px">
-                        </button>
+                        </button> -->
                     </div>
 
                     <div class="extraSetting">
                         <h3 class="smaller">Shadow Opacity (%)</h3>
                         <input id="logoShadowOpacity" type="number" min=0 max=100 empty="30" placeholder="30" value=30>
-                        <button class="buttonOption gdButton" id="resetShadowOpacity" style="margin-left: 15px">
+                        <!-- <button class="buttonOption gdButton" id="resetShadowOpacity" style="margin-left: 15px">
                         <img src="./assets/trash2.png" style="width: 58px">
-                        </button>
+                        </button> -->
                     </div>
 
                     <br>
@@ -207,17 +210,17 @@
                     <div class="extraSetting">
                         <h3 class="smaller">Shadow X (px)</h3>
                         <input id="logoShadowX" type="number" min=-30 max=30 empty="9" placeholder="9" value=9>
-                        <button class="gdButton" id="resetShadowX" style="margin-left: 15px">
+                        <!-- <button class="gdButton" id="resetShadowX" style="margin-left: 15px">
                         <img src="./assets/trash2.png" style="width: 58px">
-                        </button>
+                        </button> -->
                     </div>
 
                     <div class="extraSetting">
                         <h3 class="smaller">Shadow Y (px)</h3>
                         <input id="logoShadowY" type="number" min=-30 max=30 empty="5" placeholder="5" value=5>
-                        <button class="gdButton" id="resetShadowY" style="margin-left: 15px">
+                        <!-- <button class="gdButton" id="resetShadowY" style="margin-left: 15px">
                         <img src="./assets/trash2.png" style="width: 58px">
-                        </button>
+                        </button> -->
                     </div>
 
                     <br>
@@ -1073,22 +1076,22 @@ function openBorderFileUploader() {
   document.getElementById("customBorderFileInput").click();
 }
 
-let borderTrans = 1
+let textTrans = 1
 
 // Border opacity slider
-$('#borderOpacity').on('input', function() {
-    borderTrans = Number($(this).val())
-    $('#borderOpacityBox').val(borderTrans)
-    document.getElementById("result").style.opacity = borderTrans;
+$('#textOpacity').on('input', function() {
+    textTrans = Number($(this).val())
+    $('#textOpacityBox').val(textTrans)
+    document.getElementById("result").style.opacity = textTrans;
 })
 
-$('#borderOpacityBox').change(function() {
-    borderTrans = Number(Math.abs(Number($(this).val()) || 1).toFixed(2))
-    if (borderTrans > 1) borderTrans = 1
-    else if (borderTrans < 0) borderTrans = 0
-    $('#borderOpacity').val(borderTrans)
-    $('#borderOpacityBox').val(borderTrans)
-    document.getElementById("result").style.opacity = borderTrans;
+$('#textOpacityBox').change(function() {
+    textTrans = Number(Math.abs(Number($(this).val()) || 1).toFixed(2))
+    if (textTrans > 1) textTrans = 1
+    else if (textTrans < 0) textTrans = 0
+    $('#textOpacity').val(textTrans)
+    $('#textOpacityBox').val(textTrans)
+    document.getElementById("result").style.opacity = textTrans;
 })
 
 </script>
