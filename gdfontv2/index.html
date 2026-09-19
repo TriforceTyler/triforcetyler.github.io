@@ -49,15 +49,15 @@
                 <div class="fontTab tinyBox expandedTab tinyGreen gdButton" style="margin-right: 0px" id="charmapButton"><h2 style="transform: scale(0.85)">Charmap</h2></div>
             </div>
             <div id="logoConfig" class="rightSide" style="display: none">
-                <div class="fontTab tinyBox expandedTab tinyGreen gdButton"><h2>Logo</h2></div>
-                <div class="fontTab tinyBox expandedTab tinyGreen gdButton" style="margin-right: 0px"><h2 style="transform: scale(0.9)">Symbols</h2></div>
+                <div class="fontTab tinyBox expandedTab tinyGreen gdButton" title="Logo font settings"><h2>Logo</h2></div>
+                <div class="fontTab tinyBox expandedTab tinyGreen gdButton" style="margin-right: 0px" title="Logo charmap"><h2 style="transform: scale(0.9)">Symbols</h2></div>
             </div>
         </div>
 
         <div style="display: flex; align-items: center; justify-content: center;">
 
             <div class="arrowBox">
-                <img id="prevPage" class="gdButton" src="https://gdcolon.com/assets/gdfont/arrow_left.png" onclick="changePage(-1)" style="display: none">
+                <img id="prevPage" class="gdButton" src="https://gdcolon.com/assets/gdfont/arrow_left.png" onclick="changePage(-1)" style="display: none" title="Back to fonts">
             </div>
 
             <div id="extraSettings" class="mAdjust">
@@ -101,16 +101,16 @@
                     <div class="extraSetting">
                         <h3 class="smaller">Align</h3>
                         <div>
-                            <div class="alignBox gdButton" alignment="left"> <h2>&lt;</h2> </div>
-                            <div class="alignBox gdButton selectedButton" alignment="center"> <h2>-</h2> </div>
-                            <div class="alignBox gdButton" alignment="right"> <h2>&gt;</h2> </div>
+                            <div class="alignBox gdButton" alignment="left" title="Left"> <h2>&lt;</h2> </div>
+                            <div class="alignBox gdButton selectedButton" alignment="center" title="Center"> <h2>-</h2> </div>
+                            <div class="alignBox gdButton" alignment="right" title="Right"> <h2>&gt;</h2> </div>
                         </div>
                     </div>
 
                     <div class="extraSetting">
                         <h3 class="smaller">Max Width (px)</h3>
                         <input id="maxWidth" type="number" infinite="true" min=500 max=20000 placeholder="(none)" value=3000 style="width: 200px; margin-top: 18px";>
-                        <button class="gdButton" id="resetMaxWidth" style="margin-left: 15px">
+                        <button class="buttonOption gdButton" id="resetMaxWidth" style="margin-left: 15px">
                         <img src="./assets/trash2.png" style="width: 58px">
                         </button>
                     </div>
@@ -129,7 +129,7 @@
                     <div class="extraSetting">
                         <h3 class="smaller">Kerning</h3>
                         <input id="kerning" type="number" infinite="true" min="-1000" max="5000" placeholder="0" value=0 style="width: 200px; margin-top: 12px";>
-                        <button class="gdButton" id="resetKerning" style="margin-left: 15px">
+                        <button class="buttonOption gdButton" id="resetKerning" style="margin-left: 15px">
                         <img src="./assets/trash2.png" style="width: 58px">
                         </button>
                     </div>
@@ -166,6 +166,9 @@
                         <h3 class="smaller">Padding</h3>
                         <input id="borderPaddingX" type="number" min=-1000 max=5000 placeholder="65" empty="65" value=65 style="width: 130px";>
                         <input id="borderPaddingY" type="number" min=-1000 max=5000 placeholder="35" empty="35" value=35 style="width: 130px; margin-left: 10px";>
+                        <h3 class="smaller">Slider test.</h3>
+                        <input class="config" type="range" value="0.65" min="0.01" max="4" step="0.01">
+                        <input class="gdInput config sliderBox" type="number" value="0.65">
                     </div>
                 </div>
 
@@ -186,7 +189,7 @@
                     <div class="extraSetting">
                         <h3 class="smaller">Border Width (px)</h3>
                         <input id="logoBorderWidth" type="number" min=0 max=20 decimal="true" empty="2.5" placeholder="2.5" value=2.5>
-                        <button class="gdButton" id="resetBorderWidth" style="margin-left: 15px">
+                        <button class="buttonOption gdButton" id="resetBorderWidth" style="margin-left: 15px">
                         <img src="./assets/trash2.png" style="width: 58px">
                         </button>
                     </div>
@@ -194,7 +197,7 @@
                     <div class="extraSetting">
                         <h3 class="smaller">Shadow Opacity (%)</h3>
                         <input id="logoShadowOpacity" type="number" min=0 max=100 empty="30" placeholder="30" value=30>
-                        <button class="gdButton" id="resetShadowOpacity" style="margin-left: 15px">
+                        <button class="buttonOption gdButton" id="resetShadowOpacity" style="margin-left: 15px">
                         <img src="./assets/trash2.png" style="width: 58px">
                         </button>
                     </div>
