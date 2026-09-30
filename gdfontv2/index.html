@@ -136,7 +136,7 @@
 
                     <div class="extraSetting">
                     <h3 class="smaller">Opacity</h3>
-                    <input class="config" id="textOpacity" type="range" value="1" min="0" max="1" step="0.01">
+                    <input class="config" id="textOpacity" type="range" value=1 min="0" max="1" step="0.01">
                     <input class="gdInput config sliderBox" id="textOpacityBox" type="number" value="1">
                     </div>
                 </div>
@@ -172,6 +172,11 @@
                         <h3 class="smaller">Padding</h3>
                         <input id="borderPaddingX" type="number" min=-1000 max=5000 placeholder="65" empty="65" value=65 style="width: 130px";>
                         <input id="borderPaddingY" type="number" min=-1000 max=5000 placeholder="35" empty="35" value=35 style="width: 130px; margin-left: 10px";>
+                    </div>
+                    <br>
+                    <div class="extraSetting extraBorderSetting" style="display: none">
+                        <h3 class="smaller">9Slice Size</h3>
+                        <input id="borderSliceSize" type="number" min=25 max=2500 placeholder="50" empty="50" value=50 style="width: 130px";>
                     </div>
                 </div>
 
@@ -730,7 +735,7 @@ if (border && !isLogo) {
         }
 
         borderTexture = uploadedBorderTexture;
-        sliceSize = borderSliceSizes.default;
+        sliceSize = Number($('#borderSliceSize').val())
 
     }
 
