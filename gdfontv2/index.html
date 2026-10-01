@@ -153,9 +153,15 @@
                             <option value="green">Green</option>
                             <option value="grey">Gray</option>
                             <option value="darkgrey" str="DGrey">Dark Gray</option>
+                            <option value="blue">Blue</option>
                             <option value="cyan">Cyan</option>
+                            <option value="pink">Pink</option>
                             <option value="magenta">Magenta</option>
                             <option value="red">Red</option>
+                            <option value="teal">Teal</option>
+                            <option value="aqua">Aqua</option>
+                            <option value="orange">Orange</option>
+                            <option value="salmon">Salmon</option>
                             <option value="fancy">FLAlertLayer</option>
                             <option value="menubrown">Menu Brown</option>
                             <option value="menublue">Menu Blue</option>
@@ -163,6 +169,10 @@
                             <option value="menupurple">Menu Purple</option>
                             <option value="menudarkgrey" str="Menu DGray">Menu Dark Gray</option>
                             <option value="menugrey">Menu Gray</option>
+                            <option value="logo1">Logo Border</option>
+                            <option value="tab1">Brown Tab</option>
+                            <option value="tab2">Dark Brown Tab</option>
+                            <option value="greensquare">Green Square</option>
                         </select>
                     </div>
 
@@ -176,7 +186,7 @@
                     <br>
                     <div class="extraSetting extraBorderSetting" style="display: none">
                         <h3 class="smaller">9Slice Size</h3>
-                        <input id="borderSliceSize" type="number" min=25 max=2500 placeholder="50" empty="50" value=50 style="width: 130px";>
+                        <input id="borderSliceSize" type="number" min=0 max=2500 placeholder="50" empty="50" value=50 style="width: 130px";>
                     </div>
                 </div>
 
@@ -378,7 +388,8 @@ const customFonts = {
 
 const borderSliceSizes = {
     default: 50,
-    fancy: 200
+    fancy: 200,
+    logo1: 60
 }
 
 let lastPage = 1
