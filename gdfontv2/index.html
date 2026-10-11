@@ -141,56 +141,6 @@
                             <span class="gdButton"></span>
                         </label>
                     </div>
-
-                    <br>
-
-                    <div class="extraSetting">
-                        <h3 class="smaller">Border Width (px)</h3>
-                        <input id="logoBorderWidth" type="number" min=0 max=20 decimal="true" empty="2.5" placeholder="2.5" value=2.5>
-                        <!-- <button class="buttonOption gdButton" id="resetBorderWidth" style="margin-left: 15px">
-                        <img src="./assets/trash2.png" style="width: 58px">
-                        </button> -->
-                    </div>
-
-                    <div class="extraSetting">
-                        <h3 class="smaller">Shadow Opacity (%)</h3>
-                        <input id="textShadowOpacity" type="number" min=0 max=100 empty="30" placeholder="30" value=30>
-                        <!-- <button class="buttonOption gdButton" id="resetShadowOpacity" style="margin-left: 15px">
-                        <img src="./assets/trash2.png" style="width: 58px">
-                        </button> -->
-                    </div>
-
-                    <br>
-
-                    <div class="extraSetting">
-                        <h3 class="smaller">Shadow X (px)</h3>
-                        <input id="textShadowX" type="number" min=-30 max=30 empty="9" placeholder="9" value=9>
-                        <!-- <button class="gdButton" id="resetShadowX" style="margin-left: 15px">
-                        <img src="./assets/trash2.png" style="width: 58px">
-                        </button> -->
-                    </div>
-
-                    <div class="extraSetting">
-                        <h3 class="smaller">Shadow Y (px)</h3>
-                        <input id="textShadowY" type="number" min=-30 max=30 empty="5" placeholder="5" value=5>
-                        <!-- <button class="gdButton" id="resetShadowY" style="margin-left: 15px">
-                        <img src="./assets/trash2.png" style="width: 58px">
-                        </button> -->
-                    </div>
-
-                    <br>
-
-                    <div class="extraSetting">
-                        <h3 class="smaller" style="display: inline-block; vertical-align: middle;">Border</h3>
-                        <input style="position: absolute; visibility: hidden;" type="color" id="textBorderColor" value="#ffffff">
-                        <div id="textBorderColorChannel" class="colorBox gdButton" onclick="$('#textBorderColor').trigger('click')" style="width: 70px; height: 70px; display: inline-block; vertical-align: middle;; background-color: #ffffff"></div>
-                    </div>
-
-                    <div class="extraSetting">
-                        <h3 class="smaller" style="display: inline-block; vertical-align: middle;"; >Shadow</h3>
-                        <input style="position: absolute; visibility: hidden;" type="color" id="textShadowColor" value="#000000">
-                        <div id="textShadowColorChannel" class="colorBox gdButton" onclick="$('#textShadowColor').trigger('click')" style="width: 70px; height: 70px; display: inline-block; vertical-align: middle;; background-color: #000000"></div>
-                    </div>
                 
                 <!-- border settings, technically a tab -->
                 <div class="settingTab" style="display: none" tab="Border" id="borderSettings">
@@ -534,19 +484,6 @@ $(document).on('click', '.fontBox', function () {
         $('#trashIcon').hide()
         $('#colCorrectOption').hide()
     }
-
-    // ADDED BY ME
-    if (selectedFont == "chat_hd") {
-        $('#outlineOptionTest').show()
-    }
-    else if (selectedFont == "chat_uhd") {
-        $('#outlineOptionTest').show()
-    }
-    else {
-        $('#outlineOptionTest').hide()
-    }
-
-    // END STUFF ADDED BY ME
     
     $('#logoConfig').toggle(isLogo)
     $('#baseConfig').toggle(!isLogo)
@@ -584,10 +521,6 @@ $("#colorPicker").on('input', function() {
 
 $("#borderColor").on('input', function() { $("#borderColorChannel").css('background-color', $(this).val()); generateText() })
 $("#shadowColor").on('input', function() { $("#shadowColorChannel").css('background-color', $(this).val()); generateText() })
-
-// Next 2 lines added by me
-$("#textBorderColor").on('input', function() { $("#textBorderColorChannel").css('background-color', $(this).val()); generateText() })
-$("#textShadowColor").on('input', function() { $("#textShadowColorChannel").css('background-color', $(this).val()); generateText() })
 
 $('#colorInput').keypress(function(e) {
     if (e.key == "#") return e.preventDefault()
@@ -935,59 +868,6 @@ if (border && !isLogo) {
         logoOutline.onerror = err => { throw err }
         logoOutline.src = logoCanvas.toDataURL()
     }
-
-    // ADDED BY ME - testing for outline and shadow
-    
-    // draw a sneaky rectangle to maintain position
-        let rect = new PIXI.Graphics().drawRect(0, 0, app.renderer.width, app.renderer.height)
-        app.stage.addChild(rect)
-
-        let textCanvas = app.renderer.plugins.extract.canvas(app.stage)
-        let ctx = textCanvas.getContext('2d');
-        let textOutline = new Image()
-        rect.destroy()
-        text.destroy()
-
-        textOutline.onload = () => {
-            // https://stackoverflow.com/questions/28207232/draw-border-around-nontransparent-part-of-image-on-canvas
-            let dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1] // offset array
-            let thickness = +$('#textBorderWidth').val() || 0; let x = 3; let y = 3
-        
-            if (thickness > 0) {
-                for (let i=0; i < dArr.length; i += 2) ctx.drawImage(textOutline, x + dArr[i] * thickness, y + dArr[i + 1] * thickness);
-                ctx.globalCompositeOperation = "source-in";
-                ctx.fillStyle = $('#textBorderColor').val() || "white"
-                ctx.fillRect(0, 0, textCanvas.width, textCanvas.height);
-                ctx.globalCompositeOperation = "source-over";
-                ctx.drawImage(textOutline, x, y)
-            }
-
-            let textShadow = new Image()
-            textShadow.onload = () => {
-                let textShadowOpacity = (+$('#textShadowOpacity').val() / 100) || 0
-                if (+$('#textShadowOpacity').val() > 0) {
-                    ctx.textShadowOffsetX = +$('#textShadowX').val() || 0;
-                    ctx.textShadowOffsetY = +$('#textShadowY').val() || 0;
-                    ctx.textShadowColor = `rgba(${hexToRGB($('#textShadowColor').val() || "#000000").join(", ")}, ${textShadowOpacity})`;
-                    //ctx.shadowBlur = 1;   - add setting for this later?
-                    ctx.drawImage(textShadow, 0, 0)
-                }
-
-                let base = new PIXI.BaseTexture(textCanvas);
-                let texture = new PIXI.Texture(base);
-                let sprite = new PIXI.Sprite(texture);
-                app.stage.children.forEach(x => app.stage.removeChild(x)) // clear
-                app.stage.addChild(sprite)
-                $('#result').show()
-                $('#loading').hide()
-            }
-
-            textShadow.onerror = err => { throw err }
-            textShadow.src = textCanvas.toDataURL()
-        }
-
-        textOutline.onerror = err => { throw err }
-        textOutline.src = textCanvas.toDataURL()
 
     $('#result').show()
     $('#loading').hide()
