@@ -151,7 +151,32 @@
                 <!-- Filters, classed as a tab -->
                 <div class="settingTab" style="display: none" tab="Filter" id="filterSettings">
                     <h3 class="tabHeader" style="margin-bottom: 20px">Filters</h3>
-                    <h1 class="tabHeader" style="margin-bottom: 20px">WIP</h1>
+
+                    <div class="extraSetting">
+                    <h3 class="smaller">Blur</h3>
+                    <input class="config" id="filterBlur" type="range" value=0 min="0" max="100" step="1">
+                    <input class="gdInput config sliderBox" id="filterBlurBox" type="number" value="0">
+                    </div>
+
+                    <div class="extraSetting">
+                    <h3 class="smaller">Brightness</h3>
+                    <input class="config" id="filterBrightness" type="range" value=0 min="0" max="100" step="1">
+                    <input class="gdInput config sliderBox" id="filterBrightnessBox" type="number" value="0">
+                    </div>
+
+                    <br>
+
+                    <div class="extraSetting">
+                    <h3 class="smaller">Grayscale</h3>
+                    <input class="config" id="filterGrayscale" type="range" value=0 min="0" max="100" step="1">
+                    <input class="gdInput config sliderBox" id="filterGrayscaleBox" type="number" value="0">
+                    </div>
+
+                    <div class="extraSetting">
+                    <h3 class="smaller">Invertion</h3>
+                    <input class="config" id="filterInvert" type="range" value=0 min="0" max="100" step="1">
+                    <input class="gdInput config sliderBox" id="filterInvertBox" type="number" value="0">
+                    </div>
                 </div>
 
                 <!-- border settings, technically a tab -->
@@ -1098,7 +1123,7 @@ function openBorderFileUploader() {
 
 let textTrans = 1
 
-// Border opacity slider
+// Opacity slider
 $('#textOpacity').on('input', function() {
     textTrans = Number($(this).val())
     $('#textOpacityBox').val(textTrans)
@@ -1112,6 +1137,76 @@ $('#textOpacityBox').change(function() {
     $('#textOpacity').val(textTrans)
     $('#textOpacityBox').val(textTrans)
     document.getElementById("result").style.opacity = textTrans;
+})
+
+// FILTERS (SHADERS)
+let eFilterBlur = 0
+let eFilterBrightness = 0
+let eFilterGrayscale = 0
+let eFilterInvert = 0
+
+// Blur
+$('#filterBlur').on('input', function() {
+    eFilterBlur = Number($(this).val())
+    $('#filterBlurBox').val(eFilterBlur)
+    document.getElementById("result").style.filter = `blur(${eFilterBlur}px)`
+})
+
+$('#filterBlurBox').change(function() {
+    eFilterBlur = Number(Math.abs(Number($(this).val()) || 1).toFixed(2))
+    if (eFilterBlur > 100) eFilterBlur = 100
+    else if (eFilterBlur < 0) eFilterBlur = 0
+    $('#filterBlur').val(eFilterBlur)
+    $('#filterBlurBox').val(eFilterBlur)
+    document.getElementById("result").style.filter = `blur(${eFilterBlur}px)`
+})
+
+// Brightness
+$('#filterBrightness').on('input', function() {
+    eFilterBrightness = Number($(this).val())
+    $('#filterBrightnessBox').val(eFilterBrightness)
+    document.getElementById("result").style.filter = `brightness(${eFilterBrightness}%)`
+})
+
+$('#filterBrightnessBox').change(function() {
+    eFilterBrightness = Number(Math.abs(Number($(this).val()) || 1).toFixed(2))
+    if (eFilterBrightness > 100) eFilterBrightness = 100
+    else if (eFilterBrightness < 0) eFilterBrightness = 0
+    $('#filterBrightness').val(eFilterBrightness)
+    $('#filterBrightnessBox').val(eFilterBrightness)
+    document.getElementById("result").style.filter = `brightness(${eFilterBrightness}%)`
+})
+
+// Grayscale
+$('#filterGrayscale').on('input', function() {
+    eFilterGrayscale = Number($(this).val())
+    $('#filterGrayscaleBox').val(eFilterGrayscale)
+    document.getElementById("result").style.filter = `grayscale(${eFilterGrayscale}%)`
+})
+
+$('#filterBlurBox').change(function() {
+    eFilterGrayscale = Number(Math.abs(Number($(this).val()) || 1).toFixed(2))
+    if (eFilterGrayscale > 100) eFilterGrayscale = 100
+    else if (eFilterGrayscale < 0) eFilterGrayscale = 0
+    $('#filterGrayscale').val(eFilterGrayscale)
+    $('#filterGrayscaleBox').val(eFilterGrayscale)
+    document.getElementById("result").style.filter = `grayscale(${eFilterGrayscale}%)`
+})
+
+// Invert
+$('#filterInvert').on('input', function() {
+    eFilterInvert = Number($(this).val())
+    $('#filterInvertBox').val(eFilterInvert)
+    document.getElementById("result").style.filter = `invert(${eFilterInvert}%)`
+})
+
+$('#filterBlurBox').change(function() {
+    eFilterInvert = Number(Math.abs(Number($(this).val()) || 1).toFixed(2))
+    if (eFilterInvert > 100) eFilterInvert = 100
+    else if (eFilterInvert < 0) eFilterInvert = 0
+    $('#filterInvert').val(eFilterInvert)
+    $('#filterInvertBox').val(eFilterInvert)
+    document.getElementById("result").style.filter = `invert(${eFilterInvert}%)`
 })
 
 </script>
