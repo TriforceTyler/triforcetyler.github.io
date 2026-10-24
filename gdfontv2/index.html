@@ -141,8 +141,19 @@
                             <span class="gdButton"></span>
                         </label>
                     </div>
+
+                    <br>
+
+                    <!-- Filters button -->
+                    <div class="tinyBox gdButton" id="toFilterSettings" style="width: 375px; margin-top: 15px; background-image: url(https://gdcolon.com/assets/gdfont/longbox.png);" onclick="loadTab($('#filterSettings'))" tabindex="0"> <h2>Filters</h2> </div>
                 </div>
-                
+
+                <!-- Filters, classed as a tab -->
+                <div class="settingTab" style="display: none" tab="Filter" id="filterSettings">
+                    <h3 class="tabHeader" style="margin-bottom: 20px">Filters</h3>
+                    <h1 class="tabHeader" style="margin-bottom: 20px">WIP</h1>
+                </div>
+
                 <!-- border settings, technically a tab -->
                 <div class="settingTab" style="display: none" tab="Border" id="borderSettings">
                     <h3 class="tabHeader" style="margin-bottom: 20px">Border settings</h3>
@@ -284,6 +295,7 @@
 
 <script type="text/javascript">
 
+// Setup stuff
 let canvas = document.getElementById('result');
 let app = new PIXI.Application({ view: canvas, width: 0, height: 0, backgroundAlpha: 0 });
 let loader = new PIXI.Loader()
@@ -388,6 +400,7 @@ const customFonts = {
     "mojangles": { name: "Mojangles", title: "Mojangles", source: "Minecraft", link: "https://minecraft.wiki/w/Mojangles" }
 }
 
+// Custom border 9Slice sizes
 const borderSliceSizes = {
     default: 50,
     fancy: 200,
@@ -420,7 +433,7 @@ function appendFonts(group, fontList, css, custom) {
     }
 }
 
-/* Setup font list (I think) */
+/* Setup font list */
 appendFonts("pinnedFontList", pinnedFonts, "bigBoy")
 appendFonts("mainFontList", mainFonts)
 appendFonts("chatFontList", chatFonts, "smolBoy")
@@ -428,6 +441,7 @@ appendFonts("customFontList", customFonts, null, true)
 
 $('.fontBox[font=gjFont00-uhd]').addClass("fontSelected")
 
+// Special characters
 const specialchars = 'abcdefghijklmnopqrstuvwxyzàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþ˄˃˅˂'.split("")
 const specialalts  = 'abcdefghijklmnopqrstuvwxyzaaaaaaaceeeeiiiionoooooouuuuyp^>v<'.split("")
 
@@ -464,10 +478,12 @@ let border = null
 let uploadedBorderTexture = null;
 let uploadedBorderFile = null;
 
+// Mobile stuff
 if (mobile) {
     $('.mAdjust').addClass('mobile')
 }
 
+// Some buttons stuff
 $(document).on('click', '.fontBox', function () {
     if (loading || !$(this).attr('font') || selectedFont == $(this).attr('font')) return
     $('.fontBox').removeClass('fontSelected')
@@ -506,6 +522,7 @@ $('.colorChannel').click(function() {
     }
 })
 
+// Color setting
 function setColor(hex, noGen) {
     let newCol = ((hex || "").replace(/#/g, "") || "ffffff")
     $("#colorInput").css('color', 'white')
@@ -586,11 +603,13 @@ $('.fontTab').click(function() {
     loadTab(foundTab)
 })
 
+// Load a tab
 function loadTab(tab) {
     $('.settingTab').hide()
     $(tab).show()
 }
 
+// Change text align
 $('.alignBox').click(function() {
     align = $(this).attr('alignment')
     $('.alignBox').removeClass('selectedButton')
@@ -648,7 +667,7 @@ function stall(ms) {
     }, ms);
 }
 
-
+// Generate text
 function generateText(message=$("#input").val(), noStall) {
     if (loading) return
     fontID = selectedFont
@@ -676,6 +695,7 @@ function generateText(message=$("#input").val(), noStall) {
     else drawText(message)
 }
 
+// More generate text
 function drawText(message) {
 
     let isLogo = fontID == "fontlogo"
@@ -737,7 +757,7 @@ function drawText(message) {
 
     let slice = null
 
-    // BORDER
+// BORDER
 if (border && !isLogo) {
 
     let borderTexture;
@@ -874,6 +894,7 @@ if (border && !isLogo) {
     $('#loading').hide()
 }
 
+// Default text display
 generateText(defaultMessage)
 
 $(document).on('input blur', 'input[type="number"]', function (event) {
@@ -1069,30 +1090,6 @@ $(document).on('keydown', '.gdButton', function(k) {
 });
 
 /* THINGS ADDED BY ME (probably won't work) */
-
-$('#resetBorderWidth').click(function() {
-    $('#logoBorderWidth').val(2.5)
-})
-
-$('#resetShadowOpacity').click(function() {
-    $('#logoShadowOpacity').val(30)
-})
-
-$('#resetShadowX').click(function() {
-    $('#logoShadowX').val(9)
-})
-
-$('#resetShadowY').click(function() {
-    $('#logoShadowY').val(5)
-})
-
-$('#resetKerning').click(function() {
-    $('#kerning').val(0)
-})
-
-$('#resetMaxWidth').click(function() {
-    $('#maxWidth').val(3000)
-})
 
 function openBorderFileUploader() {
   // Simulate a click on the hidden file input
