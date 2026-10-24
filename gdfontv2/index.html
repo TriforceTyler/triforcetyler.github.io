@@ -145,7 +145,7 @@
                     <br>
 
                     <!-- Filters button -->
-                    <div class="tinyBox gdButton" id="toFilterSettings" style="width: 375px; margin-top: 15px; background-image: url(https://gdcolon.com/assets/gdfont/longbox.png);" onclick="loadTab($('#filterSettings'))" tabindex="0"> <h2>Filters</h2> </div>
+                    <div class="tinyBox gdButton" id="toFilterSettings" style="width: 350px; margin-top: 15px; background-image: url(https://gdcolon.com/assets/gdfont/longbox.png);" onclick="loadTab($('#filterSettings'))" tabindex="0"> <h2>Filters</h2> </div>
                 </div>
 
                 <!-- Filters, classed as a tab -->
@@ -154,14 +154,14 @@
 
                     <div class="extraSetting">
                     <h3 class="smaller">Blur</h3>
-                    <input class="config" id="filterBlur" type="range" value=0 min="0" max="100" step="1">
+                    <input class="config" id="filterBlur" type="range" value=0 min="0" max="50" step="0.5">
                     <input class="gdInput config sliderBox" id="filterBlurBox" type="number" value="0">
                     </div>
 
                     <div class="extraSetting">
                     <h3 class="smaller">Brightness</h3>
-                    <input class="config" id="filterBrightness" type="range" value=0 min="0" max="100" step="1">
-                    <input class="gdInput config sliderBox" id="filterBrightnessBox" type="number" value="0">
+                    <input class="config" id="filterBrightness" type="range" value=100 min="0" max="100" step="1">
+                    <input class="gdInput config sliderBox" id="filterBrightnessBox" type="number" value="100">
                     </div>
 
                     <br>
@@ -1141,7 +1141,7 @@ $('#textOpacityBox').change(function() {
 
 // FILTERS (SHADERS)
 let eFilterBlur = 0
-let eFilterBrightness = 0
+let eFilterBrightness = 100
 let eFilterGrayscale = 0
 let eFilterInvert = 0
 
@@ -1184,7 +1184,7 @@ $('#filterGrayscale').on('input', function() {
     document.getElementById("result").style.filter = `grayscale(${eFilterGrayscale}%)`
 })
 
-$('#filterBlurBox').change(function() {
+$('#filterGrayscaleBox').change(function() {
     eFilterGrayscale = Number(Math.abs(Number($(this).val()) || 1).toFixed(2))
     if (eFilterGrayscale > 100) eFilterGrayscale = 100
     else if (eFilterGrayscale < 0) eFilterGrayscale = 0
@@ -1200,7 +1200,7 @@ $('#filterInvert').on('input', function() {
     document.getElementById("result").style.filter = `invert(${eFilterInvert}%)`
 })
 
-$('#filterBlurBox').change(function() {
+$('#filterInvertBox').change(function() {
     eFilterInvert = Number(Math.abs(Number($(this).val()) || 1).toFixed(2))
     if (eFilterInvert > 100) eFilterInvert = 100
     else if (eFilterInvert < 0) eFilterInvert = 0
