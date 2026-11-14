@@ -1149,7 +1149,12 @@ let eFilterInvert = 0
 $('#filterBlur').on('input', function() {
     eFilterBlur = Number($(this).val())
     $('#filterBlurBox').val(eFilterBlur)
-    document.getElementById("result").style.filter = `blur(${eFilterBlur}px)`
+    document.getElementById("result").style.filter = `
+    grayscale(${eFilterGrayscale}%)
+    brightness(${eFilterBrightness}%)
+    invert(${eFilterInvert}%)
+    blur(${eFilterBlur}px)
+    `
 })
 
 $('#filterBlurBox').change(function() {
@@ -1158,14 +1163,24 @@ $('#filterBlurBox').change(function() {
     else if (eFilterBlur < 0) eFilterBlur = 0
     $('#filterBlur').val(eFilterBlur)
     $('#filterBlurBox').val(eFilterBlur)
-    document.getElementById("result").style.filter = `blur(${eFilterBlur}px)`
+    document.getElementById("result").style.filter = `
+    grayscale(${eFilterGrayscale}%)
+    brightness(${eFilterBrightness}%)
+    invert(${eFilterInvert}%)
+    blur(${eFilterBlur}px)
+    `
 })
 
 // Brightness
 $('#filterBrightness').on('input', function() {
     eFilterBrightness = Number($(this).val())
     $('#filterBrightnessBox').val(eFilterBrightness)
-    document.getElementById("result").style.filter = `brightness(${eFilterBrightness}%)`
+    document.getElementById("result").style.filter = `
+    grayscale(${eFilterGrayscale}%)
+    brightness(${eFilterBrightness}%)
+    invert(${eFilterInvert}%)
+    blur(${eFilterBlur}px)
+    `
 })
 
 $('#filterBrightnessBox').change(function() {
@@ -1174,14 +1189,24 @@ $('#filterBrightnessBox').change(function() {
     else if (eFilterBrightness < 0) eFilterBrightness = 0
     $('#filterBrightness').val(eFilterBrightness)
     $('#filterBrightnessBox').val(eFilterBrightness)
-    document.getElementById("result").style.filter = `brightness(${eFilterBrightness}%)`
+    document.getElementById("result").style.filter = `
+    grayscale(${eFilterGrayscale}%)
+    brightness(${eFilterBrightness}%)
+    invert(${eFilterInvert}%)
+    blur(${eFilterBlur}px)
+    `
 })
 
 // Grayscale
 $('#filterGrayscale').on('input', function() {
     eFilterGrayscale = Number($(this).val())
     $('#filterGrayscaleBox').val(eFilterGrayscale)
-    document.getElementById("result").style.filter = `grayscale(${eFilterGrayscale}%)`
+    document.getElementById("result").style.filter = `
+    grayscale(${eFilterGrayscale}%)
+    brightness(${eFilterBrightness}%)
+    invert(${eFilterInvert}%)
+    blur(${eFilterBlur}px)
+    `
 })
 
 $('#filterGrayscaleBox').change(function() {
@@ -1190,14 +1215,24 @@ $('#filterGrayscaleBox').change(function() {
     else if (eFilterGrayscale < 0) eFilterGrayscale = 0
     $('#filterGrayscale').val(eFilterGrayscale)
     $('#filterGrayscaleBox').val(eFilterGrayscale)
-    document.getElementById("result").style.filter = `grayscale(${eFilterGrayscale}%)`
+    document.getElementById("result").style.filter = `
+    grayscale(${eFilterGrayscale}%)
+    brightness(${eFilterBrightness}%)
+    invert(${eFilterInvert}%)
+    blur(${eFilterBlur}px)
+    `
 })
 
 // Invert
 $('#filterInvert').on('input', function() {
     eFilterInvert = Number($(this).val())
     $('#filterInvertBox').val(eFilterInvert)
-    document.getElementById("result").style.filter = `invert(${eFilterInvert}%)`
+    document.getElementById("result").style.filter = `
+    grayscale(${eFilterGrayscale}%)
+    brightness(${eFilterBrightness}%)
+    invert(${eFilterInvert}%)
+    blur(${eFilterBlur}px)
+    `
 })
 
 $('#filterInvertBox').change(function() {
@@ -1206,7 +1241,12 @@ $('#filterInvertBox').change(function() {
     else if (eFilterInvert < 0) eFilterInvert = 0
     $('#filterInvert').val(eFilterInvert)
     $('#filterInvertBox').val(eFilterInvert)
-    document.getElementById("result").style.filter = `invert(${eFilterInvert}%)`
+    document.getElementById("result").style.filter = `
+    grayscale(${eFilterGrayscale}%)
+    brightness(${eFilterBrightness}%)
+    invert(${eFilterInvert}%)
+    blur(${eFilterBlur}px)
+    `
 })
 
 </script>
