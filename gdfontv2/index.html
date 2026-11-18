@@ -177,6 +177,13 @@
                     <input class="config" id="filterInvert" type="range" value=0 min="0" max="100" step="1">
                     <input class="gdInput config sliderBox" id="filterInvertBox" type="number" value="0">
                     </div>
+
+                    <br>
+
+                    <div class="extraSetting">
+                        <h3 class="smaller">Noise</h3>
+                        <input id="noise" type="number" infinite="true" min="0" max="100" placeholder="0" value=0 style="width: 200px; margin-top: 12px";>
+                    </div>
                 </div>
 
                 <!-- border settings, technically a tab -->
@@ -322,7 +329,7 @@
 
 // Setup stuff
 let canvas = document.getElementById('result');
-let app = new PIXI.Application({ view: canvas, width: 0, height: 0, backgroundAlpha: 0 });
+let app = new PIXI.Application({ view: canvas, width: 0, height: 0, backgroundAlpha: 0, preserveDrawingBuffer: true });
 let loader = new PIXI.Loader()
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
@@ -1144,6 +1151,15 @@ let eFilterBlur = 0
 let eFilterBrightness = 100
 let eFilterGrayscale = 0
 let eFilterInvert = 0
+let eFilterNoise = 0
+
+import { BlurFilter, NoiseFilter } from 'pixi.js';
+
+// Apply filters
+    app.stage.filters = [
+    new BlurFilter({ strength: eFilterBlur }),
+    new NoiseFilter({ noise: eFilterNoise }),
+];
 
 // Blur
 $('#filterBlur').on('input', function() {
@@ -1247,6 +1263,12 @@ $('#filterInvertBox').change(function() {
     invert(${eFilterInvert}%)
     blur(${eFilterBlur}px)
     `
+})
+
+$('#noise').change(function() {
+    eFilterNoise = Number(Math.abs(Number($(this).val()) || 1).toFixed(2))
+    if (eFilterNoise > 100) eFilterInvert = 100
+    else if (eFilterNoise < 0) eFilterInvert = 0
 })
 
 </script>
