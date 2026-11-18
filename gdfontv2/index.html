@@ -1153,14 +1153,6 @@ let eFilterGrayscale = 0
 let eFilterInvert = 0
 let eFilterNoise = 0
 
-import { BlurFilter, NoiseFilter } from 'pixi.js';
-
-// Apply filters
-    app.stage.filters = [
-    new BlurFilter({ strength: eFilterBlur }),
-    new NoiseFilter({ noise: eFilterNoise }),
-];
-
 // Blur
 $('#filterBlur').on('input', function() {
     eFilterBlur = Number($(this).val())
