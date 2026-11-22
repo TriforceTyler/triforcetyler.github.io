@@ -1025,23 +1025,70 @@ function hexToRGB(hex) { // https://stackoverflow.com/a/39077686
     .map(x => parseInt(x, 16))
 }
 
-$('#downloadBtn').click(async function() {
-    if ($('#result').is(":hidden")) return
-    let link = document.createElement('a');
-    let filename = ($('#input').val() || defaultMessage).replace(/\s+/g, " ").replace(/[/\\#%&{}\<>*?$!'":@+`|=]/g, "").slice(0, 40) || "message"
+// ADDED BY ME!!!!
 
-    let selectfnt = allFonts[selectedFont]
+// Apply visual filters directly to an exportable canvas
+function getFilteredCanvas() {
+    const source = app.renderer.plugins.extract.canvas(app.stage);
+
+    const blurPadding = Math.ceil(eFilterBlur * 2);
+
+    const output = document.createElement('canvas');
+    output.width = source.width + blurPadding * 2;
+    output.height = source.height + blurPadding * 2;
+
+    const ctx = output.getContext('2d');
+
+    ctx.filter = `
+        grayscale(${eFilterGrayscale}%)
+        brightness(${eFilterBrightness}%)
+        invert(${eFilterInvert}%)
+        blur(${eFilterBlur}px)
+    `;
+
+    ctx.globalAlpha = textTrans;
+
+    ctx.drawImage(
+        source,
+        blurPadding,
+        blurPadding
+    );
+
+    ctx.filter = 'none';
+    ctx.globalAlpha = 1;
+
+    return output;
+}
+
+// FUNCTION MODIFIED BY ME:
+
+$('#downloadBtn').click(function() {
+    if ($('#result').is(":hidden")) return;
+
+    let link = document.createElement('a');
+
+    let filename = ($('#input').val() || defaultMessage)
+        .replace(/\s+/g, " ")
+        .replace(/[/\\#%&{}\<>*?$!'":@+`|=]/g, "")
+        .slice(0, 40) || "message";
+
+    let selectfnt = allFonts[selectedFont];
+
     link.download = `${selectfnt.main ? "font" + selectfnt.mainID : selectedFont.replace(/^font/, "")} - ${filename}.png`;
-    link.href = await app.renderer.plugins.extract.canvas(app.stage).toDataURL()
-    
+
+    // Export the canvas WITH filters applied
+    link.href = getFilteredCanvas().toDataURL("image/png");
+
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-})
+});
+
+// ALSO MODIFIED BY ME:
 
 $('#copyBtn').click(function() {
     if ($(this).hasClass('greyscale')) return
-    app.renderer.plugins.extract.canvas(app.stage).toBlob(function(blob) { 
+    getFilteredCanvas().toBlob(function(blob) {
         let item = new ClipboardItem({ "image/png": blob });
         navigator.clipboard.write([item]); 
     });
@@ -1257,10 +1304,12 @@ $('#filterInvertBox').change(function() {
     `
 })
 
+// Noise (not fully implemented yet!)
+
 $('#noise').change(function() {
     eFilterNoise = Number(Math.abs(Number($(this).val()) || 1).toFixed(2))
-    if (eFilterNoise > 100) eFilterInvert = 100
-    else if (eFilterNoise < 0) eFilterInvert = 0
+    if (eFilterNoise > 100) eFilterNoise = 100
+    else if (eFilterNoise < 0) eFilterNoise = 0
 })
 
 </script>
