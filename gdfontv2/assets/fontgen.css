@@ -529,14 +529,14 @@ label input[type=checkbox]:checked + span {
       transform: scale(1.2);
   }
   75% {
-      transform: scale(1.1);
+      transform: scale(1.05);
   }
   100% {
-      transform: scale(1.17);
+      transform: scale(1.18);
   }
 }
 
-/* Extra support added by me */
+/* Extra support for slider inputs, added by me */
 
 input[type="range"] {
     background-color: rgba(0, 0, 0, 0);
