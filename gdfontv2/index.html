@@ -152,13 +152,13 @@
                 <div class="settingTab" style="display: none" tab="Filter" id="filterSettings">
                     <h3 class="tabHeader" style="margin-bottom: 20px">Filters</h3>
 
-                    <div class="extraSetting">
+                    <div class="extraSetting" style="margin-right: 5px">
                     <h3 class="smaller">Blur</h3>
                     <input class="config" id="filterBlur" type="range" value=0 min="0" max="50" step="0.5">
                     <input class="gdInput config sliderBox" id="filterBlurBox" type="number" value="0">
                     </div>
 
-                    <div class="extraSetting">
+                    <div class="extraSetting" style="margin-left: 5px">
                     <h3 class="smaller">Brightness</h3>
                     <input class="config" id="filterBrightness" type="range" value=100 min="0" max="100" step="1">
                     <input class="gdInput config sliderBox" id="filterBrightnessBox" type="number" value="100">
@@ -166,25 +166,17 @@
 
                     <br>
 
-                    <div class="extraSetting">
+                    <div class="extraSetting" style="margin-right: 5px">
                     <h3 class="smaller">Grayscale</h3>
                     <input class="config" id="filterGrayscale" type="range" value=0 min="0" max="100" step="1">
                     <input class="gdInput config sliderBox" id="filterGrayscaleBox" type="number" value="0">
                     </div>
 
-                    <div class="extraSetting">
+                    <div class="extraSetting" style="margin-left: 5px">
                     <h3 class="smaller">Invertion</h3>
                     <input class="config" id="filterInvert" type="range" value=0 min="0" max="100" step="1">
                     <input class="gdInput config sliderBox" id="filterInvertBox" type="number" value="0">
                     </div>
-
-                    <br>
-
-                    <div class="extraSetting">
-                        <h3 class="smaller">Noise</h3>
-                        <input id="noise" type="number" infinite="true" min="0" max="100" placeholder="0" value=0 style="width: 200px; margin-top: 12px";>
-                    </div>
-                </div>
 
                 <!-- border settings, technically a tab -->
                 <div class="settingTab" style="display: none" tab="Border" id="borderSettings">
@@ -1198,7 +1190,6 @@ let eFilterBlur = 0
 let eFilterBrightness = 100
 let eFilterGrayscale = 0
 let eFilterInvert = 0
-let eFilterNoise = 0
 
 // Blur
 $('#filterBlur').on('input', function() {
@@ -1302,14 +1293,6 @@ $('#filterInvertBox').change(function() {
     invert(${eFilterInvert}%)
     blur(${eFilterBlur}px)
     `
-})
-
-// Noise (not fully implemented yet!)
-
-$('#noise').change(function() {
-    eFilterNoise = Number(Math.abs(Number($(this).val()) || 1).toFixed(2))
-    if (eFilterNoise > 100) eFilterNoise = 100
-    else if (eFilterNoise < 0) eFilterNoise = 0
 })
 
 </script>
